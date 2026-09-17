@@ -988,8 +988,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Sitio {
   id: number;
-  inicio: {
-    titulo: string;
+  inicio?: {
     texto?: string | null;
   };
   quienesSomos?: {
@@ -1098,7 +1097,6 @@ export interface SitioSelect<T extends boolean = true> {
   inicio?:
     | T
     | {
-        titulo?: T;
         texto?: T;
       };
   quienesSomos?:

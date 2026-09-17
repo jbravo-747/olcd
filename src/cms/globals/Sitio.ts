@@ -17,10 +17,7 @@ export const Sitio: GlobalConfig = {
         {
           label: "Inicio",
           name: "inicio",
-          fields: [
-            { name: "titulo", type: "text", required: true, localized: true, label: "Título del hero" },
-            texto("texto", "Texto del hero"),
-          ],
+          fields: [texto("texto", "Texto bajo el nombre del Observatorio")],
         },
         {
           label: "Quiénes somos",

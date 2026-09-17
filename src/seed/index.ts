@@ -317,10 +317,7 @@ async function sembrarPersonas(payload: Payload, organizacionIds: number[]) {
 
 async function sembrarSitio(payload: Payload) {
   const datos = (traducir: (s: string) => string) => ({
-    inicio: {
-      titulo: traducir("Observatorio Latinoamericano de Centros de Datos"),
-      texto: traducir(descripcionCortaLarga),
-    },
+    inicio: { texto: traducir(descripcionCortaLarga) },
     quienesSomos: {
       titulo: traducir(
         "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sodales orci in neque euismod rhoncus.",

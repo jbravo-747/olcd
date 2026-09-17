@@ -61,6 +61,7 @@
     "filtrosDe": "Filtros de {titulo}"
   },
   "inicio": {
+    "titulo": "Observatorio Latinoamericano de Centros de Datos",
     "mapaTitulo": "Mapa de centros de datos",
     "verMapa": "Ver el mapa completo",
     "reciente": "Reciente",

@@ -69,8 +69,8 @@ export default async function Inicio({ params }: { params: Promise<{ locale: Loc
         <div className="hero-pattern" aria-hidden />
 
         <div className="shell relative text-center">
-          <h1 className="display t-h1 mx-auto max-w-[20ch]">{sitio.inicio.titulo}</h1>
-          {sitio.inicio.texto && (
+          <h1 className="display t-h1 mx-auto max-w-[20ch]">{t("titulo")}</h1>
+          {sitio.inicio?.texto && (
             <p className="t-lead mx-auto mt-6 max-w-[var(--lead-max)]">{sitio.inicio.texto}</p>
           )}
           <Link href="/quienes-somos" className="pill pill-dark mt-12">

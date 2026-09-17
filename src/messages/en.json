@@ -61,6 +61,7 @@
     "filtrosDe": "{titulo} filters"
   },
   "inicio": {
+    "titulo": "Observatorio Latinoamericano de Centros de Datos",
     "mapaTitulo": "Data center map",
     "verMapa": "See the full map",
     "reciente": "Latest",
