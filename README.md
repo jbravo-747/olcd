@@ -79,6 +79,12 @@ Las migraciones se aplican al primer arranque. Para cargar contenido:
 En ambos casos, si el sitio ya se visitó antes de cargar contenido, ejecutar
 `docker compose up -d --force-recreate app` para vaciar la caché de datos.
 
+**Correo del formulario de contacto.** Con `SMTP_HOST` vacío los mensajes se
+guardan igual en `/admin` → Administración → Mensajes de contacto, pero no se
+envía ningún correo. Para activarlo basta definir `SMTP_HOST`, `SMTP_PORT`,
+`SMTP_USER`, `SMTP_PASS`, `EMAIL_FROM` y `CONTACTO_DESTINO` en `.env` y
+ejecutar `docker compose up -d app` (se leen al arrancar; no requiere rebuild).
+
 ## Mapa de páginas
 
 | Ruta (bajo `/es` o `/en`) | Contenido |

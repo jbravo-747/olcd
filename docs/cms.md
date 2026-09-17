@@ -67,6 +67,15 @@ En Docker, `minio-init` crea el bucket público `olcd` en el primer arranque y
 proveedor externo en lugar de MinIO basta quitar los servicios `minio` y
 `minio-init` del compose y poner sus credenciales en `S3_*`.
 
+## Correo
+
+El adaptador de correo (`@payloadcms/email-nodemailer`) sólo se registra si
+`SMTP_HOST` tiene valor; se evalúa al arrancar, no al compilar. Sin SMTP el
+formulario de contacto sigue guardando cada mensaje en la colección
+`mensajes-contacto` y sólo omite el aviso a `CONTACTO_DESTINO`. Para activarlo
+después: definir `SMTP_*`, `EMAIL_FROM` y `CONTACTO_DESTINO` y reiniciar la app
+(`docker compose up -d app` en Docker; redeploy en Vercel).
+
 ## Usuarios
 
 `admin` gestiona usuarios y ve los mensajes de contacto; `editor` sólo edita
