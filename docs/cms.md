@@ -50,9 +50,22 @@ redeploy. Gracias a esto `next build` no necesita base de datos.
 
 ## Archivos
 
-Con `S3_BUCKET` definido, imágenes y PDF van a un bucket S3-compatible
-(Cloudflare R2 / AWS S3 con Vercel, MinIO en Docker) y se sirven desde
-`S3_PUBLIC_URL`. Sin `S3_BUCKET` se guardan en disco (sólo desarrollo).
+`@payloadcms/storage-s3` está siempre registrado en `payload.config.ts` y se
+activa con `enabled: Boolean(S3_BUCKET)`. Se registra siempre porque el
+importMap del admin (`src/app/(payload)/admin/importMap.js`) se genera a
+partir de los plugins presentes: si el plugin sólo existiera con bucket, un
+importMap generado en desarrollo no incluiría `S3ClientUploadHandler` y el
+admin quedaría en blanco en producción. Con `S3_BUCKET` definido:
+imágenes y PDF van a un bucket S3-compatible (Cloudflare R2 / AWS S3 con
+Vercel, MinIO en Docker) y se sirven directamente desde `S3_PUBLIC_URL`, que
+`next.config.ts` añade a `images.remotePatterns`. Sin `S3_BUCKET` se guardan en
+disco (sólo desarrollo). Es la única bifurcación entre entornos y se decide por
+configuración.
+
+En Docker, `minio-init` crea el bucket público `olcd` en el primer arranque y
+`app` recibe `S3_ENDPOINT=http://minio:9000` por la red interna. Para usar un
+proveedor externo en lugar de MinIO basta quitar los servicios `minio` y
+`minio-init` del compose y poner sus credenciales en `S3_*`.
 
 ## Usuarios
 

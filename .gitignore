@@ -12,6 +12,8 @@ docs/insumos/
 
 # Herramientas locales
 .playwright-mcp/
+.claude/skills/
+skills-lock.json
 
 # Archivos subidos al CMS cuando no hay bucket S3 (sólo desarrollo)
 media/

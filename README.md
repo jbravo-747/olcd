@@ -65,8 +65,16 @@ docker compose up --build     # app :3000, Postgres, MinIO :9000 (consola :9001)
 ```
 
 `docker-compose.yml` levanta Postgres, MinIO (crea el bucket público `olcd`)
-y la app en modo `standalone`. El seed se corre desde una máquina de
-desarrollo apuntando `DATABASE_URI` a la base destino.
+y la app en modo `standalone`; `APP_PORT` cambia el puerto publicado (3000).
+Las migraciones se aplican al primer arranque. Para cargar contenido:
+
+- desde cero: `npm run seed` desde una máquina de desarrollo con
+  `DATABASE_URI` apuntando a la base destino, o
+- copiando otro entorno: `pg_dump` → `docker compose exec -T db psql -U olcd olcd`.
+  Si el volcado viene de una base usada en desarrollo, borrar antes la marca de
+  modo *push* (`DELETE FROM payload_migrations WHERE name = 'dev';`), porque
+  Payload se detiene a pedir confirmación interactiva al verla. Tras restaurar,
+  `docker compose up -d --force-recreate app` para vaciar la caché de datos.
 
 ## Mapa de páginas
 
@@ -126,9 +134,12 @@ Medidas fluidas con `clamp()` entre 386 px y 1440 px (`--fs-h1`,
 
 ## Recursos de marca
 
-`public/brand/`: `logo-olcd-horizontal.png` (header), `logo-olcd-vertical.png`
-(pie), `hero-blobs-desktop.png` / `-mobile.png` (máscara del hero) y
-`public/favicon.ico`.
+`public/brand/`: `logo-olcd-horizontal.png` (header) y `logo-olcd-vertical.png`
+(pie) son los logos oficiales con textura topográfica, en crema para fondos
+oscuros, recortados y reducidos para web (los originales en alta resolución
+viven en `docs/insumos/marca/`, fuera del repo); `hero-blobs-desktop.png` /
+`-mobile.png` (máscara del hero) y `public/favicon.ico` vienen del prototipo
+de referencia.
 
 ## Insumos originales
 

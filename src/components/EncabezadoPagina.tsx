@@ -1,5 +1,3 @@
-import Marcador from "./Marcador";
-
 /** Banda oscura con el título de la página (N1 de los wireframes). */
 export default function EncabezadoPagina({
   titulo,
@@ -40,5 +38,3 @@ export function TituloSeccion({
     </h2>
   );
 }
-
-export { Marcador };

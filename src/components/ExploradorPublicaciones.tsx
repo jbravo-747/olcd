@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useTranslations } from "next-intl";
 import GridRecursos, { type Recurso } from "./GridRecursos";
 
 export type ItemExplorable = Recurso & { tipo: string };
@@ -26,6 +27,7 @@ export default function ExploradorPublicaciones({
   categorias: Categoria[];
   items: ItemExplorable[];
 }) {
+  const t = useTranslations("comun");
   const [palabra, setPalabra] = useState("");
   const [tipo, setTipo] = useState("");
 
@@ -50,11 +52,11 @@ export default function ExploradorPublicaciones({
             className="mx-auto mt-10 grid max-w-3xl gap-5 sm:grid-cols-2"
             onSubmit={(e) => e.preventDefault()}
             role="search"
-            aria-label={`Filtros de ${titulo.toLowerCase()}`}
+            aria-label={t("filtrosDe", { titulo })}
           >
             <div>
               <label htmlFor="pub-palabra" className="mb-2 block text-xs font-semibold text-cream/80">
-                Palabra Clave
+                {t("palabraClave")}
               </label>
               <input
                 id="pub-palabra"
@@ -62,7 +64,7 @@ export default function ExploradorPublicaciones({
                 value={palabra}
                 onChange={(e) => setPalabra(e.target.value)}
                 className="field"
-                placeholder="Buscar por título"
+                placeholder={t("buscarPorTitulo")}
               />
             </div>
             <div>
@@ -76,7 +78,7 @@ export default function ExploradorPublicaciones({
                 className="field appearance-none bg-[length:16px] bg-[right_1.25rem_center] bg-no-repeat pr-12"
                 style={{ backgroundImage: flechaSelect }}
               >
-                <option value="">Todos</option>
+                <option value="">{t("todos")}</option>
                 {categorias.map((c) => (
                   <option key={c.slug} value={c.slug}>
                     {c.nombre}
@@ -91,17 +93,15 @@ export default function ExploradorPublicaciones({
       {filtrando ? (
         <section className="bg-cream py-16">
           <div className="shell">
-            <h2 className="display t-section">Resultados</h2>
+            <h2 className="display t-section">{t("resultadosTitulo")}</h2>
             <p className="mt-2 text-sm text-ink/70" aria-live="polite">
-              {resultados.length} {resultados.length === 1 ? "resultado" : "resultados"}
+              {t("resultados", { n: resultados.length })}
             </p>
             <div className="mt-10">
               {resultados.length === 0 ? (
-                <p className="rounded-xl bg-cream-deep p-8 text-center text-sm">
-                  No hay resultados para esta búsqueda.
-                </p>
+                <p className="rounded-xl bg-cream-deep p-8 text-center text-sm">{t("sinResultados")}</p>
               ) : (
-                <GridRecursos recursos={resultados} porPagina={9} etiquetaPaginacion="Paginación de resultados" />
+                <GridRecursos recursos={resultados} porPagina={9} />
               )}
             </div>
           </div>
@@ -115,13 +115,11 @@ export default function ExploradorPublicaciones({
           >
             <div className="shell">
               <h2 className="display t-section">{categoria.nombre}</h2>
-              <p className="mt-6 max-w-3xl text-[15px] leading-relaxed text-ink/80">{categoria.descripcion}</p>
+              {categoria.descripcion && (
+                <p className="mt-6 max-w-3xl text-[15px] leading-relaxed text-ink/80">{categoria.descripcion}</p>
+              )}
               <div className="mt-10">
-                <GridRecursos
-                  recursos={items.filter((item) => item.tipo === categoria.slug)}
-                  porPagina={9}
-                  etiquetaPaginacion={`Paginación de ${categoria.nombre}`}
-                />
+                <GridRecursos recursos={items.filter((item) => item.tipo === categoria.slug)} porPagina={9} />
               </div>
             </div>
           </section>

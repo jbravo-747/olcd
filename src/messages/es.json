@@ -35,7 +35,8 @@
     "mostrarSecciones": "Mostrar secciones de {seccion}",
     "cambiarIdioma": "Cambiar idioma a inglés",
     "codigoIdioma": "EN",
-    "saltarContenido": "Saltar al contenido principal"
+    "saltarContenido": "Saltar al contenido principal",
+    "irAlInicio": "Ir al inicio"
   },
   "noEncontrado": {
     "titulo": "Página no encontrada",

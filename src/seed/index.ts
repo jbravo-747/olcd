@@ -1,5 +1,5 @@
 /**
- * Siembra el CMS con el contenido de la maqueta (src/data/*). Se ejecuta con
+ * Siembra el CMS con el contenido de la maqueta (src/seed/datos/*). Se ejecuta con
  * `npm run seed` contra la base de datos de DATABASE_URI. No hace nada si ya
  * hay labs cargados.
  */

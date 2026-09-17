@@ -27,32 +27,33 @@ import { migrations } from "./migrations";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const plugins: Plugin[] = [];
+// El plugin se registra siempre para que sus componentes de cliente queden en
+// el importMap del admin; sin bucket (desarrollo local) se desactiva y los
+// archivos se guardan en disco.
+const urlPublica = (filename: string) => `${process.env.S3_PUBLIC_URL}/${filename}`;
 
-// Sin bucket configurado (p. ej. desarrollo local) los archivos se guardan en disco.
-if (process.env.S3_BUCKET) {
-  plugins.push(
-    s3Storage({
-      collections: {
-        media: { generateFileURL: ({ filename }) => `${process.env.S3_PUBLIC_URL}/${filename}` },
-        documentos: { generateFileURL: ({ filename }) => `${process.env.S3_PUBLIC_URL}/${filename}` },
+const plugins: Plugin[] = [
+  s3Storage({
+    enabled: Boolean(process.env.S3_BUCKET),
+    collections: {
+      media: { generateFileURL: ({ filename }) => urlPublica(filename) },
+      documentos: { generateFileURL: ({ filename }) => urlPublica(filename) },
+    },
+    bucket: process.env.S3_BUCKET || "",
+    // Subida directa desde el navegador (evita el límite de 4.5 MB de Vercel).
+    // Requiere que S3_ENDPOINT sea alcanzable desde el navegador y CORS en el bucket.
+    clientUploads: process.env.S3_CLIENT_UPLOADS === "true",
+    config: {
+      endpoint: process.env.S3_ENDPOINT,
+      region: process.env.S3_REGION || "us-east-1",
+      forcePathStyle: process.env.S3_FORCE_PATH_STYLE !== "false",
+      credentials: {
+        accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
+        secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
       },
-      bucket: process.env.S3_BUCKET,
-      // Subida directa desde el navegador (evita el límite de 4.5 MB de Vercel).
-      // Requiere que S3_ENDPOINT sea alcanzable desde el navegador y CORS en el bucket.
-      clientUploads: process.env.S3_CLIENT_UPLOADS === "true",
-      config: {
-        endpoint: process.env.S3_ENDPOINT,
-        region: process.env.S3_REGION || "us-east-1",
-        forcePathStyle: process.env.S3_FORCE_PATH_STYLE !== "false",
-        credentials: {
-          accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
-          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
-        },
-      },
-    }),
-  );
-}
+    },
+  }),
+];
 
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000",

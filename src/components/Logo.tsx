@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 
 import horizontal from "../../public/brand/logo-olcd-horizontal.png";
@@ -9,11 +10,9 @@ type Props = {
   variante?: "barra" | "bloque";
 };
 
-/**
- * Marca del Observatorio. Los archivos son los oficiales del sitio de
- * referencia (`public/brand/`) y están pensados para fondos oscuros.
- */
+/** Marca del Observatorio (`public/brand/`), pensada para fondos oscuros. */
 export default function Logo({ variante = "barra" }: Props) {
+  const t = useTranslations("header");
   const esBloque = variante === "bloque";
 
   return (
@@ -25,7 +24,7 @@ export default function Logo({ variante = "barra" }: Props) {
         className={esBloque ? "h-auto w-[132px]" : "h-[38px] w-auto md:h-[44px]"}
         sizes={esBloque ? "132px" : "200px"}
       />
-      <span className="sr-only">Ir al inicio</span>
+      <span className="sr-only">{t("irAlInicio")}</span>
     </Link>
   );
 }

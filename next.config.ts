@@ -15,6 +15,9 @@ const nextConfig: NextConfig = {
   output: "standalone",
   turbopack: { root: path.resolve(dirname) },
   images: {
+    // En pruebas locales con Docker el bucket vive en localhost, que dentro del
+    // contenedor no es MinIO: se sirve la imagen tal cual en vez de optimizarla.
+    unoptimized: bucket?.hostname === "localhost" || bucket?.hostname === "127.0.0.1",
     localPatterns: [{ pathname: "/api/media/file/**" }],
     remotePatterns: bucket
       ? [

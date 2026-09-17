@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useFormatter, useTranslations } from "next-intl";
-import latam from "@/data/latam.json";
+import latam from "@/lib/latam.json";
 import type { Centro } from "@/payload-types";
 import { ALTO, ANCHO, anilloAPath, proyectar } from "@/lib/proyeccion";
 
@@ -15,7 +15,7 @@ const trazos = Object.entries(geografia).flatMap(([pais, anillos]) =>
 
 type Estado = Centro["estado"];
 
-export const estados: Estado[] = ["en-operacion", "en-construccion", "anunciado"];
+const estados: Estado[] = ["en-operacion", "en-construccion", "anunciado"];
 
 /** Color del marcador según el estado del proyecto. */
 const colorEstado: Record<Estado, string> = {

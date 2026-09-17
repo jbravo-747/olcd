@@ -7,7 +7,7 @@ import Imagen from "./Imagen";
 import { IconoFlecha } from "./Iconos";
 
 /** Carrusel de fotos del detalle de proyecto o entrada. Sin fotos muestra un marcador. */
-export default function Carrusel({ fotos, etiqueta }: { fotos: Media[]; etiqueta?: string }) {
+export default function Carrusel({ fotos }: { fotos: Media[] }) {
   const t = useTranslations("carrusel");
   const [indice, setIndice] = useState(0);
   const total = fotos.length;
@@ -17,7 +17,7 @@ export default function Carrusel({ fotos, etiqueta }: { fotos: Media[]; etiqueta
     return (
       <section className="bg-slate">
         <div className="flex h-[320px] items-center justify-center text-cream/85 sm:h-[420px]">
-          <p className="text-sm font-semibold">{etiqueta ?? t("galeria")}</p>
+          <p className="text-sm font-semibold">{t("galeria")}</p>
         </div>
       </section>
     );
