@@ -61,7 +61,13 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
-    meta: { titleSuffix: " | OLCD" },
+    meta: {
+      titleSuffix: " | OLCD",
+      icons: [
+        { rel: "icon", type: "image/x-icon", url: "/favicon.ico" },
+        { rel: "apple-touch-icon", url: "/apple-touch-icon.png" },
+      ],
+    },
   },
   i18n: {
     supportedLanguages: { es, en },

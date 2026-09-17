@@ -147,8 +147,10 @@ Medidas fluidas con `clamp()` entre 386 px y 1440 px (`--fs-h1`,
 (pie) son los logos oficiales con textura topográfica, en crema para fondos
 oscuros, recortados y reducidos para web (los originales en alta resolución
 viven en `docs/insumos/marca/`, fuera del repo); `hero-blobs-desktop.png` /
-`-mobile.png` (máscara del hero) y `public/favicon.ico` vienen del prototipo
-de referencia.
+`-mobile.png` (máscara del hero) viene del prototipo de referencia. El
+favicon (`public/favicon.ico`, `icon-192.png`, `icon-512.png`,
+`apple-touch-icon.png`) es la "O" del logo sobre fondo `ink`, generado con
+sharp a partir del original.
 
 ## Insumos originales
 
