@@ -76,6 +76,18 @@ formulario de contacto sigue guardando cada mensaje en la colección
 después: definir `SMTP_*`, `EMAIL_FROM` y `CONTACTO_DESTINO` y reiniciar la app
 (`docker compose up -d app` en Docker; redeploy en Vercel).
 
+## Personalización del panel
+
+El admin lleva la identidad del Observatorio:
+
+- `src/app/(payload)/custom.scss`: variables de tema de Payload (`--theme-elevation-*`,
+  acentos, radios, tipografías) con la paleta de `globals.css`, en claro y oscuro.
+- `src/cms/componentes/`: logo del login (`Logo`), icono de la barra (`Icono`),
+  texto de bienvenida en login y panel (`AntesDeLogin`, `Bienvenida`), enlace y
+  vista del manual de uso (`EnlaceManual`, `Manual` → `/admin/manual`).
+  Se registran en `admin.components` de `payload.config.ts`; al añadir o mover
+  componentes hay que correr `npm run generate:importmap`.
+
 ## Usuarios
 
 `admin` gestiona usuarios y ve los mensajes de contacto; `editor` sólo edita

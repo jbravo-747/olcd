@@ -61,6 +61,23 @@ export default buildConfig({
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },
+    components: {
+      graphics: {
+        Logo: "/cms/componentes/Logo#Logo",
+        Icon: "/cms/componentes/Icono#Icono",
+      },
+      beforeLogin: ["/cms/componentes/AntesDeLogin#AntesDeLogin"],
+      beforeDashboard: ["/cms/componentes/Bienvenida#Bienvenida"],
+      afterNavLinks: ["/cms/componentes/EnlaceManual#EnlaceManual"],
+      views: {
+        manual: {
+          Component: "/cms/componentes/Manual#Manual",
+          path: "/manual",
+          exact: true,
+          meta: { title: "Manual de uso" },
+        },
+      },
+    },
     meta: {
       titleSuffix: " | OLCD",
       icons: [
