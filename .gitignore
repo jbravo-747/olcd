@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+.env*
+*.tsbuildinfo
+next-env.d.ts
+.DS_Store
+
+# Los insumos de diseño pesan ~50 MB: descomentar si el repo va a un remoto
+docs/insumos/
+
+# Herramientas locales
+.playwright-mcp/

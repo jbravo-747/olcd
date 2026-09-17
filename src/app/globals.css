@@ -1,0 +1,220 @@
+@import "tailwindcss";
+
+/*
+ * Sistema de diseño OLCD.
+ * Los colores, la escala tipográfica fluida y el gutter están tomados de las
+ * variables del prototipo de referencia (olcd-org.us-central1.hosted.app),
+ * para que esta maqueta y aquél coincidan al pixel.
+ */
+
+@theme {
+  --color-cream: #f5f1e9;
+  --color-cream-deep: #e8e5de;
+  --color-ink: #1e2429;
+  --color-ink-soft: #2f3336;
+  --color-slate: #4a4e51;
+  --color-slate-light: #7c8083;
+  --color-paper: #e4e7e5;
+  --color-line: #c9c4b8;
+
+  /* Acentos de marca */
+  --color-teal: #00a7b5;
+  --color-green: #01ff5b;
+  --color-amber: #ffb000;
+  --color-orange: #e85d04;
+  --color-purple: #4a1c6b;
+
+  --font-display: var(--font-roboto-condensed), "Roboto Condensed", sans-serif;
+  --font-sans: var(--font-archivo), Archivo, ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  color-scheme: light;
+
+  /* Medidas fluidas entre 386px y 1440px de ancho de ventana */
+  --gutter: clamp(36px, calc(36px + 70 * (100vw - 386px) / 1054), 106px);
+  --header-h: 70px;
+  --ancho-contenido: 1228px;
+
+  --fs-h1: clamp(32.5px, calc(32.5px + 45.8 * (100vw - 386px) / 1054), 78.3px);
+  --lh-h1: clamp(32px, calc(32px + 46 * (100vw - 386px) / 1054), 78px);
+  --fs-lead: clamp(14.15px, calc(14.15px + 9.05 * (100vw - 386px) / 1054), 23.2px);
+  --lh-lead: clamp(21px, calc(21px + 15 * (100vw - 386px) / 1054), 36px);
+  --fs-section: clamp(41px, calc(41px + 15.8 * (100vw - 386px) / 1054), 56.8px);
+  --fs-btn: clamp(16.27px, calc(16.27px + 2.33 * (100vw - 386px) / 1054), 18.6px);
+  --fs-nav: 13.88px;
+  --fs-tag: clamp(10.2px, calc(10.2px + 2.05 * (100vw - 386px) / 1054), 12.25px);
+  --fs-card-title: clamp(14.35px, calc(14.35px + 4.88 * (100vw - 386px) / 1054), 19.23px);
+  --fs-card-desc: clamp(9.68px, calc(9.68px + 3.94 * (100vw - 386px) / 1054), 13.62px);
+  --lh-card-desc: clamp(15px, calc(15px + 6 * (100vw - 386px) / 1054), 21px);
+  --fs-card-cta: clamp(13.8px, calc(13.8px + 4 * (100vw - 386px) / 1054), 17.8px);
+  --lead-max: clamp(298px, calc(298px + 390 * (100vw - 386px) / 1054), 688px);
+  --btn-h: clamp(42px, calc(42px + 14 * (100vw - 386px) / 1054), 56px);
+  --btn-px: clamp(17px, calc(17px + 15 * (100vw - 386px) / 1054), 32px);
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--header-h) + 1rem);
+}
+
+body {
+  background-color: var(--color-cream);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .display {
+    font-family: var(--font-display);
+    font-weight: 900;
+    letter-spacing: -0.01em;
+    text-transform: uppercase;
+  }
+
+  /* Contenedor único del sitio: gutter fluido y contenido centrado. */
+  .shell {
+    width: 100%;
+    max-width: calc(var(--ancho-contenido) + 2 * var(--gutter));
+    padding-inline: var(--gutter);
+    margin-inline: auto;
+  }
+
+  /* Escala tipográfica fluida */
+  .t-h1 {
+    font-size: var(--fs-h1);
+    line-height: var(--lh-h1);
+  }
+  .t-section {
+    font-size: var(--fs-section);
+    line-height: 1.05;
+  }
+  .t-lead {
+    font-size: var(--fs-lead);
+    line-height: var(--lh-lead);
+  }
+  .t-card-title {
+    font-size: var(--fs-card-title);
+    line-height: 1.25;
+  }
+  .t-card-desc {
+    font-size: var(--fs-card-desc);
+    line-height: var(--lh-card-desc);
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border-radius: 9999px;
+    padding-inline: var(--btn-px);
+    min-height: var(--btn-h);
+    font-size: var(--fs-card-cta);
+    font-weight: 600;
+    line-height: 1;
+    transition: all 0.18s ease;
+  }
+
+  .pill-dark {
+    background-color: var(--color-ink-soft);
+    color: var(--color-cream);
+  }
+  .pill-dark:hover {
+    background-color: var(--color-slate);
+  }
+
+  .pill-light {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+  }
+  .pill-light:hover {
+    background-color: #fff;
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 9999px;
+    background-color: var(--color-ink-soft);
+    color: var(--color-cream);
+    padding: 0.3rem 0.8rem;
+    font-size: var(--fs-tag);
+    font-weight: 700;
+    line-height: 1.2;
+  }
+
+  .field {
+    width: 100%;
+    border-radius: 9999px;
+    border: 1px solid transparent;
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    padding: 0.875rem 1.25rem;
+    font-size: 0.9375rem;
+  }
+  .field:focus {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+
+  /*
+   * Patrón de manchas del hero: la imagen de marca se usa como máscara sobre
+   * un color plano, igual que en el sitio de referencia.
+   */
+  .hero-pattern {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-color: var(--color-cream-deep);
+    mask-image: url("/brand/hero-blobs-mobile.png");
+    -webkit-mask-image: url("/brand/hero-blobs-mobile.png");
+    mask-size: 100% 100%;
+    -webkit-mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+  }
+
+  @media (min-width: 768px) {
+    .hero-pattern {
+      mask-image: url("/brand/hero-blobs-desktop.png");
+      -webkit-mask-image: url("/brand/hero-blobs-desktop.png");
+    }
+  }
+}
+
+/* Foco visible y accesible en todo el sitio */
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+input:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+  z-index: 100;
+  background: var(--color-ink);
+  color: var(--color-cream);
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+  }
+}
