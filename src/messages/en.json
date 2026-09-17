@@ -58,7 +58,8 @@
     "todos": "All",
     "tipo": "Type",
     "seccion": "Section",
-    "filtrosDe": "{titulo} filters"
+    "filtrosDe": "{titulo} filters",
+    "sinContenido": "There is no content in this section yet."
   },
   "inicio": {
     "titulo": "Observatorio Latinoamericano de Centros de Datos",
@@ -186,11 +187,27 @@
     "redes": "Social media",
     "exito": "Thank you, we received your message.",
     "error": "The message could not be sent. Please try again.",
-    "invalido": "Please review the highlighted fields."
+    "invalido": "Please review the highlighted fields.",
+    "obligatorio": "(required)",
+    "errores": {
+      "nombre": "Enter your name (at least 2 characters).",
+      "correo": "Enter a valid email address.",
+      "asunto": "The subject is too long.",
+      "mensaje": "Enter a message (at least 10 characters)."
+    }
   },
   "legales": {
     "accesibilidad": "Accessibility",
     "privacidad": "Privacy",
     "terminos": "Terms of use"
+  },
+  "seo": {
+    "inicio": "The Latin American Data Center Observatory researches and maps the expansion of data centers across Latin America.",
+    "quienesSomos": "Purpose, team and directories of organizations and people of the Latin American Data Center Observatory.",
+    "ejesDeTrabajo": "The Observatory's work areas: Data Lab, Citizen Science Lab, Methods Lab, Narratives Lab and Policy Lab.",
+    "mapa": "Interactive map of Latin American data centers, filterable by country and project status.",
+    "publicaciones": "Reports, articles, books and educational resources from the Latin American Data Center Observatory.",
+    "actualidad": "Blog, press releases, press coverage and news from the Latin American Data Center Observatory.",
+    "contacto": "Get in touch with the Latin American Data Center Observatory."
   }
 }

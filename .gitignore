@@ -18,3 +18,16 @@ skills-lock.json
 # Archivos subidos al CMS cuando no hay bucket S3 (sólo desarrollo)
 media/
 documentos/
+
+# Plan local de QA y seguridad (prompts y estado, no se versiona)
+PLAN-QA-SEGURIDAD.md
+
+# Pruebas: entornos desechables sin secretos reales
+!.env.test
+!.env.e2e
+tests/e2e/.report/
+tests/e2e/.results/
+
+# Next.js 16 genera estas reglas de agente al arrancar dev
+AGENTS.md
+CLAUDE.md

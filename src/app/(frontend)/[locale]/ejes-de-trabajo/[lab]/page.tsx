@@ -19,7 +19,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PaginaLab({ params }: Props) {
   const { locale, lab: slug } = await params;
   setRequestLocale(locale);
-  const [t, lab] = await Promise.all([getTranslations("ejes"), buscarLab(slug, locale)]);
+  const [t, tComun, lab] = await Promise.all([
+    getTranslations("ejes"),
+    getTranslations("comun"),
+    buscarLab(slug, locale),
+  ]);
   if (!lab) notFound();
 
   const proyectos = await listarProyectosDeLab(lab.id, locale);
@@ -45,7 +49,15 @@ export default async function PaginaLab({ params }: Props) {
         <div className="shell">
           <TituloSeccion>{t("proyectos")}</TituloSeccion>
           <div className="mt-10">
-            <GridRecursos recursos={recursos} porPagina={9} etiquetaPaginacion={t("paginacionProyectos", { lab: lab.nombre })} />
+            {recursos.length === 0 ? (
+              <p className="text-[15px] text-ink/70">{tComun("sinContenido")}</p>
+            ) : (
+              <GridRecursos
+                recursos={recursos}
+                porPagina={9}
+                etiquetaPaginacion={t("paginacionProyectos", { lab: lab.nombre })}
+              />
+            )}
           </div>
         </div>
       </section>

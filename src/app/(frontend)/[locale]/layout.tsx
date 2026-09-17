@@ -25,21 +25,38 @@ const robotoCondensed = Roboto_Condensed({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: "Observatorio Latinoamericano de Centros de Datos",
-    template: "%s | OLCD",
-  },
-  description: "Sitio del Observatorio Latinoamericano de Centros de Datos (OLCD).",
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "48x48" },
-      { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
-      { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
-    ],
-    apple: "/apple-touch-icon.png",
-  },
-};
+const URL_BASE = process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000";
+
+// `metadataBase` resuelve las URLs relativas de canonical, hreflang y Open
+// Graph. El Open Graph y la descripción por defecto se sobrescriben por página
+// (Q-7 / A-6).
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const descripcion = "Sitio del Observatorio Latinoamericano de Centros de Datos (OLCD).";
+  return {
+    metadataBase: new URL(URL_BASE),
+    title: {
+      default: "Observatorio Latinoamericano de Centros de Datos",
+      template: "%s | OLCD",
+    },
+    description: descripcion,
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "48x48" },
+        { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
+        { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
+      ],
+      apple: "/apple-touch-icon.png",
+    },
+    openGraph: {
+      type: "website",
+      siteName: "OLCD",
+      locale: locale === "en" ? "en_US" : "es_ES",
+      title: "Observatorio Latinoamericano de Centros de Datos",
+      description: descripcion,
+    },
+  };
+}
 
 export default async function LocaleLayout({
   children,

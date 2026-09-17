@@ -40,7 +40,7 @@ export default async function PaginaEntrada({ params }: Props) {
 
       <div className="bg-cream py-14">
         <div className="shell max-w-4xl">
-          <p className="text-xs font-bold uppercase tracking-wide text-ink/55">{t(`tipos.${entrada.tipo}`)}</p>
+          <p className="text-xs font-bold uppercase tracking-wide text-ink/70">{t(`tipos.${entrada.tipo}`)}</p>
           <h1 className="display t-h1 mt-2">{entrada.titulo}</h1>
           <p className="mt-4 text-sm text-ink/70">
             <time dateTime={entrada.fecha}>{formato.dateTime(new Date(entrada.fecha), { dateStyle: "full" })}</time>
@@ -53,7 +53,7 @@ export default async function PaginaEntrada({ params }: Props) {
               .filter(([, valor]) => valor)
               .map(([clave, valor]) => (
                 <div key={clave} className="border-b border-line py-2">
-                  <dt className="text-xs uppercase tracking-wide text-ink/55">{clave}</dt>
+                  <dt className="text-xs uppercase tracking-wide text-ink/70">{clave}</dt>
                   <dd className="mt-1 text-[15px] font-semibold">{valor}</dd>
                 </div>
               ))}

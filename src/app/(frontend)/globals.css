@@ -22,7 +22,17 @@
   --color-green: #01ff5b;
   --color-amber: #ffb000;
   --color-orange: #e85d04;
+  /* Naranja oscuro para texto de error: 4.76:1 sobre cream (AA), a diferencia
+     de --color-orange (3.11:1, por debajo de AA). */
+  --color-orange-deep: #b84600;
   --color-purple: #4a1c6b;
+
+  /* Estados del mapa: color + forma. Cada uno supera 3:1 sobre el relleno
+     de los países (cream-deep): operación 12.5:1, construcción 4.3:1,
+     anunciado 4.6:1. */
+  --color-marker-operacion: #1e2429;
+  --color-marker-construccion: #b84600;
+  --color-marker-anunciado: #00707a;
 
   --font-display: var(--font-roboto-condensed), "Roboto Condensed", sans-serif;
   --font-sans: var(--font-archivo), Archivo, ui-sans-serif, system-ui, sans-serif;

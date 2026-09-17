@@ -5,6 +5,7 @@ import GridPersonas, { type FichaPersona } from "@/components/GridPersonas";
 import GridOrganizaciones from "@/components/GridOrganizaciones";
 import TextoEnriquecido from "@/components/TextoEnriquecido";
 import { TituloSeccion } from "@/components/EncabezadoPagina";
+import { metadatosPagina } from "@/components/seo";
 import { listarPersonas } from "@/lib/cms/personas";
 import { listarOrganizaciones } from "@/lib/cms/organizaciones";
 import { obtenerSitio } from "@/lib/cms/sitio";
@@ -15,8 +16,14 @@ type Props = { params: Promise<{ locale: Locale }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "quienesSomos" });
-  return { title: t("titulo") };
+  const [t, tSeo] = await Promise.all([
+    getTranslations({ locale, namespace: "quienesSomos" }),
+    getTranslations({ locale, namespace: "seo" }),
+  ]);
+  return {
+    title: t("titulo"),
+    ...metadatosPagina(locale, "/quienes-somos", t("titulo"), tSeo("quienesSomos")),
+  };
 }
 
 const grupos: Persona["grupo"][] = ["investigacion", "comunidad", "aliados"];
@@ -35,14 +42,16 @@ function ficha(p: Persona): FichaPersona {
 export default async function QuienesSomos({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, sitio, personas, organizaciones] = await Promise.all([
+  const [t, tComun, sitio, personas, organizaciones] = await Promise.all([
     getTranslations("quienesSomos"),
+    getTranslations("comun"),
     obtenerSitio(locale),
     listarPersonas(locale),
     listarOrganizaciones(locale),
   ]);
   const textos = sitio.quienesSomos;
   const equipo = personas.filter((p) => p.equipo).map(ficha);
+  const hayDirectorioPersonas = personas.some((p) => !p.equipo);
 
   return (
     <>
@@ -60,7 +69,11 @@ export default async function QuienesSomos({ params }: Props) {
             <p className="mt-6 max-w-3xl text-[15px] leading-relaxed text-ink/80">{textos.equipoTexto}</p>
           )}
           <div className="mt-12">
-            <GridPersonas personas={equipo} porPagina={8} etiquetaPaginacion={t("paginacionEquipo")} />
+            {equipo.length === 0 ? (
+              <p className="text-[15px] text-ink/70">{tComun("sinContenido")}</p>
+            ) : (
+              <GridPersonas personas={equipo} porPagina={8} etiquetaPaginacion={t("paginacionEquipo")} />
+            )}
           </div>
         </div>
       </section>
@@ -72,10 +85,14 @@ export default async function QuienesSomos({ params }: Props) {
             <p className="mt-6 max-w-3xl text-[15px] leading-relaxed text-ink/80">{textos.organizacionesTexto}</p>
           )}
           <div className="mt-12">
-            <GridOrganizaciones
-              organizaciones={organizaciones.map((o) => ({ slug: o.slug, nombre: o.nombre, logo: imagen(o.logo) }))}
-              porPagina={8}
-            />
+            {organizaciones.length === 0 ? (
+              <p className="text-[15px] text-ink/70">{tComun("sinContenido")}</p>
+            ) : (
+              <GridOrganizaciones
+                organizaciones={organizaciones.map((o) => ({ slug: o.slug, nombre: o.nombre, logo: imagen(o.logo) }))}
+                porPagina={8}
+              />
+            )}
           </div>
         </div>
       </section>
@@ -104,6 +121,8 @@ export default async function QuienesSomos({ params }: Props) {
               </div>
             );
           })}
+
+          {!hayDirectorioPersonas && <p className="mt-8 text-[15px] text-ink/70">{tComun("sinContenido")}</p>}
         </div>
       </section>
     </>

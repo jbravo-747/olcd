@@ -22,8 +22,9 @@ export default function GridOrganizaciones({
 }) {
   const t = useTranslations("comun");
   const [pagina, setPagina] = useState(1);
-  const totalPaginas = Math.ceil(organizaciones.length / porPagina);
-  const visibles = organizaciones.slice((pagina - 1) * porPagina, pagina * porPagina);
+  const totalPaginas = Math.max(1, Math.ceil(organizaciones.length / porPagina));
+  const paginaActual = Math.min(pagina, totalPaginas);
+  const visibles = organizaciones.slice((paginaActual - 1) * porPagina, paginaActual * porPagina);
 
   return (
     <div>
@@ -44,7 +45,7 @@ export default function GridOrganizaciones({
           </li>
         ))}
       </ul>
-      <Paginacion pagina={pagina} total={totalPaginas} onCambio={setPagina} etiqueta={t("paginacion")} />
+      <Paginacion pagina={paginaActual} total={totalPaginas} onCambio={setPagina} etiqueta={t("paginacion")} />
     </div>
   );
 }

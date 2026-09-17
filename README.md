@@ -11,15 +11,15 @@ de referencia `olcd-org--olcd-org.us-central1.hosted.app`.
 
 ## Stack
 
-| Pieza | Elección |
-|---|---|
-| Framework | Next.js 16 (App Router, Turbopack) + React 19 + TypeScript |
-| CMS | Payload 3 embebido en la misma app (`/admin`) — ver `docs/cms.md` |
-| Base de datos | Postgres (Neon en Vercel, contenedor en Docker) |
-| Archivos | Bucket S3-compatible (R2/S3 en Vercel, MinIO en Docker) |
-| Idiomas | ES/EN: contenido localizado en Payload, interfaz con next-intl (`/es`, `/en`) |
-| Estilos | Tailwind CSS v4 (tokens en `src/app/(frontend)/globals.css`) |
-| Tipografías | Roboto Condensed 900 (títulos) + Archivo (texto), vía `next/font` |
+| Pieza         | Elección                                                                      |
+| ------------- | ----------------------------------------------------------------------------- |
+| Framework     | Next.js 16 (App Router, Turbopack) + React 19 + TypeScript                    |
+| CMS           | Payload 3 embebido en la misma app (`/admin`) — ver `docs/cms.md`             |
+| Base de datos | Postgres (Neon en Vercel, contenedor en Docker)                               |
+| Archivos      | Bucket S3-compatible (R2/S3 en Vercel, MinIO en Docker)                       |
+| Idiomas       | ES/EN: contenido localizado en Payload, interfaz con next-intl (`/es`, `/en`) |
+| Estilos       | Tailwind CSS v4 (tokens en `src/app/(frontend)/globals.css`)                  |
+| Tipografías   | Roboto Condensed 900 (títulos) + Archivo (texto), vía `next/font`             |
 
 ## Desarrollo local
 
@@ -40,19 +40,48 @@ En desarrollo el esquema de la base se sincroniza solo (`push`). Sin
 
 Scripts útiles:
 
-| Script | Qué hace |
-|---|---|
-| `npm run generate:types` | Regenera `src/payload-types.ts` tras cambiar colecciones |
-| `npm run migrate:create` | Genera una migración en `src/migrations/` (producción) |
-| `npm run migrate:status` | Muestra migraciones pendientes |
-| `npm run seed` | Siembra el contenido inicial (no hace nada si ya hay datos) |
-| `npm run build && npm start` | Build de producción (no requiere base de datos) |
+| Script                       | Qué hace                                                    |
+| ---------------------------- | ----------------------------------------------------------- |
+| `npm run generate:types`     | Regenera `src/payload-types.ts` tras cambiar colecciones    |
+| `npm run migrate:create`     | Genera una migración en `src/migrations/` (producción)      |
+| `npm run migrate:status`     | Muestra migraciones pendientes                              |
+| `npm run seed`               | Siembra el contenido inicial (no hace nada si ya hay datos) |
+| `npm run build && npm start` | Build de producción (no requiere base de datos)             |
+
+## Pruebas
+
+Tres niveles, todos contra bases desechables (nunca contra la de desarrollo ni producción):
+
+| Nivel       | Comando                    | Qué cubre                                                                                                                                 | Necesita                       |
+| ----------- | -------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| Unitarias   | `npm run test:unit`        | `lib/cms/util`, Lexical, proyección del mapa, integridad del menú                                                                         | nada                           |
+| Integración | `npm run test:integration` | reglas de acceso por rol, formulario de contacto, validación de subidas, seed                                                             | Postgres de pruebas            |
+| End-to-end  | `npm run test:e2e`         | rutas públicas ES/EN en escritorio y móvil, 404, login del admin, contacto, subidas por API, alta de contenido y su publicación, buscador | Postgres de pruebas + Chromium |
+
+`npm run test` corre unitarias e integración; `npm run test:all` añade `tsc` y las E2E.
+
+Postgres de pruebas (una sola vez; `.env.test` y `.env.e2e` ya apuntan a él):
+
+```bash
+docker run -d --name olcd-test-db -p 127.0.0.1:5433:5432 \
+  -e POSTGRES_USER=olcd -e POSTGRES_PASSWORD=olcd -e POSTGRES_DB=olcd_test postgres:16-alpine
+docker exec olcd-test-db psql -U olcd -d olcd_test -c "CREATE DATABASE olcd_e2e OWNER olcd;"
+npx playwright install chromium
+sudo npx playwright install-deps chromium   # librerías del sistema (libnss3, libasound2…)
+```
+
+Las E2E levantan solas un `next dev` en el puerto 3001 sobre `olcd_e2e` y siembran el
+contenido con `SEED_ADMIN_*` de `.env.e2e`. Los tests marcados `fixme`/`skip` documentan
+hallazgos abiertos de `docs/auditoria-2026-09-16.md` (Q-2, Q-5, Q-6, S-3) y se activan al
+corregirlos.
+
+Antes de cada commit, Husky corre Prettier sobre lo preparado, `tsc` y las unitarias.
 
 ## Despliegue
 
 ### Vercel + Neon (actual)
 
-Variables de entorno (ver `.env.example`): `DATABASE_URI` (cadena *pooled* de
+Variables de entorno (ver `.env.example`): `DATABASE_URI` (cadena _pooled_ de
 Neon), `PAYLOAD_SECRET`, `NEXT_PUBLIC_SERVER_URL`, `S3_*` de un bucket R2/S3
 con `S3_CLIENT_UPLOADS=true` (y CORS en el bucket), `SMTP_*` y
 `CONTACTO_DESTINO`. Las migraciones corren al arrancar.
@@ -73,7 +102,7 @@ Las migraciones se aplican al primer arranque. Para cargar contenido:
   usuario admin), o
 - copiando otro entorno: `pg_dump` → `docker compose exec -T db psql -U olcd olcd`.
   Si el volcado viene de una base usada en desarrollo, borrar antes la marca de
-  modo *push* (`DELETE FROM payload_migrations WHERE name = 'dev';`), porque
+  modo _push_ (`DELETE FROM payload_migrations WHERE name = 'dev';`), porque
   Payload se detiene a pedir confirmación interactiva al verla.
 
 En ambos casos, si el sitio ya se visitó antes de cargar contenido, ejecutar
@@ -87,19 +116,19 @@ ejecutar `docker compose up -d app` (se leen al arrancar; no requiere rebuild).
 
 ## Mapa de páginas
 
-| Ruta (bajo `/es` o `/en`) | Contenido |
-|---|---|
-| `/` | Inicio: hero, mapa resumido y lo más reciente |
-| `/quienes-somos` | Propósito · Equipo · Directorio de organizaciones · Directorio de personas |
-| `/quienes-somos/organizaciones/[slug]`, `/quienes-somos/personas/[slug]` | Fichas |
-| `/ejes-de-trabajo`, `/ejes-de-trabajo/[lab]`, `/ejes-de-trabajo/[lab]/[proyecto]` | Labs y proyectos (carrusel + secciones) |
-| `/mapa-de-centros-de-datos` | Mapa SVG de América Latina con filtros y ficha |
-| `/buscador-de-noticias` | Búsqueda y paginación en servidor (`?q=&categoria=&pagina=`) |
-| `/publicaciones`, `/publicaciones/[slug]` | Reportes · Artículos y libros · Recursos educativos |
-| `/actualidad`, `/actualidad/[slug]` | Blog · Comunicados · Cobertura de prensa · Noticias |
-| `/contacto` | Formulario (guarda en el admin y avisa por correo) |
-| `/accesibilidad`, `/privacidad`, `/terminos-de-uso` | Textos legales editables |
-| `/admin` | Panel de administración |
+| Ruta (bajo `/es` o `/en`)                                                         | Contenido                                                                  |
+| --------------------------------------------------------------------------------- | -------------------------------------------------------------------------- |
+| `/`                                                                               | Inicio: hero, mapa resumido y lo más reciente                              |
+| `/quienes-somos`                                                                  | Propósito · Equipo · Directorio de organizaciones · Directorio de personas |
+| `/quienes-somos/organizaciones/[slug]`, `/quienes-somos/personas/[slug]`          | Fichas                                                                     |
+| `/ejes-de-trabajo`, `/ejes-de-trabajo/[lab]`, `/ejes-de-trabajo/[lab]/[proyecto]` | Labs y proyectos (carrusel + secciones)                                    |
+| `/mapa-de-centros-de-datos`                                                       | Mapa SVG de América Latina con filtros y ficha                             |
+| `/buscador-de-noticias`                                                           | Búsqueda y paginación en servidor (`?q=&categoria=&pagina=`)               |
+| `/publicaciones`, `/publicaciones/[slug]`                                         | Reportes · Artículos y libros · Recursos educativos                        |
+| `/actualidad`, `/actualidad/[slug]`                                               | Blog · Comunicados · Cobertura de prensa · Noticias                        |
+| `/contacto`                                                                       | Formulario (guarda en el admin y avisa por correo)                         |
+| `/accesibilidad`, `/privacidad`, `/terminos-de-uso`                               | Textos legales editables                                                   |
+| `/admin`                                                                          | Panel de administración                                                    |
 
 ## Estructura
 
@@ -126,15 +155,15 @@ Para cambiar el menú se edita `src/lib/navegacion.ts` y las etiquetas en
 Los tokens de `src/app/(frontend)/globals.css` están copiados de las
 variables CSS del prototipo de referencia.
 
-| Token | Valor | Uso |
-|---|---|---|
-| `cream` | `#f5f1e9` | Fondo general y tarjetas |
-| `cream-deep` | `#e8e5de` | Secciones alternas y manchas del hero |
-| `ink` | `#1e2429` | Texto y pie |
-| `ink-soft` | `#2f3336` | Barra de navegación, botones, etiquetas |
-| `slate` | `#4a4e51` | Bandas oscuras de encabezado |
-| `slate-light` | `#7c8083` | Marcadores de imagen y fondo del buscador |
-| `teal` `green` `amber` `orange` `purple` | `#00a7b5` `#01ff5b` `#ffb000` `#e85d04` `#4a1c6b` | Acentos de marca |
+| Token                                    | Valor                                             | Uso                                       |
+| ---------------------------------------- | ------------------------------------------------- | ----------------------------------------- |
+| `cream`                                  | `#f5f1e9`                                         | Fondo general y tarjetas                  |
+| `cream-deep`                             | `#e8e5de`                                         | Secciones alternas y manchas del hero     |
+| `ink`                                    | `#1e2429`                                         | Texto y pie                               |
+| `ink-soft`                               | `#2f3336`                                         | Barra de navegación, botones, etiquetas   |
+| `slate`                                  | `#4a4e51`                                         | Bandas oscuras de encabezado              |
+| `slate-light`                            | `#7c8083`                                         | Marcadores de imagen y fondo del buscador |
+| `teal` `green` `amber` `orange` `purple` | `#00a7b5` `#01ff5b` `#ffb000` `#e85d04` `#4a1c6b` | Acentos de marca                          |
 
 Medidas fluidas con `clamp()` entre 386 px y 1440 px (`--fs-h1`,
 `--fs-section`, `--fs-lead`, `--gutter`…). Clases utilitarias: `.display`,
