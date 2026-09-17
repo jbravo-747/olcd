@@ -10,9 +10,17 @@ const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 // Host público del bucket S3/MinIO desde donde se sirven imágenes y PDFs.
 const bucket = process.env.S3_PUBLIC_URL ? new URL(process.env.S3_PUBLIC_URL) : null;
 
+// Detrás de un proxy o túnel (Cloudflare, Caddy) el host público debe
+// declararse para que Next acepte los Server Actions (formulario de contacto,
+// admin de Payload).
+const hostPublico = process.env.NEXT_PUBLIC_SERVER_URL ? new URL(process.env.NEXT_PUBLIC_SERVER_URL).host : null;
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   output: "standalone",
+  experimental: {
+    serverActions: { allowedOrigins: hostPublico ? [hostPublico] : [] },
+  },
   turbopack: { root: path.resolve(dirname) },
   images: {
     // En pruebas locales con Docker el bucket vive en localhost, que dentro del
