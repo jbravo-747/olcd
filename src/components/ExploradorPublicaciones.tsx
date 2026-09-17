@@ -107,23 +107,30 @@ export default function ExploradorPublicaciones({
           </div>
         </section>
       ) : (
-        categorias.map((categoria, i) => (
-          <section
-            key={categoria.slug}
-            id={categoria.slug}
-            className={`scroll-mt-20 py-16 ${i % 2 === 0 ? "bg-cream" : "bg-cream-deep"}`}
-          >
-            <div className="shell">
-              <h2 className="display t-section">{categoria.nombre}</h2>
-              {categoria.descripcion && (
-                <p className="mt-6 max-w-3xl text-[15px] leading-relaxed text-ink/80">{categoria.descripcion}</p>
-              )}
-              <div className="mt-10">
-                <GridRecursos recursos={items.filter((item) => item.tipo === categoria.slug)} porPagina={9} />
+        categorias.map((categoria, i) => {
+          const recursos = items.filter((item) => item.tipo === categoria.slug);
+          return (
+            <section
+              key={categoria.slug}
+              id={categoria.slug}
+              className={`scroll-mt-20 py-16 ${i % 2 === 0 ? "bg-cream" : "bg-cream-deep"}`}
+            >
+              <div className="shell">
+                <h2 className="display t-section">{categoria.nombre}</h2>
+                {categoria.descripcion && (
+                  <p className="mt-6 max-w-3xl text-[15px] leading-relaxed text-ink/80">{categoria.descripcion}</p>
+                )}
+                <div className="mt-10">
+                  {recursos.length === 0 ? (
+                    <p className="rounded-xl bg-cream p-8 text-center text-sm text-ink/70">{t("sinContenido")}</p>
+                  ) : (
+                    <GridRecursos recursos={recursos} porPagina={9} />
+                  )}
+                </div>
               </div>
-            </div>
-          </section>
-        ))
+            </section>
+          );
+        })
       )}
     </>
   );

@@ -9,13 +9,25 @@ export const Users: CollectionConfig = {
     group: "Administración",
   },
   auth: true,
+  hooks: {
+    // El primer usuario del sistema siempre nace admin, pase lo que pase por el
+    // formulario o el body de /api/users/first-register (auditoría S-2). Sin
+    // esto, un primer usuario "editor" deja el CMS sin administrador y sólo se
+    // arregla por SQL.
+    beforeChange: [
+      async ({ operation, data, req }) => {
+        if (operation !== "create") return data;
+        const { totalDocs } = await req.payload.count({ collection: "users" });
+        if (totalDocs === 0) return { ...data, rol: "admin" };
+        return data;
+      },
+    ],
+  },
   access: {
     create: esAdmin,
     delete: esAdmin,
-    update: ({ req: { user } }) =>
-      user?.rol === "admin" ? true : user ? { id: { equals: user.id } } : false,
-    read: ({ req: { user } }) =>
-      user?.rol === "admin" ? true : user ? { id: { equals: user.id } } : false,
+    update: ({ req: { user } }) => (user?.rol === "admin" ? true : user ? { id: { equals: user.id } } : false),
+    read: ({ req: { user } }) => (user?.rol === "admin" ? true : user ? { id: { equals: user.id } } : false),
   },
   fields: [
     { name: "nombre", type: "text", required: true },
