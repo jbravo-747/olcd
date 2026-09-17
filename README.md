@@ -68,13 +68,16 @@ docker compose up --build     # app :3000, Postgres, MinIO :9000 (consola :9001)
 y la app en modo `standalone`; `APP_PORT` cambia el puerto publicado (3000).
 Las migraciones se aplican al primer arranque. Para cargar contenido:
 
-- desde cero: `npm run seed` desde una máquina de desarrollo con
-  `DATABASE_URI` apuntando a la base destino, o
+- desde cero: `SEED_ADMIN_EMAIL=… SEED_ADMIN_PASSWORD=… docker compose run --rm seed`
+  (servicio auxiliar que corre el seed dentro de la red de Docker y crea el
+  usuario admin), o
 - copiando otro entorno: `pg_dump` → `docker compose exec -T db psql -U olcd olcd`.
   Si el volcado viene de una base usada en desarrollo, borrar antes la marca de
   modo *push* (`DELETE FROM payload_migrations WHERE name = 'dev';`), porque
-  Payload se detiene a pedir confirmación interactiva al verla. Tras restaurar,
-  `docker compose up -d --force-recreate app` para vaciar la caché de datos.
+  Payload se detiene a pedir confirmación interactiva al verla.
+
+En ambos casos, si el sitio ya se visitó antes de cargar contenido, ejecutar
+`docker compose up -d --force-recreate app` para vaciar la caché de datos.
 
 ## Mapa de páginas
 

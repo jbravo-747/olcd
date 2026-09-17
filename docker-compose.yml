@@ -84,6 +84,35 @@ services:
     ports:
       - "${APP_PORT:-3000}:3000"
 
+  # Carga el contenido inicial: `docker compose run --rm seed`
+  # (no arranca con `up`; usa la etapa de dependencias del Dockerfile).
+  seed:
+    profiles: ["herramientas"]
+    build:
+      context: .
+      target: deps
+    working_dir: /app
+    command: node --import tsx src/seed/index.ts
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URI: postgres://olcd:${POSTGRES_PASSWORD:-olcd}@db:5432/olcd
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET:?Define PAYLOAD_SECRET en .env}
+      NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-http://localhost:3000}
+      S3_BUCKET: olcd
+      S3_ENDPOINT: http://minio:9000
+      S3_REGION: us-east-1
+      S3_ACCESS_KEY_ID: ${MINIO_ROOT_USER:-olcd}
+      S3_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:-olcd-minio-secret}
+      S3_FORCE_PATH_STYLE: "true"
+      S3_PUBLIC_URL: ${S3_PUBLIC_URL:-http://localhost:9000/olcd}
+      SEED_ADMIN_EMAIL: ${SEED_ADMIN_EMAIL:-}
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-}
+
 volumes:
   db:
   minio:
