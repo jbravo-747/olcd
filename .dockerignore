@@ -1,0 +1,13 @@
+node_modules
+.next
+.git
+.env
+.env.*
+!.env.example
+docs/insumos
+.claude
+.playwright-mcp
+media
+*.tsbuildinfo
+Dockerfile
+docker-compose.yml

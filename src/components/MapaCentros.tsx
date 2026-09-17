@@ -1,8 +1,9 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { useFormatter, useTranslations } from "next-intl";
 import latam from "@/data/latam.json";
-import { centros, colorEstado, estados, paises, type Centro } from "@/data/centros";
+import type { Centro } from "@/payload-types";
 import { ALTO, ANCHO, anilloAPath, proyectar } from "@/lib/proyeccion";
 
 const geografia = latam as Record<string, number[][][]>;
@@ -12,20 +13,42 @@ const trazos = Object.entries(geografia).flatMap(([pais, anillos]) =>
   anillos.map((anillo, i) => ({ id: `${pais}-${i}`, pais, d: anilloAPath(anillo) })),
 );
 
+type Estado = Centro["estado"];
+
+export const estados: Estado[] = ["en-operacion", "en-construccion", "anunciado"];
+
+/** Color del marcador según el estado del proyecto. */
+const colorEstado: Record<Estado, string> = {
+  "en-operacion": "#1e2429",
+  "en-construccion": "#7a6a4f",
+  anunciado: "#f5f1e9",
+};
+
 /**
  * Mapa de centros de datos de América Latina.
  *
  * `resumido` es la versión del Inicio (sin filtros ni ficha); la completa
  * añade filtros por país y estado, ficha lateral y listado.
  */
-export default function MapaCentros({ resumido = false }: { resumido?: boolean }) {
+export default function MapaCentros({
+  centros,
+  resumido = false,
+  descripcion,
+}: {
+  centros: Centro[];
+  resumido?: boolean;
+  descripcion?: string | null;
+}) {
+  const t = useTranslations("mapa");
+  const formato = useFormatter();
   const [pais, setPais] = useState("");
   const [estado, setEstado] = useState("");
   const [activo, setActivo] = useState<Centro | null>(null);
 
+  const paises = useMemo(() => [...new Set(centros.map((c) => c.pais))].sort(), [centros]);
   const visibles = useMemo(
     () => centros.filter((c) => (!pais || c.pais === pais) && (!estado || c.estado === estado)),
-    [pais, estado],
+    [centros, pais, estado],
   );
 
   const mapa = (
@@ -34,7 +57,7 @@ export default function MapaCentros({ resumido = false }: { resumido?: boolean }
         viewBox={`0 0 ${ANCHO} ${ALTO}`}
         className={`w-full ${resumido ? "max-h-[520px]" : "max-h-[620px]"}`}
         role="img"
-        aria-label={`Mapa de América Latina con ${visibles.length} centros de datos`}
+        aria-label={t("descripcionMapa", { n: visibles.length })}
       >
         <g>
           {trazos.map((trazo) => (
@@ -65,7 +88,7 @@ export default function MapaCentros({ resumido = false }: { resumido?: boolean }
                   onClick={() => setActivo(seleccionado ? null : centro)}
                   role="button"
                   tabIndex={0}
-                  aria-label={`${centro.nombre}. ${centro.ciudad}, ${centro.pais}. ${centro.estado}.`}
+                  aria-label={`${centro.nombre}. ${centro.ciudad}, ${centro.pais}. ${t(`estados.${centro.estado}`)}.`}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
                       e.preventDefault();
@@ -87,7 +110,7 @@ export default function MapaCentros({ resumido = false }: { resumido?: boolean }
               className="inline-block h-3 w-3 rounded-full border-2 border-ink"
               style={{ backgroundColor: colorEstado[e] }}
             />
-            {e}
+            {t(`estados.${e}`)}
           </li>
         ))}
       </ul>
@@ -101,11 +124,8 @@ export default function MapaCentros({ resumido = false }: { resumido?: boolean }
           <div className="mx-auto w-full max-w-[520px]">{mapa}</div>
 
           <div>
-            <p className="display text-2xl text-cream">{centros.length} centros de datos</p>
-            <p className="mt-3 text-sm leading-relaxed text-cream/85">
-              Registro colaborativo de la infraestructura anunciada, en construcción y en
-              operación en América Latina.
-            </p>
+            <p className="display text-2xl text-cream">{t("centrosDeDatos", { n: centros.length })}</p>
+            {descripcion && <p className="mt-3 text-sm leading-relaxed text-cream/85">{descripcion}</p>}
             <ul className="mt-6 space-y-2">
               {paises.map((p) => (
                 <li key={p} className="flex justify-between border-b border-cream/20 pb-1 text-[13px] text-cream/90">
@@ -125,7 +145,7 @@ export default function MapaCentros({ resumido = false }: { resumido?: boolean }
       <form className="mb-10 grid gap-5 sm:grid-cols-2 lg:max-w-2xl" onSubmit={(e) => e.preventDefault()}>
         <div>
           <label htmlFor="pais" className="mb-2 block text-xs font-semibold">
-            País
+            {t("pais")}
           </label>
           <select
             id="pais"
@@ -136,7 +156,7 @@ export default function MapaCentros({ resumido = false }: { resumido?: boolean }
             }}
             className="field border border-line"
           >
-            <option value="">Todos los países</option>
+            <option value="">{t("todosPaises")}</option>
             {paises.map((p) => (
               <option key={p} value={p}>
                 {p}
@@ -147,7 +167,7 @@ export default function MapaCentros({ resumido = false }: { resumido?: boolean }
 
         <div>
           <label htmlFor="estado" className="mb-2 block text-xs font-semibold">
-            Estado del proyecto
+            {t("estado")}
           </label>
           <select
             id="estado"
@@ -158,10 +178,10 @@ export default function MapaCentros({ resumido = false }: { resumido?: boolean }
             }}
             className="field border border-line"
           >
-            <option value="">Todos los estados</option>
+            <option value="">{t("todosEstados")}</option>
             {estados.map((opcion) => (
               <option key={opcion} value={opcion}>
-                {opcion}
+                {t(`estados.${opcion}`)}
               </option>
             ))}
           </select>
@@ -177,11 +197,16 @@ export default function MapaCentros({ resumido = false }: { resumido?: boolean }
               <h2 className="display text-2xl">{activo.nombre}</h2>
               <dl className="mt-4 space-y-3 text-[13px]">
                 {[
-                  ["Ciudad", `${activo.ciudad}, ${activo.pais}`],
-                  ["Empresa", activo.empresa],
-                  ["Estado", activo.estado],
-                  ["Inversión anunciada", activo.inversion],
-                  ["Coordenadas", `${activo.lat.toFixed(2)}, ${activo.lng.toFixed(2)}`],
+                  [t("ciudad"), `${activo.ciudad}, ${activo.pais}`],
+                  [t("empresa"), activo.empresa ?? "—"],
+                  [t("estado"), t(`estados.${activo.estado}`)],
+                  [
+                    t("inversion"),
+                    activo.inversionUsdMillones != null
+                      ? t("inversionValor", { monto: formato.number(activo.inversionUsdMillones) })
+                      : "—",
+                  ],
+                  [t("coordenadas"), `${activo.lat.toFixed(2)}, ${activo.lng.toFixed(2)}`],
                 ].map(([clave, valor]) => (
                   <div key={clave} className="border-b border-line pb-2">
                     <dt className="text-ink/55">{clave}</dt>
@@ -191,13 +216,11 @@ export default function MapaCentros({ resumido = false }: { resumido?: boolean }
               </dl>
             </div>
           ) : (
-            <p className="rounded-xl bg-cream-deep p-6 text-sm text-ink/70">
-              Selecciona un punto del mapa para ver la ficha del centro de datos.
-            </p>
+            <p className="rounded-xl bg-cream-deep p-6 text-sm text-ink/70">{t("seleccionar")}</p>
           )}
 
           <h3 className="mt-8 text-xs font-bold uppercase tracking-wide text-ink/60">
-            Resultados ({visibles.length})
+            {t("resultados", { n: visibles.length })}
           </h3>
           <ul className="mt-3 space-y-1">
             {visibles.map((c) => (

@@ -1,0 +1,113 @@
+import path from "path";
+import { fileURLToPath } from "url";
+import { buildConfig, type Plugin } from "payload";
+import { postgresAdapter } from "@payloadcms/db-postgres";
+import { lexicalEditor } from "@payloadcms/richtext-lexical";
+import { s3Storage } from "@payloadcms/storage-s3";
+import { nodemailerAdapter } from "@payloadcms/email-nodemailer";
+import { en } from "@payloadcms/translations/languages/en";
+import { es } from "@payloadcms/translations/languages/es";
+import sharp from "sharp";
+
+import { Users } from "./cms/collections/Users";
+import { Media } from "./cms/collections/Media";
+import { Documentos } from "./cms/collections/Documentos";
+import { Categorias } from "./cms/collections/Categorias";
+import { Labs } from "./cms/collections/Labs";
+import { Proyectos } from "./cms/collections/Proyectos";
+import { Publicaciones } from "./cms/collections/Publicaciones";
+import { Entradas } from "./cms/collections/Entradas";
+import { Noticias } from "./cms/collections/Noticias";
+import { Centros } from "./cms/collections/Centros";
+import { Personas } from "./cms/collections/Personas";
+import { Organizaciones } from "./cms/collections/Organizaciones";
+import { MensajesContacto } from "./cms/collections/MensajesContacto";
+import { Sitio } from "./cms/globals/Sitio";
+import { migrations } from "./migrations";
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const plugins: Plugin[] = [];
+
+// Sin bucket configurado (p. ej. desarrollo local) los archivos se guardan en disco.
+if (process.env.S3_BUCKET) {
+  plugins.push(
+    s3Storage({
+      collections: {
+        media: { generateFileURL: ({ filename }) => `${process.env.S3_PUBLIC_URL}/${filename}` },
+        documentos: { generateFileURL: ({ filename }) => `${process.env.S3_PUBLIC_URL}/${filename}` },
+      },
+      bucket: process.env.S3_BUCKET,
+      // Subida directa desde el navegador (evita el límite de 4.5 MB de Vercel).
+      // Requiere que S3_ENDPOINT sea alcanzable desde el navegador y CORS en el bucket.
+      clientUploads: process.env.S3_CLIENT_UPLOADS === "true",
+      config: {
+        endpoint: process.env.S3_ENDPOINT,
+        region: process.env.S3_REGION || "us-east-1",
+        forcePathStyle: process.env.S3_FORCE_PATH_STYLE !== "false",
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID || "",
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || "",
+        },
+      },
+    }),
+  );
+}
+
+export default buildConfig({
+  serverURL: process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000",
+  secret: process.env.PAYLOAD_SECRET || "",
+  admin: {
+    user: Users.slug,
+    importMap: { baseDir: path.resolve(dirname) },
+    meta: { titleSuffix: " | OLCD" },
+  },
+  i18n: {
+    supportedLanguages: { es, en },
+    fallbackLanguage: "es",
+  },
+  localization: {
+    locales: [
+      { label: "Español", code: "es" },
+      { label: "English", code: "en" },
+    ],
+    defaultLocale: "es",
+    fallback: true,
+  },
+  collections: [
+    Labs,
+    Proyectos,
+    Publicaciones,
+    Entradas,
+    Noticias,
+    Centros,
+    Personas,
+    Organizaciones,
+    Categorias,
+    Media,
+    Documentos,
+    MensajesContacto,
+    Users,
+  ],
+  globals: [Sitio],
+  editor: lexicalEditor(),
+  db: postgresAdapter({
+    pool: { connectionString: process.env.DATABASE_URI || "" },
+    push: process.env.NODE_ENV === "development",
+    prodMigrations: migrations,
+  }),
+  email: process.env.SMTP_HOST
+    ? nodemailerAdapter({
+        defaultFromAddress: process.env.EMAIL_FROM || "no-reply@olcd.org",
+        defaultFromName: "Observatorio Latinoamericano de Centros de Datos",
+        transportOptions: {
+          host: process.env.SMTP_HOST,
+          port: Number(process.env.SMTP_PORT || 587),
+          auth: { user: process.env.SMTP_USER, pass: process.env.SMTP_PASS },
+        },
+      })
+    : undefined,
+  sharp,
+  typescript: { outputFile: path.resolve(dirname, "payload-types.ts") },
+  plugins,
+});

@@ -1,14 +1,17 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
 import Logo from "./Logo";
-import { navegacion } from "@/data/navegacion";
+import { Link, usePathname } from "@/i18n/navigation";
+import { navegacion } from "@/lib/navegacion";
 import { IconoCerrar, IconoChevron, IconoMenu } from "./Iconos";
 
 export default function Header() {
   const pathname = usePathname();
+  const locale = useLocale();
+  const t = useTranslations("header");
+  const tNav = useTranslations("nav");
   const [abierto, setAbierto] = useState(false);
   const [desplegado, setDesplegado] = useState<string | null>(null);
 
@@ -19,6 +22,13 @@ export default function Header() {
   }, [pathname]);
 
   const activo = (href: string) => pathname === href || pathname.startsWith(href + "/");
+  const otroIdioma = locale === "es" ? "en" : "es";
+
+  const conmutadorIdioma = (className: string) => (
+    <Link href={pathname} locale={otroIdioma} className={className} aria-label={t("cambiarIdioma")}>
+      {t("codigoIdioma")}
+    </Link>
+  );
 
   return (
     <header className="sticky top-0 z-50 bg-ink-soft text-cream">
@@ -26,7 +36,7 @@ export default function Header() {
         <Logo />
 
         {/* Navegación de escritorio */}
-        <nav aria-label="Principal" className="hidden items-center gap-1 lg:flex">
+        <nav aria-label={t("principal")} className="hidden items-center gap-1 lg:flex">
           {navegacion.map((item) => (
             <div key={item.href} className="group relative">
               <Link
@@ -35,7 +45,7 @@ export default function Header() {
                   activo(item.href) ? "bg-white/10" : ""
                 }`}
               >
-                {item.label}
+                {tNav(item.clave)}
                 {item.hijos && <IconoChevron className="h-3 w-3" />}
               </Link>
 
@@ -47,7 +57,7 @@ export default function Header() {
                       href={hijo.href}
                       className="block rounded-xl px-3 py-2 text-[length:var(--fs-nav)] text-cream/80 transition-colors hover:bg-white/10 hover:text-cream"
                     >
-                      {hijo.label}
+                      {tNav(hijo.clave)}
                     </Link>
                   ))}
                 </div>
@@ -58,13 +68,7 @@ export default function Header() {
 
         <div className="flex items-center gap-3">
           <div className="hidden h-8 w-px bg-white/25 lg:block" />
-          <button
-            type="button"
-            className="hidden text-[length:var(--fs-nav)] font-semibold tracking-wide lg:block"
-            aria-label="Cambiar idioma. Idioma actual: español"
-          >
-            ES
-          </button>
+          {conmutadorIdioma("hidden text-[length:var(--fs-nav)] font-semibold tracking-wide lg:block")}
 
           <button
             type="button"
@@ -72,7 +76,7 @@ export default function Header() {
             onClick={() => setAbierto((v) => !v)}
             aria-expanded={abierto}
             aria-controls="menu-movil"
-            aria-label={abierto ? "Cerrar menú" : "Abrir menú"}
+            aria-label={abierto ? t("cerrarMenu") : t("abrirMenu")}
           >
             {abierto ? <IconoCerrar /> : <IconoMenu />}
           </button>
@@ -81,20 +85,20 @@ export default function Header() {
 
       {/* Navegación móvil */}
       {abierto && (
-        <nav id="menu-movil" aria-label="Principal móvil" className="border-t border-white/10 bg-ink-soft lg:hidden">
+        <nav id="menu-movil" aria-label={t("principalMovil")} className="border-t border-white/10 bg-ink-soft lg:hidden">
           <div className="shell max-h-[70vh] overflow-y-auto py-3">
             {navegacion.map((item) => (
               <div key={item.href} className="border-b border-white/10 last:border-0">
                 <div className="flex items-center justify-between">
                   <Link href={item.href} className="block flex-1 py-3 text-sm font-semibold">
-                    {item.label}
+                    {tNav(item.clave)}
                   </Link>
                   {item.hijos && (
                     <button
                       type="button"
                       onClick={() => setDesplegado(desplegado === item.href ? null : item.href)}
                       aria-expanded={desplegado === item.href}
-                      aria-label={`Mostrar secciones de ${item.label}`}
+                      aria-label={t("mostrarSecciones", { seccion: tNav(item.clave) })}
                       className="p-3"
                     >
                       <IconoChevron
@@ -107,16 +111,14 @@ export default function Header() {
                   <div className="pb-3 pl-3">
                     {item.hijos.map((hijo) => (
                       <Link key={hijo.href} href={hijo.href} className="block py-2 text-sm text-cream/75">
-                        {hijo.label}
+                        {tNav(hijo.clave)}
                       </Link>
                     ))}
                   </div>
                 )}
               </div>
             ))}
-            <button type="button" className="py-4 text-sm font-semibold" aria-label="Cambiar idioma">
-              ES
-            </button>
+            {conmutadorIdioma("block py-4 text-sm font-semibold")}
           </div>
         </nav>
       )}

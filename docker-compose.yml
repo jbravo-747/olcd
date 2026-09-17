@@ -1,0 +1,89 @@
+# Despliegue autoalojado: sitio + CMS, Postgres y MinIO (almacenamiento S3).
+# Uso: cp .env.example .env (ajustar PAYLOAD_SECRET) && docker compose up --build
+services:
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: olcd
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-olcd}
+      POSTGRES_DB: olcd
+    volumes:
+      - db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U olcd -d olcd"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-olcd}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-olcd-minio-secret}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio:/data
+    healthcheck:
+      test: ["CMD", "mc", "ready", "local"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Crea el bucket público la primera vez.
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      minio:
+        condition: service_healthy
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-olcd}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-olcd-minio-secret}
+    entrypoint: >
+      /bin/sh -c "
+      mc alias set local http://minio:9000 $$MINIO_ROOT_USER $$MINIO_ROOT_PASSWORD &&
+      mc mb --ignore-existing local/olcd &&
+      mc anonymous set download local/olcd
+      "
+
+  app:
+    build:
+      context: .
+      args:
+        NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-http://localhost:3000}
+        S3_PUBLIC_URL: ${S3_PUBLIC_URL:-http://localhost:9000/olcd}
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+      minio-init:
+        condition: service_completed_successfully
+    environment:
+      NODE_ENV: production
+      DATABASE_URI: postgres://olcd:${POSTGRES_PASSWORD:-olcd}@db:5432/olcd
+      PAYLOAD_SECRET: ${PAYLOAD_SECRET:?Define PAYLOAD_SECRET en .env}
+      NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-http://localhost:3000}
+      S3_BUCKET: olcd
+      S3_ENDPOINT: http://minio:9000
+      S3_REGION: us-east-1
+      S3_ACCESS_KEY_ID: ${MINIO_ROOT_USER:-olcd}
+      S3_SECRET_ACCESS_KEY: ${MINIO_ROOT_PASSWORD:-olcd-minio-secret}
+      S3_FORCE_PATH_STYLE: "true"
+      S3_PUBLIC_URL: ${S3_PUBLIC_URL:-http://localhost:9000/olcd}
+      S3_CLIENT_UPLOADS: "false"
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASS: ${SMTP_PASS:-}
+      EMAIL_FROM: ${EMAIL_FROM:-no-reply@olcd.org}
+      CONTACTO_DESTINO: ${CONTACTO_DESTINO:-}
+    ports:
+      - "3000:3000"
+
+volumes:
+  db:
+  minio:

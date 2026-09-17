@@ -2,6 +2,7 @@ node_modules/
 .next/
 out/
 .env*
+!.env.example
 *.tsbuildinfo
 next-env.d.ts
 .DS_Store
@@ -11,3 +12,7 @@ docs/insumos/
 
 # Herramientas locales
 .playwright-mcp/
+
+# Archivos subidos al CMS cuando no hay bucket S3 (sólo desarrollo)
+media/
+documentos/

@@ -1,0 +1,194 @@
+{
+  "nav": {
+    "quienesSomos": "Quiénes Somos",
+    "proposito": "Propósito",
+    "equipo": "Equipo",
+    "directorioOrganizaciones": "Directorio de organizaciones",
+    "directorioPersonas": "Directorio de personas",
+    "ejesDeTrabajo": "Ejes de Trabajo",
+    "dataLab": "Data Lab",
+    "citizenScienceLab": "Citizen Science Lab",
+    "methodsLab": "Methods Lab",
+    "narrativesLab": "Narratives Lab",
+    "policyLab": "Policy Lab",
+    "mapa": "Mapa de Centros de Datos",
+    "buscador": "Buscador de Noticias",
+    "publicaciones": "Publicaciones",
+    "reportes": "Reportes",
+    "articulosLibros": "Artículos y Libros",
+    "recursosEducativos": "Recursos Educativos o Multimedia",
+    "actualidad": "Actualidad",
+    "blog": "Blog",
+    "comunicados": "Comunicados",
+    "coberturaPrensa": "Cobertura de Prensa",
+    "noticiasObservatorio": "Noticias del Observatorio",
+    "contacto": "Contacto",
+    "accesibilidad": "Accesibilidad",
+    "privacidad": "Privacidad",
+    "terminosDeUso": "Términos de uso"
+  },
+  "header": {
+    "principal": "Principal",
+    "principalMovil": "Principal móvil",
+    "abrirMenu": "Abrir menú",
+    "cerrarMenu": "Cerrar menú",
+    "mostrarSecciones": "Mostrar secciones de {seccion}",
+    "cambiarIdioma": "Cambiar idioma a inglés",
+    "codigoIdioma": "EN",
+    "saltarContenido": "Saltar al contenido principal"
+  },
+  "noEncontrado": {
+    "titulo": "Página no encontrada",
+    "texto": "La dirección que buscas no existe.",
+    "volver": "Volver al inicio"
+  },
+  "comun": {
+    "leerMas": "Leer más",
+    "sobre": "sobre {titulo}",
+    "paginacion": "Paginación",
+    "pagina": "Página {n}",
+    "paginaSiguiente": "Página siguiente",
+    "descargarPdf": "Descargar PDF",
+    "resultados": "{n, plural, =1 {1 resultado} other {# resultados}}",
+    "resultadosTitulo": "Resultados",
+    "sinResultados": "No hay resultados para esta búsqueda.",
+    "palabraClave": "Palabra clave",
+    "buscarPorTitulo": "Buscar por título",
+    "todos": "Todos",
+    "tipo": "Tipo",
+    "seccion": "Sección",
+    "filtrosDe": "Filtros de {titulo}"
+  },
+  "inicio": {
+    "mapaTitulo": "Mapa de centros de datos",
+    "verMapa": "Ver el mapa completo",
+    "reciente": "Reciente",
+    "paginacionReciente": "Paginación de lo más reciente"
+  },
+  "quienesSomos": {
+    "titulo": "Quiénes somos",
+    "equipo": "Equipo",
+    "directorioOrganizaciones": "Directorio de organizaciones",
+    "directorioPersonas": "Directorio de personas",
+    "paginacionEquipo": "Paginación del equipo",
+    "paginacionGrupo": "Paginación de {grupo}",
+    "grupos": {
+      "investigacion": "Investigación",
+      "comunidad": "Comunidad",
+      "aliados": "Aliados"
+    }
+  },
+  "persona": {
+    "organizacion": "Organización",
+    "rol": "Rol",
+    "region": "Región",
+    "afiliacion": "Afiliación",
+    "correo": "Correo electrónico"
+  },
+  "organizacion": {
+    "region": "Región",
+    "web": "Página web",
+    "correo": "Correo electrónico"
+  },
+  "ejes": {
+    "titulo": "Ejes de trabajo",
+    "proyectos": "Proyectos",
+    "paginacionProyectos": "Paginación de proyectos de {lab}"
+  },
+  "proyecto": {
+    "autores": "Autores",
+    "anio": "Año",
+    "lugar": "Lugar",
+    "participantes": "Participantes",
+    "contenido": "Contenido del proyecto",
+    "compartir": "Compartir en {red}"
+  },
+  "publicaciones": {
+    "titulo": "Publicaciones",
+    "lab": "Lab",
+    "autores": "Autores",
+    "anio": "Año de publicación",
+    "paginas": "Número de páginas",
+    "tipos": {
+      "reportes": "Reportes",
+      "articulos-y-libros": "Artículos y libros",
+      "recursos-educativos": "Recursos educativos o multimedia"
+    }
+  },
+  "actualidad": {
+    "titulo": "Actualidad",
+    "medio": "Medio",
+    "creditos": "Créditos",
+    "participantes": "Participantes",
+    "tipos": {
+      "blog": "Blog",
+      "comunicados": "Comunicados",
+      "cobertura-de-prensa": "Cobertura de prensa",
+      "noticias-del-observatorio": "Noticias del Observatorio"
+    }
+  },
+  "carrusel": {
+    "galeria": "Galería de imágenes",
+    "anterior": "Imagen anterior",
+    "siguiente": "Imagen siguiente",
+    "verImagen": "Ver imagen {n}",
+    "imagenDe": "Imagen {actual} de {total}"
+  },
+  "mapa": {
+    "titulo": "Mapa de centros de datos",
+    "pais": "País",
+    "estado": "Estado del proyecto",
+    "todosPaises": "Todos los países",
+    "todosEstados": "Todos los estados",
+    "seleccionar": "Selecciona un punto del mapa para ver la ficha del centro de datos.",
+    "resultados": "Resultados ({n})",
+    "ciudad": "Ciudad",
+    "empresa": "Empresa",
+    "inversion": "Inversión anunciada",
+    "inversionValor": "USD {monto} M",
+    "coordenadas": "Coordenadas",
+    "centrosDeDatos": "{n} centros de datos",
+    "descripcionMapa": "Mapa de América Latina con {n} centros de datos",
+    "estados": {
+      "en-operacion": "En operación",
+      "en-construccion": "En construcción",
+      "anunciado": "Anunciado"
+    }
+  },
+  "buscador": {
+    "titulo": "Buscador de noticias",
+    "palabraClave": "Palabra clave",
+    "placeholder": "Buscar por título o medio",
+    "categoria": "Categoría",
+    "todasCategorias": "Todas las categorías",
+    "buscar": "Buscar",
+    "noticias": "Noticias",
+    "sinResultados": "No hay noticias que coincidan con la búsqueda.",
+    "abrirNota": "Abrir la nota original en {medio}",
+    "medio": "Medio",
+    "fecha": "Fecha",
+    "hora": "Hora",
+    "filtros": "Filtros del buscador de noticias",
+    "paginacion": "Paginación de noticias"
+  },
+  "contacto": {
+    "titulo": "Contacto",
+    "formulario": "Formulario de contacto",
+    "nombre": "Nombre",
+    "correo": "Correo electrónico",
+    "asunto": "Asunto",
+    "mensaje": "Mensaje",
+    "enviar": "Enviar mensaje",
+    "enviando": "Enviando…",
+    "escribenos": "Escríbenos",
+    "redes": "Redes",
+    "exito": "Gracias, recibimos tu mensaje.",
+    "error": "No se pudo enviar el mensaje. Inténtalo de nuevo.",
+    "invalido": "Revisa los campos marcados."
+  },
+  "legales": {
+    "accesibilidad": "Accesibilidad",
+    "privacidad": "Privacidad",
+    "terminos": "Términos de uso"
+  }
+}

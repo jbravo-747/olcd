@@ -1,37 +1,61 @@
-# Nota sobre el CMS
+# CMS: decisión y funcionamiento
 
-La maqueta no incluye CMS: todo el contenido vive en `src/data/*.ts`, con
-tipos explícitos. Esa frontera es a propósito — cuando se elija el CMS, sólo
-hay que cambiar el cuerpo de esas funciones por llamadas a la API; las páginas
-y componentes no cambian.
+**Decisión (septiembre 2026):** Payload CMS 3 embebido en la misma aplicación
+Next.js, con Postgres y almacenamiento S3-compatible. Combina lo mejor de las
+dos opciones que se barajaron: un solo despliegue y control total del esquema
+(opción A) con panel, roles, versiones e i18n ya resueltos (opción B).
 
-Las opciones que están sobre la mesa (según las notas del proyecto):
+## Piezas
 
-## A. CMS propio sobre Next.js
+| Pieza | Dónde |
+|---|---|
+| Configuración de Payload | `src/payload.config.ts` |
+| Colecciones y global | `src/cms/collections/*`, `src/cms/globals/Sitio.ts` |
+| Reglas de acceso | `src/cms/access/index.ts` (`admin` / `editor` / público) |
+| Invalidación de caché | `src/cms/hooks/revalidar.ts` |
+| Panel de administración | `/admin` (`src/app/(payload)/`) |
+| API REST / GraphQL | `/api/*`, `/api/graphql` |
+| Capa de lectura del sitio | `src/lib/cms/*.ts` (Local API + Data Cache por etiquetas) |
+| Tipos generados | `src/payload-types.ts` (`npm run generate:types`) |
+| Migraciones | `src/migrations/` (`npm run migrate:create`) |
+| Seed con el contenido de la maqueta | `src/seed/index.ts` (`npm run seed`) |
 
-- Panel de administración como parte de la misma app de Next (rutas
-  protegidas), con **Auth0** para autenticación.
-- Ventaja: un solo despliegue, control total del modelo de datos, se ajusta
-  exactamente al árbol de navegación del Observatorio.
-- Costo: hay que construir y mantener el panel, la subida de archivos y los
-  permisos.
+## Modelo de contenido
 
-## B. Software libre autoalojado (Docker)
+Colecciones: `labs`, `proyectos` (→ lab), `publicaciones` (→ lab, pdf),
+`entradas` (actualidad), `noticias` (corpus del buscador), `centros`,
+`personas` (→ organización), `organizaciones`, `categorias`, `media`
+(imágenes), `documentos` (PDF), `mensajes-contacto`, `users`.
+Global: `sitio` (hero, propósito, encabezados de página, textos legales, redes).
 
-- Un CMS headless de código abierto (Strapi, Directus, Payload) en un
-  contenedor, con Next consumiendo su API.
-- Ventaja: panel, roles, versiones y subida de archivos ya resueltos; sin
-  dependencia de un proveedor.
-- Costo: hay que operar el contenedor, la base de datos y los respaldos.
+Los campos de texto llevan `localized: true`: el admin muestra un selector
+ES/EN y el sitio pide cada idioma con `locale`. Si falta la traducción se
+usa el español (`fallback: true`).
 
-## Qué hace falta decidir antes
+## Cómo se sirve el contenido
 
-1. Quién carga contenido y con qué frecuencia (¿una persona o varias
-   organizaciones de la red?).
-2. Si el contenido debe ser multilingüe desde el inicio (ES/EN).
-3. Dónde vive el sitio en producción — el prototipo de referencia está en
-   Firebase App Hosting, que corre Next pero no aloja el CMS.
+Las páginas son dinámicas (`force-dynamic`) y leen con la Local API a través
+de `src/lib/cms/*`, envuelto en `unstable_cache` con una etiqueta por
+colección. Al guardar en el admin, los hooks `afterChange`/`afterDelete`
+llaman `revalidateTag`, así que el cambio se ve en la siguiente carga sin
+redeploy. Gracias a esto `next build` no necesita base de datos.
 
-Los tipos de `src/data/` sirven como borrador del esquema de contenidos para
-cualquiera de las dos rutas: `Lab`, `Proyecto`, `Publicacion`, `Entrada`,
-`Persona`, `Organizacion`, `Noticia` y `Centro`.
+## Migraciones
+
+- Desarrollo (`NODE_ENV=development`): `push: true`, Payload sincroniza el
+  esquema solo. **Nunca** apuntar el modo desarrollo a la base de producción.
+- Producción: las migraciones de `src/migrations/` corren al arrancar
+  (`prodMigrations`). Tras cambiar colecciones: `npm run migrate:create`
+  y commitear el archivo generado.
+
+## Archivos
+
+Con `S3_BUCKET` definido, imágenes y PDF van a un bucket S3-compatible
+(Cloudflare R2 / AWS S3 con Vercel, MinIO en Docker) y se sirven desde
+`S3_PUBLIC_URL`. Sin `S3_BUCKET` se guardan en disco (sólo desarrollo).
+
+## Usuarios
+
+`admin` gestiona usuarios y ve los mensajes de contacto; `editor` sólo edita
+contenido. El primer usuario se crea desde `/admin` al arrancar con la base
+vacía (o con `SEED_ADMIN_EMAIL`/`SEED_ADMIN_PASSWORD` al correr el seed).

@@ -1,0 +1,194 @@
+{
+  "nav": {
+    "quienesSomos": "About Us",
+    "proposito": "Purpose",
+    "equipo": "Team",
+    "directorioOrganizaciones": "Organizations directory",
+    "directorioPersonas": "People directory",
+    "ejesDeTrabajo": "Work Areas",
+    "dataLab": "Data Lab",
+    "citizenScienceLab": "Citizen Science Lab",
+    "methodsLab": "Methods Lab",
+    "narrativesLab": "Narratives Lab",
+    "policyLab": "Policy Lab",
+    "mapa": "Data Center Map",
+    "buscador": "News Search",
+    "publicaciones": "Publications",
+    "reportes": "Reports",
+    "articulosLibros": "Articles and Books",
+    "recursosEducativos": "Educational or Multimedia Resources",
+    "actualidad": "News",
+    "blog": "Blog",
+    "comunicados": "Press Releases",
+    "coberturaPrensa": "Press Coverage",
+    "noticiasObservatorio": "Observatory News",
+    "contacto": "Contact",
+    "accesibilidad": "Accessibility",
+    "privacidad": "Privacy",
+    "terminosDeUso": "Terms of Use"
+  },
+  "header": {
+    "principal": "Main",
+    "principalMovil": "Main mobile",
+    "abrirMenu": "Open menu",
+    "cerrarMenu": "Close menu",
+    "mostrarSecciones": "Show sections of {seccion}",
+    "cambiarIdioma": "Switch language to Spanish",
+    "codigoIdioma": "ES",
+    "saltarContenido": "Skip to main content"
+  },
+  "noEncontrado": {
+    "titulo": "Page not found",
+    "texto": "The address you are looking for does not exist.",
+    "volver": "Back to home"
+  },
+  "comun": {
+    "leerMas": "Read more",
+    "sobre": "about {titulo}",
+    "paginacion": "Pagination",
+    "pagina": "Page {n}",
+    "paginaSiguiente": "Next page",
+    "descargarPdf": "Download PDF",
+    "resultados": "{n, plural, =1 {1 result} other {# results}}",
+    "resultadosTitulo": "Results",
+    "sinResultados": "No results for this search.",
+    "palabraClave": "Keyword",
+    "buscarPorTitulo": "Search by title",
+    "todos": "All",
+    "tipo": "Type",
+    "seccion": "Section",
+    "filtrosDe": "{titulo} filters"
+  },
+  "inicio": {
+    "mapaTitulo": "Data center map",
+    "verMapa": "See the full map",
+    "reciente": "Latest",
+    "paginacionReciente": "Latest items pagination"
+  },
+  "quienesSomos": {
+    "titulo": "About us",
+    "equipo": "Team",
+    "directorioOrganizaciones": "Organizations directory",
+    "directorioPersonas": "People directory",
+    "paginacionEquipo": "Team pagination",
+    "paginacionGrupo": "{grupo} pagination",
+    "grupos": {
+      "investigacion": "Research",
+      "comunidad": "Community",
+      "aliados": "Partners"
+    }
+  },
+  "persona": {
+    "organizacion": "Organization",
+    "rol": "Role",
+    "region": "Region",
+    "afiliacion": "Affiliation",
+    "correo": "Email"
+  },
+  "organizacion": {
+    "region": "Region",
+    "web": "Website",
+    "correo": "Email"
+  },
+  "ejes": {
+    "titulo": "Work areas",
+    "proyectos": "Projects",
+    "paginacionProyectos": "{lab} projects pagination"
+  },
+  "proyecto": {
+    "autores": "Authors",
+    "anio": "Year",
+    "lugar": "Place",
+    "participantes": "Participants",
+    "contenido": "Project contents",
+    "compartir": "Share on {red}"
+  },
+  "publicaciones": {
+    "titulo": "Publications",
+    "lab": "Lab",
+    "autores": "Authors",
+    "anio": "Publication year",
+    "paginas": "Number of pages",
+    "tipos": {
+      "reportes": "Reports",
+      "articulos-y-libros": "Articles and books",
+      "recursos-educativos": "Educational or multimedia resources"
+    }
+  },
+  "actualidad": {
+    "titulo": "News",
+    "medio": "Outlet",
+    "creditos": "Credits",
+    "participantes": "Participants",
+    "tipos": {
+      "blog": "Blog",
+      "comunicados": "Press releases",
+      "cobertura-de-prensa": "Press coverage",
+      "noticias-del-observatorio": "Observatory news"
+    }
+  },
+  "carrusel": {
+    "galeria": "Image gallery",
+    "anterior": "Previous image",
+    "siguiente": "Next image",
+    "verImagen": "View image {n}",
+    "imagenDe": "Image {actual} of {total}"
+  },
+  "mapa": {
+    "titulo": "Data center map",
+    "pais": "Country",
+    "estado": "Project status",
+    "todosPaises": "All countries",
+    "todosEstados": "All statuses",
+    "seleccionar": "Select a point on the map to see the data center details.",
+    "resultados": "Results ({n})",
+    "ciudad": "City",
+    "empresa": "Company",
+    "inversion": "Announced investment",
+    "inversionValor": "USD {monto} M",
+    "coordenadas": "Coordinates",
+    "centrosDeDatos": "{n} data centers",
+    "descripcionMapa": "Map of Latin America with {n} data centers",
+    "estados": {
+      "en-operacion": "In operation",
+      "en-construccion": "Under construction",
+      "anunciado": "Announced"
+    }
+  },
+  "buscador": {
+    "titulo": "News search",
+    "palabraClave": "Keyword",
+    "placeholder": "Search by title or outlet",
+    "categoria": "Category",
+    "todasCategorias": "All categories",
+    "buscar": "Search",
+    "noticias": "News",
+    "sinResultados": "No news items match your search.",
+    "abrirNota": "Open the original article at {medio}",
+    "medio": "Outlet",
+    "fecha": "Date",
+    "hora": "Time",
+    "filtros": "News search filters",
+    "paginacion": "News pagination"
+  },
+  "contacto": {
+    "titulo": "Contact",
+    "formulario": "Contact form",
+    "nombre": "Name",
+    "correo": "Email",
+    "asunto": "Subject",
+    "mensaje": "Message",
+    "enviar": "Send message",
+    "enviando": "Sending…",
+    "escribenos": "Write to us",
+    "redes": "Social media",
+    "exito": "Thank you, we received your message.",
+    "error": "The message could not be sent. Please try again.",
+    "invalido": "Please review the highlighted fields."
+  },
+  "legales": {
+    "accesibilidad": "Accessibility",
+    "privacidad": "Privacy",
+    "terminos": "Terms of use"
+  }
+}

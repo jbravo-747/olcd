@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 
 import horizontal from "../../public/brand/logo-olcd-horizontal.png";
 import vertical from "../../public/brand/logo-olcd-vertical.png";
