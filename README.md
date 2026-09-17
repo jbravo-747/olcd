@@ -1,10 +1,7 @@
 # OLCD — Sitio y CMS
 
 Sitio del **Observatorio Latinoamericano de Centros de Datos** con su gestor
-de contenidos integrado. Nació como maqueta navegable a partir de dos insumos:
-
-- `Navegación Observatorio.pdf` — árbol de navegación corregido (8 secciones, niveles N1/N2/N3).
-- `Wireframes.zip` — 31 wireframes de escritorio y móvil (Figma → PDF).
+de contenidos integrado.
 
 El estilo visual (tipografías, paleta, componentes) replica el del prototipo
 de referencia `olcd-org--olcd-org.us-central1.hosted.app`.
