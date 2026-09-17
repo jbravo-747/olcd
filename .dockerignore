@@ -11,3 +11,8 @@ media
 *.tsbuildinfo
 Dockerfile
 docker-compose.yml
+
+# Pruebas: no forman parte de la imagen de producción
+tests
+playwright.config.ts
+vitest.config.ts
