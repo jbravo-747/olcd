@@ -152,6 +152,14 @@
     "coordenadas": "Coordinates",
     "centrosDeDatos": "{n} data centers",
     "descripcionMapa": "Map of Latin America with {n} data centers",
+    "capas": {
+      "satelite": "Satellite (Esri)",
+      "sentinel": "Satellite (Sentinel-2)",
+      "claro": "Light map",
+      "agua": "Water bodies",
+      "rios": "Rivers",
+      "centros": "Data centers"
+    },
     "estados": {
       "en-operacion": "In operation",
       "en-construccion": "Under construction",

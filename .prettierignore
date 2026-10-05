@@ -13,3 +13,6 @@ tests/e2e/.results
 # Archivos generados por Payload (los reescribe la CLI; no reformatear)
 src/app/(payload)/api
 src/app/(payload)/admin/[[...segments]]
+
+# GeoJSON minificado de las capas del mapa (no reformatear: crecería enormemente)
+public/geo

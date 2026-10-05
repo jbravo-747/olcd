@@ -152,6 +152,14 @@
     "coordenadas": "Coordenadas",
     "centrosDeDatos": "{n} centros de datos",
     "descripcionMapa": "Mapa de América Latina con {n} centros de datos",
+    "capas": {
+      "satelite": "Satélite (Esri)",
+      "sentinel": "Satélite (Sentinel-2)",
+      "claro": "Mapa claro",
+      "agua": "Cuerpos de agua",
+      "rios": "Ríos",
+      "centros": "Centros de datos"
+    },
     "estados": {
       "en-operacion": "En operación",
       "en-construccion": "En construcción",

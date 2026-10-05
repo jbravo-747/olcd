@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import EncabezadoPagina from "@/components/EncabezadoPagina";
-import MapaCentros from "@/components/MapaCentros";
+import MapaCentrosInteractivo from "@/components/mapa/MapaCentrosInteractivo";
 import { metadatosPagina } from "@/components/seo";
 import { listarCentros } from "@/lib/cms/centros";
 import { obtenerSitio } from "@/lib/cms/sitio";
@@ -33,7 +33,7 @@ export default async function PaginaMapa({ params }: Props) {
     <>
       <EncabezadoPagina titulo={t("titulo")} descripcion={sitio.paginas?.mapa ?? undefined} />
       <div className="bg-cream">
-        <MapaCentros centros={centros} />
+        <MapaCentrosInteractivo centros={centros} />
       </div>
     </>
   );
