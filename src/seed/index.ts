@@ -19,8 +19,18 @@ const contexto = { disableRevalidate: true };
 const en = (texto: string) => `[EN] ${texto}`;
 
 const meses: Record<string, number> = {
-  enero: 0, febrero: 1, marzo: 2, abril: 3, mayo: 4, junio: 5,
-  julio: 6, agosto: 7, septiembre: 8, octubre: 9, noviembre: 10, diciembre: 11,
+  enero: 0,
+  febrero: 1,
+  marzo: 2,
+  abril: 3,
+  mayo: 4,
+  junio: 5,
+  julio: 6,
+  agosto: 7,
+  septiembre: 8,
+  octubre: 9,
+  noviembre: 10,
+  diciembre: 11,
 };
 
 /** "Sábado, 03 Abril 2021" + "07:00 GMT" → ISO */
@@ -52,7 +62,13 @@ async function sembrarCategorias(payload: Payload) {
       locale: "es",
       context: contexto,
     });
-    await payload.update({ collection: "categorias", id: doc.id, data: { nombre: en(nombre) }, locale: "en", context: contexto });
+    await payload.update({
+      collection: "categorias",
+      id: doc.id,
+      data: { nombre: en(nombre) },
+      locale: "en",
+      context: contexto,
+    });
     ids.set(nombre, doc.id);
   }
   return (nombres: string[]) => nombres.map((n) => ids.get(n)!).filter(Boolean);
@@ -171,7 +187,11 @@ async function sembrarLabsYProyectos(payload: Payload, categoriaIds: (n: string[
   return labIdPorNombre;
 }
 
-async function sembrarPublicaciones(payload: Payload, labIdPorNombre: Map<string, number>, categoriaIds: (n: string[]) => number[]) {
+async function sembrarPublicaciones(
+  payload: Payload,
+  labIdPorNombre: Map<string, number>,
+  categoriaIds: (n: string[]) => number[],
+) {
   for (const pub of publicacionesMaqueta) {
     const doc = await payload.create({
       collection: "publicaciones",
@@ -193,7 +213,11 @@ async function sembrarPublicaciones(payload: Payload, labIdPorNombre: Map<string
     await payload.update({
       collection: "publicaciones",
       id: doc.id,
-      data: { titulo: en(pub.titulo), descripcion: en(pub.descripcion), contenido: parrafosALexical(pub.contenido.map(en)) },
+      data: {
+        titulo: en(pub.titulo),
+        descripcion: en(pub.descripcion),
+        contenido: parrafosALexical(pub.contenido.map(en)),
+      },
       locale: "en",
       context: contexto,
     });
@@ -345,7 +369,9 @@ async function sembrarSitio(payload: Payload) {
       recursosEducativos: traducir(descripcionCortaLarga),
     },
     actualidad: {
-      blog: traducir("[Descripción corta] Entradas del Observatorio con galería de imágenes, créditos y participantes."),
+      blog: traducir(
+        "[Descripción corta] Entradas del Observatorio con galería de imágenes, créditos y participantes.",
+      ),
       comunicados: traducir("[Descripción corta] Posicionamientos públicos del Observatorio en PDF descargable."),
       coberturaPrensa: traducir("[Descripción corta] Menciones del Observatorio en medios de comunicación."),
       noticiasObservatorio: traducir("[Descripción corta] Avisos, convocatorias y novedades de la red."),
@@ -382,7 +408,10 @@ async function main() {
   const payload = await getPayload({ config });
   const { totalDocs } = await payload.count({ collection: "labs" });
   if (totalDocs > 0) {
-    payload.logger.warn("Ya hay contenido cargado; no se siembra nada.");
+    payload.logger.warn("Ya hay contenido cargado; no se siembra contenido.");
+    // Aun con contenido (p. ej. base restaurada por pg_dump) se intenta crear el
+    // admin desde SEED_ADMIN_* si aún no hay ningún usuario (auditoría Q-6).
+    await sembrarAdmin(payload);
     process.exit(0);
   }
 

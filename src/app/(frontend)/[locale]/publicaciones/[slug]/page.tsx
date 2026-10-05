@@ -54,7 +54,7 @@ export default async function PaginaRecurso({ params }: Props) {
                 .filter(([, valor]) => valor)
                 .map(([clave, valor]) => (
                   <div key={clave} className="border-b border-line py-3">
-                    <dt className="text-xs uppercase tracking-wide text-ink/55">{clave}</dt>
+                    <dt className="text-xs uppercase tracking-wide text-ink/70">{clave}</dt>
                     <dd className="mt-1 text-[15px] font-semibold">{valor}</dd>
                   </div>
                 ))}

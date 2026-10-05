@@ -33,8 +33,11 @@ export default function GridRecursos({
 }) {
   const t = useTranslations("comun");
   const [pagina, setPagina] = useState(1);
-  const totalPaginas = Math.ceil(recursos.length / porPagina);
-  const visibles = recursos.slice((pagina - 1) * porPagina, pagina * porPagina);
+  const totalPaginas = Math.max(1, Math.ceil(recursos.length / porPagina));
+  // Si la lista se acorta (p. ej. al filtrar) y la página queda fuera de rango,
+  // se muestra la última página en vez de una rejilla vacía (auditoría Q-4).
+  const paginaActual = Math.min(pagina, totalPaginas);
+  const visibles = recursos.slice((paginaActual - 1) * porPagina, paginaActual * porPagina);
 
   return (
     <div>
@@ -43,7 +46,11 @@ export default function GridRecursos({
           <li key={recurso.href} className="flex">
             <article className="flex w-full flex-col overflow-hidden rounded-xl bg-cream shadow-sm transition-transform hover:-translate-y-1">
               <div className="relative">
-                <Imagen media={recurso.imagen} className="aspect-[4/3] w-full" sizes="(min-width: 1024px) 400px, 100vw" />
+                <Imagen
+                  media={recurso.imagen}
+                  className="aspect-[4/3] w-full"
+                  sizes="(min-width: 1024px) 400px, 100vw"
+                />
                 {recurso.etiqueta && <span className="tag absolute right-3 top-3">{recurso.etiqueta}</span>}
               </div>
               <div className="flex flex-1 flex-col p-5">
@@ -63,7 +70,7 @@ export default function GridRecursos({
 
       <div className={tema === "oscuro" ? "text-cream" : ""}>
         <Paginacion
-          pagina={pagina}
+          pagina={paginaActual}
           total={totalPaginas}
           onCambio={setPagina}
           etiqueta={etiquetaPaginacion ?? t("paginacion")}

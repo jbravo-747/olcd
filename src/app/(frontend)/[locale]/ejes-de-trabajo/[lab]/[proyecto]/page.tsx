@@ -44,7 +44,7 @@ export default async function PaginaProyecto({ params }: Props) {
       <header className="bg-cream py-14">
         <div className="shell grid gap-10 lg:grid-cols-[1fr_auto_240px]">
           <div>
-            <p className="text-xs font-bold uppercase tracking-wide text-ink/55">{lab.nombre}</p>
+            <p className="text-xs font-bold uppercase tracking-wide text-ink/70">{lab.nombre}</p>
             <h1 className="display t-h1 mt-2">{proyecto.titulo}</h1>
 
             <dl className="mt-10 max-w-md">

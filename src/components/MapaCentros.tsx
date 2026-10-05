@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type SVGProps } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import latam from "@/lib/latam.json";
 import type { Centro } from "@/payload-types";
@@ -17,12 +17,51 @@ type Estado = Centro["estado"];
 
 const estados: Estado[] = ["en-operacion", "en-construccion", "anunciado"];
 
-/** Color del marcador según el estado del proyecto. */
-const colorEstado: Record<Estado, string> = {
-  "en-operacion": "#1e2429",
-  "en-construccion": "#7a6a4f",
-  anunciado: "#f5f1e9",
+/**
+ * Cada estado se distingue por forma Y color (no solo color), y cada color
+ * supera 3:1 sobre el relleno del mapa (cream-deep). Los colores son tokens
+ * de globals.css; aquí solo van las clases de Tailwind.
+ */
+const formaEstado: Record<Estado, "circulo" | "diamante" | "triangulo"> = {
+  "en-operacion": "circulo",
+  "en-construccion": "diamante",
+  anunciado: "triangulo",
 };
+
+const claseEstado: Record<Estado, string> = {
+  "en-operacion": "fill-marker-operacion",
+  "en-construccion": "fill-marker-construccion",
+  anunciado: "fill-marker-anunciado",
+};
+
+/**
+ * Dibuja la marca de un estado con su forma propia. `interactivo` añade los
+ * atributos de puntero/teclado (solo en los marcadores del mapa, no en la
+ * leyenda).
+ */
+function MarcaEstado({
+  estado,
+  r,
+  interactivo,
+}: {
+  estado: Estado;
+  r: number;
+  interactivo?: Omit<SVGProps<SVGGeometryElement>, "ref">;
+}) {
+  const props = {
+    className: `${claseEstado[estado]} stroke-ink`,
+    strokeWidth: 2.5,
+    vectorEffect: "non-scaling-stroke" as const,
+    ...interactivo,
+  };
+  if (formaEstado[estado] === "diamante") {
+    return <polygon points={`0,${-r} ${r},0 0,${r} ${-r},0`} {...props} />;
+  }
+  if (formaEstado[estado] === "triangulo") {
+    return <polygon points={`0,${-(r + 1)} ${r},${r * 0.8} ${-r},${r * 0.8}`} {...props} />;
+  }
+  return <circle r={r} {...props} />;
+}
 
 /**
  * Mapa de centros de datos de América Latina.
@@ -78,22 +117,21 @@ export default function MapaCentros({
             return (
               <g key={centro.id} transform={`translate(${x} ${y})`}>
                 {seleccionado && <circle r={22} className="fill-ink/15" />}
-                <circle
+                <MarcaEstado
+                  estado={centro.estado}
                   r={seleccionado ? 13 : 9}
-                  fill={colorEstado[centro.estado]}
-                  stroke="#1e2429"
-                  strokeWidth={2.5}
-                  vectorEffect="non-scaling-stroke"
-                  className="cursor-pointer transition-all"
-                  onClick={() => setActivo(seleccionado ? null : centro)}
-                  role="button"
-                  tabIndex={0}
-                  aria-label={`${centro.nombre}. ${centro.ciudad}, ${centro.pais}. ${t(`estados.${centro.estado}`)}.`}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      setActivo(seleccionado ? null : centro);
-                    }
+                  interactivo={{
+                    className: `${claseEstado[centro.estado]} stroke-ink cursor-pointer transition-all`,
+                    onClick: () => setActivo(seleccionado ? null : centro),
+                    role: "button",
+                    tabIndex: 0,
+                    "aria-label": `${centro.nombre}. ${centro.ciudad}, ${centro.pais}. ${t(`estados.${centro.estado}`)}.`,
+                    onKeyDown: (e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        setActivo(seleccionado ? null : centro);
+                      }
+                    },
                   }}
                 />
               </g>
@@ -105,11 +143,10 @@ export default function MapaCentros({
       {/* Leyenda */}
       <ul className="mt-3 flex flex-wrap gap-x-4 gap-y-1 sm:absolute sm:bottom-0 sm:left-0 sm:mt-0 sm:block sm:space-y-1.5">
         {estados.map((e) => (
-          <li key={e} className="flex items-center gap-2 text-[11px] font-semibold text-cream/90">
-            <span
-              className="inline-block h-3 w-3 rounded-full border-2 border-ink"
-              style={{ backgroundColor: colorEstado[e] }}
-            />
+          <li key={e} className="flex items-center gap-2 text-[11px] font-semibold text-cream">
+            <svg viewBox="-11 -11 22 22" className="h-3.5 w-3.5 shrink-0" aria-hidden focusable="false">
+              <MarcaEstado estado={e} r={8} />
+            </svg>
             {t(`estados.${e}`)}
           </li>
         ))}
@@ -119,7 +156,7 @@ export default function MapaCentros({
 
   if (resumido) {
     return (
-      <div className="bg-slate-light py-10">
+      <div className="bg-slate py-10">
         <div className="shell grid items-center gap-8 lg:grid-cols-[1fr_300px]">
           <div className="mx-auto w-full max-w-[520px]">{mapa}</div>
 
@@ -128,7 +165,7 @@ export default function MapaCentros({
             {descripcion && <p className="mt-3 text-sm leading-relaxed text-cream/85">{descripcion}</p>}
             <ul className="mt-6 space-y-2">
               {paises.map((p) => (
-                <li key={p} className="flex justify-between border-b border-cream/20 pb-1 text-[13px] text-cream/90">
+                <li key={p} className="flex justify-between border-b border-cream/20 pb-1 text-[13px] text-cream">
                   <span>{p}</span>
                   <span className="font-semibold">{centros.filter((c) => c.pais === p).length}</span>
                 </li>
@@ -189,7 +226,7 @@ export default function MapaCentros({
       </form>
 
       <div className="grid gap-8 lg:grid-cols-[1fr_340px]">
-        <div className="rounded-xl bg-slate-light p-6">{mapa}</div>
+        <div className="rounded-xl bg-slate p-6">{mapa}</div>
 
         <aside aria-live="polite">
           {activo ? (
@@ -209,7 +246,7 @@ export default function MapaCentros({
                   [t("coordenadas"), `${activo.lat.toFixed(2)}, ${activo.lng.toFixed(2)}`],
                 ].map(([clave, valor]) => (
                   <div key={clave} className="border-b border-line pb-2">
-                    <dt className="text-ink/55">{clave}</dt>
+                    <dt className="text-ink/70">{clave}</dt>
                     <dd className="font-semibold">{valor}</dd>
                   </div>
                 ))}
@@ -233,11 +270,10 @@ export default function MapaCentros({
                     activo?.id === c.id ? "bg-ink/10" : ""
                   }`}
                 >
-                  <span
-                    className="inline-block h-2.5 w-2.5 shrink-0 rounded-full border border-ink"
-                    style={{ backgroundColor: colorEstado[c.estado] }}
-                  />
-                  {c.nombre} <span className="text-ink/55">· {c.pais}</span>
+                  <svg viewBox="-11 -11 22 22" className="h-3 w-3 shrink-0" aria-hidden focusable="false">
+                    <MarcaEstado estado={c.estado} r={8} />
+                  </svg>
+                  {c.nombre} <span className="text-ink/70">· {c.pais}</span>
                 </button>
               </li>
             ))}

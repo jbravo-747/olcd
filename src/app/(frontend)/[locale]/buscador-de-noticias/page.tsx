@@ -6,10 +6,18 @@ import { IconoEnlace } from "@/components/Iconos";
 import { buscarNoticias, listarCategorias } from "@/lib/cms/noticias";
 import { nombresCategorias } from "@/lib/cms/util";
 
+type ValorParametro = string | string[] | undefined;
+
 type Props = {
   params: Promise<{ locale: Locale }>;
-  searchParams: Promise<{ q?: string; categoria?: string; pagina?: string }>;
+  searchParams: Promise<{ q?: ValorParametro; categoria?: ValorParametro; pagina?: ValorParametro }>;
 };
+
+/** Un parámetro repetido (`?q=a&q=b`) llega como arreglo: nos quedamos con el último. */
+function unico(valor: ValorParametro): string {
+  if (Array.isArray(valor)) return valor.at(-1) ?? "";
+  return valor ?? "";
+}
 
 const flechaSelect =
   "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231e2429' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")";
@@ -24,16 +32,27 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PaginaBuscador({ params, searchParams }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const { q = "", categoria = "", pagina: paginaTexto } = await searchParams;
-  const pagina = Math.max(1, Number.parseInt(paginaTexto ?? "1", 10) || 1);
+  const parametros = await searchParams;
+  const q = unico(parametros.q);
+  const categoria = unico(parametros.categoria);
+  const paginaPedida = Math.max(1, Number.parseInt(unico(parametros.pagina) || "1", 10) || 1);
 
-  const [t, tComun, formato, categorias, resultado] = await Promise.all([
+  const [t, tComun, formato, categorias, primeraBusqueda] = await Promise.all([
     getTranslations("buscador"),
     getTranslations("comun"),
     getFormatter(),
     listarCategorias(locale),
-    buscarNoticias({ q: q.trim(), categoria, pagina, locale }),
+    buscarNoticias({ q: q.trim(), categoria, pagina: paginaPedida, locale }),
   ]);
+
+  // Si se pide una página más allá del total (p. ej. tras estrechar el filtro),
+  // Payload devuelve 0 docs con totalDocs > 0: se reconsulta la última página
+  // válida para no mostrar una lista vacía (auditoría Q-5).
+  const totalPaginas = primeraBusqueda.totalPages || 1;
+  const pagina = Math.min(paginaPedida, totalPaginas);
+  const resultado =
+    pagina === paginaPedida ? primeraBusqueda : await buscarNoticias({ q: q.trim(), categoria, pagina, locale });
+  const sinResultados = resultado.docs.length === 0;
 
   const href = (n: number) => {
     const qs = new URLSearchParams();
@@ -97,7 +116,7 @@ export default async function PaginaBuscador({ params, searchParams }: Props) {
             {tComun("resultados", { n: resultado.totalDocs })}
           </p>
 
-          {resultado.totalDocs === 0 ? (
+          {sinResultados ? (
             <p className="mt-10 rounded-xl bg-cream p-8 text-center text-sm">{t("sinResultados")}</p>
           ) : (
             <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -153,8 +172,8 @@ export default async function PaginaBuscador({ params, searchParams }: Props) {
           )}
 
           <PaginacionEnlaces
-            pagina={resultado.page ?? 1}
-            total={resultado.totalPages}
+            pagina={pagina}
+            total={totalPaginas}
             href={href}
             etiqueta={t("paginacion")}
             etiquetaPagina={(n) => tComun("pagina", { n })}

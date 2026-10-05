@@ -4,14 +4,22 @@ import type { Locale } from "@/i18n/routing";
 import EncabezadoPagina from "@/components/EncabezadoPagina";
 import FormularioContacto from "@/components/FormularioContacto";
 import { IconoRed } from "@/components/Iconos";
+import { metadatosPagina } from "@/components/seo";
 import { obtenerSitio } from "@/lib/cms/sitio";
 
 type Props = { params: Promise<{ locale: Locale }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "contacto" });
-  return { title: t("titulo") };
+  const [t, tSeo, sitio] = await Promise.all([
+    getTranslations({ locale, namespace: "contacto" }),
+    getTranslations({ locale, namespace: "seo" }),
+    obtenerSitio(locale),
+  ]);
+  return {
+    title: t("titulo"),
+    ...metadatosPagina(locale, "/contacto", t("titulo"), sitio.paginas?.contacto || tSeo("contacto")),
+  };
 }
 
 /** Sección 8 del árbol de navegación. */

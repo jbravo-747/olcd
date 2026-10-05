@@ -58,7 +58,8 @@
     "todos": "Todos",
     "tipo": "Tipo",
     "seccion": "Sección",
-    "filtrosDe": "Filtros de {titulo}"
+    "filtrosDe": "Filtros de {titulo}",
+    "sinContenido": "Aún no hay contenido en esta sección."
   },
   "inicio": {
     "titulo": "Observatorio Latinoamericano de Centros de Datos",
@@ -186,11 +187,27 @@
     "redes": "Redes",
     "exito": "Gracias, recibimos tu mensaje.",
     "error": "No se pudo enviar el mensaje. Inténtalo de nuevo.",
-    "invalido": "Revisa los campos marcados."
+    "invalido": "Revisa los campos marcados.",
+    "obligatorio": "(obligatorio)",
+    "errores": {
+      "nombre": "Escribe tu nombre (al menos 2 caracteres).",
+      "correo": "Escribe un correo electrónico válido.",
+      "asunto": "El asunto es demasiado largo.",
+      "mensaje": "Escribe un mensaje (al menos 10 caracteres)."
+    }
   },
   "legales": {
     "accesibilidad": "Accesibilidad",
     "privacidad": "Privacidad",
     "terminos": "Términos de uso"
+  },
+  "seo": {
+    "inicio": "El Observatorio Latinoamericano de Centros de Datos investiga y mapea la expansión de los centros de datos en América Latina.",
+    "quienesSomos": "Propósito, equipo y directorios de organizaciones y personas del Observatorio Latinoamericano de Centros de Datos.",
+    "ejesDeTrabajo": "Los ejes de trabajo del Observatorio: Data Lab, Citizen Science Lab, Methods Lab, Narratives Lab y Policy Lab.",
+    "mapa": "Mapa interactivo de los centros de datos de América Latina, filtrable por país y estado del proyecto.",
+    "publicaciones": "Reportes, artículos, libros y recursos educativos del Observatorio Latinoamericano de Centros de Datos.",
+    "actualidad": "Blog, comunicados, cobertura de prensa y noticias del Observatorio Latinoamericano de Centros de Datos.",
+    "contacto": "Ponte en contacto con el Observatorio Latinoamericano de Centros de Datos."
   }
 }

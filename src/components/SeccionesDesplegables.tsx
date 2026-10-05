@@ -52,7 +52,7 @@ export default function SeccionesDesplegables({ secciones }: { secciones: Seccio
                 <ul className="mt-2 space-y-1.5 pl-3">
                   {seccion.subsecciones?.map((sub) => (
                     <li key={sub.id ?? sub.titulo}>
-                      <a href={`#${idDe(sub.titulo)}`} className="text-[13px] text-ink/50 hover:text-ink">
+                      <a href={`#${idDe(sub.titulo)}`} className="text-[13px] text-ink/70 hover:text-ink">
                         {sub.titulo}
                       </a>
                     </li>

@@ -9,7 +9,8 @@ export const listarPublicaciones = cacheado(
       collection: "publicaciones",
       locale,
       fallbackLocale: "es",
-      sort: "createdAt",
+      // Más recientes primero: la portada toma las primeras como "lo más reciente".
+      sort: "-createdAt",
       limit: 500,
       depth: 1,
     });

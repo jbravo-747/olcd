@@ -4,6 +4,7 @@ import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import EncabezadoPagina from "@/components/EncabezadoPagina";
 import Imagen from "@/components/Imagen";
+import { metadatosPagina } from "@/components/seo";
 import { listarLabs } from "@/lib/cms/labs";
 import { obtenerSitio } from "@/lib/cms/sitio";
 import { imagen } from "@/lib/cms/util";
@@ -12,8 +13,15 @@ type Props = { params: Promise<{ locale: Locale }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "ejes" });
-  return { title: t("titulo") };
+  const [t, tSeo, sitio] = await Promise.all([
+    getTranslations({ locale, namespace: "ejes" }),
+    getTranslations({ locale, namespace: "seo" }),
+    obtenerSitio(locale),
+  ]);
+  return {
+    title: t("titulo"),
+    ...metadatosPagina(locale, "/ejes-de-trabajo", t("titulo"), sitio.paginas?.ejesDeTrabajo || tSeo("ejesDeTrabajo")),
+  };
 }
 
 /** N1 - Ejes de trabajo */
@@ -40,7 +48,11 @@ export default async function EjesDeTrabajo({ params }: Props) {
                 i % 2 === 1 ? "lg:[&>*:first-child]:order-2" : ""
               }`}
             >
-              <Imagen media={imagen(lab.imagen)} className="h-full min-h-[280px] w-full" sizes="(min-width: 1024px) 600px, 100vw" />
+              <Imagen
+                media={imagen(lab.imagen)}
+                className="h-full min-h-[280px] w-full"
+                sizes="(min-width: 1024px) 600px, 100vw"
+              />
               <div className="p-8 lg:p-12">
                 <h2 className="display text-3xl">{lab.nombre}</h2>
                 <p className="mt-5 text-[15px] leading-relaxed text-ink/80">{lab.descripcion}</p>

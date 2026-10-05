@@ -26,8 +26,9 @@ export default function GridPersonas({
 }) {
   const t = useTranslations("comun");
   const [pagina, setPagina] = useState(1);
-  const totalPaginas = Math.ceil(personas.length / porPagina);
-  const visibles = personas.slice((pagina - 1) * porPagina, pagina * porPagina);
+  const totalPaginas = Math.max(1, Math.ceil(personas.length / porPagina));
+  const paginaActual = Math.min(pagina, totalPaginas);
+  const visibles = personas.slice((paginaActual - 1) * porPagina, paginaActual * porPagina);
 
   return (
     <div>
@@ -51,7 +52,7 @@ export default function GridPersonas({
         ))}
       </ul>
       <Paginacion
-        pagina={pagina}
+        pagina={paginaActual}
         total={totalPaginas}
         onCambio={setPagina}
         etiqueta={etiquetaPaginacion ?? t("paginacion")}

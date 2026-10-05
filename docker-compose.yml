@@ -1,12 +1,13 @@
 # Despliegue autoalojado: sitio + CMS, Postgres y MinIO (almacenamiento S3).
-# Uso: cp .env.example .env (ajustar PAYLOAD_SECRET) && docker compose up --build
+# Uso: cp .env.example .env (definir PAYLOAD_SECRET, POSTGRES_PASSWORD y
+# MINIO_ROOT_PASSWORD) && docker compose up --build
 services:
   db:
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
       POSTGRES_USER: olcd
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-olcd}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Define POSTGRES_PASSWORD en .env}
       POSTGRES_DB: olcd
     volumes:
       - db:/var/lib/postgresql/data
@@ -22,10 +23,13 @@ services:
     command: server /data --console-address ":9001"
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-olcd}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-olcd-minio-secret}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?Define MINIO_ROOT_PASSWORD en .env}
+    # Sólo se publican en localhost: la app llega a MinIO por la red interna
+    # (minio:9000). Para exponer archivos al público, poner un reverse proxy con
+    # TLS delante del 9000 limitado a GET /olcd/*, y no publicar la consola 9001.
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "${MINIO_BIND:-127.0.0.1}:9000:9000"
+      - "${MINIO_BIND:-127.0.0.1}:9001:9001"
     volumes:
       - minio:/data
     healthcheck:
@@ -42,12 +46,16 @@ services:
         condition: service_healthy
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER:-olcd}
-      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:-olcd-minio-secret}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD:?Define MINIO_ROOT_PASSWORD en .env}
+    # Política anónima de sólo GetObject: los archivos se sirven por URL directa,
+    # pero el bucket NO es listable (auditoría S-1). `mc anonymous set download`
+    # sí permitía listar todo el bucket sin credenciales.
     entrypoint: >
       /bin/sh -c "
       mc alias set local http://minio:9000 $$MINIO_ROOT_USER $$MINIO_ROOT_PASSWORD &&
       mc mb --ignore-existing local/olcd &&
-      mc anonymous set download local/olcd
+      printf '%s' '{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"AWS\":[\"*\"]},\"Action\":[\"s3:GetObject\"],\"Resource\":[\"arn:aws:s3:::olcd/*\"]}]}' > /tmp/olcd-policy.json &&
+      mc anonymous set-json /tmp/olcd-policy.json local/olcd
       "
 
   app:

@@ -58,6 +58,21 @@ const plugins: Plugin[] = [
 export default buildConfig({
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL || "http://localhost:3000",
   secret: process.env.PAYLOAD_SECRET || "",
+  // Crea el admin al arrancar si la base no tiene usuarios y hay SEED_ADMIN_*,
+  // así /api/users/first-register queda cerrado antes de servir la primera
+  // petición y no hay ventana de toma de control (auditoría S-2).
+  onInit: async (payload) => {
+    const email = process.env.SEED_ADMIN_EMAIL;
+    const password = process.env.SEED_ADMIN_PASSWORD;
+    if (!email || !password) return;
+    const { totalDocs } = await payload.count({ collection: "users" });
+    if (totalDocs > 0) return;
+    await payload.create({
+      collection: "users",
+      data: { email, password, nombre: "Administración", rol: "admin" },
+    });
+    payload.logger.info(`Usuario admin creado en el arranque: ${email}`);
+  },
   admin: {
     user: Users.slug,
     importMap: { baseDir: path.resolve(dirname) },

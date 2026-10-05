@@ -1,15 +1,27 @@
 "use client";
 
+import { useEffect } from "react";
 import { useActionState } from "react";
 import { useTranslations } from "next-intl";
 import { enviarMensaje, type EstadoContacto } from "@/app/(frontend)/[locale]/contacto/acciones";
 
 const inicial: EstadoContacto = { estado: "inicial" };
 
+type Campo = keyof NonNullable<EstadoContacto["errores"]>;
+
+const camposEnOrden: Campo[] = ["nombre", "correo", "asunto", "mensaje"];
+
 export default function FormularioContacto() {
   const t = useTranslations("contacto");
   const [estado, accion, pendiente] = useActionState(enviarMensaje, inicial);
-  const invalido = (campo: keyof NonNullable<EstadoContacto["errores"]>) => Boolean(estado.errores?.[campo]);
+  const invalido = (campo: Campo) => Boolean(estado.errores?.[campo]);
+
+  // Al fallar la validación, mueve el foco al primer campo inválido (A-5).
+  useEffect(() => {
+    if (estado.estado !== "invalido") return;
+    const primero = camposEnOrden.find((campo) => estado.errores?.[campo]);
+    if (primero) document.getElementById(primero)?.focus();
+  }, [estado]);
 
   if (estado.estado === "exito") {
     return (
@@ -19,12 +31,24 @@ export default function FormularioContacto() {
     );
   }
 
+  const describedBy = (campo: Campo) => (invalido(campo) ? `err-${campo}` : undefined);
+
+  const mensajeError = (campo: Campo) =>
+    invalido(campo) ? (
+      <p id={`err-${campo}`} role="alert" className="mt-2 text-sm font-semibold text-orange-deep">
+        {t(`errores.${campo}`)}
+      </p>
+    ) : null;
+
+  const obligatorio = <span className="font-normal text-ink/70"> {t("obligatorio")}</span>;
+
   return (
     <form action={accion} className="max-w-2xl" aria-label={t("formulario")} noValidate>
       <div className="grid gap-6 sm:grid-cols-2">
         <div>
           <label htmlFor="nombre" className="mb-2 block text-xs font-semibold">
             {t("nombre")}
+            {obligatorio}
           </label>
           <input
             id="nombre"
@@ -33,12 +57,15 @@ export default function FormularioContacto() {
             autoComplete="name"
             required
             aria-invalid={invalido("nombre")}
-            className="field border border-line aria-[invalid=true]:border-orange"
+            aria-describedby={describedBy("nombre")}
+            className="field border border-line aria-[invalid=true]:border-orange-deep"
           />
+          {mensajeError("nombre")}
         </div>
         <div>
           <label htmlFor="correo" className="mb-2 block text-xs font-semibold">
             {t("correo")}
+            {obligatorio}
           </label>
           <input
             id="correo"
@@ -47,8 +74,10 @@ export default function FormularioContacto() {
             autoComplete="email"
             required
             aria-invalid={invalido("correo")}
-            className="field border border-line aria-[invalid=true]:border-orange"
+            aria-describedby={describedBy("correo")}
+            className="field border border-line aria-[invalid=true]:border-orange-deep"
           />
+          {mensajeError("correo")}
         </div>
       </div>
 
@@ -56,12 +85,21 @@ export default function FormularioContacto() {
         <label htmlFor="asunto" className="mb-2 block text-xs font-semibold">
           {t("asunto")}
         </label>
-        <input id="asunto" name="asunto" type="text" className="field border border-line" />
+        <input
+          id="asunto"
+          name="asunto"
+          type="text"
+          aria-invalid={invalido("asunto")}
+          aria-describedby={describedBy("asunto")}
+          className="field border border-line aria-[invalid=true]:border-orange-deep"
+        />
+        {mensajeError("asunto")}
       </div>
 
       <div className="mt-6">
         <label htmlFor="mensaje" className="mb-2 block text-xs font-semibold">
           {t("mensaje")}
+          {obligatorio}
         </label>
         <textarea
           id="mensaje"
@@ -69,8 +107,10 @@ export default function FormularioContacto() {
           rows={6}
           required
           aria-invalid={invalido("mensaje")}
-          className="w-full rounded-2xl border border-line bg-cream px-5 py-4 text-[15px] aria-[invalid=true]:border-orange"
+          aria-describedby={describedBy("mensaje")}
+          className="w-full rounded-2xl border border-line bg-cream px-5 py-4 text-[15px] aria-[invalid=true]:border-orange-deep"
         />
+        {mensajeError("mensaje")}
       </div>
 
       <div className="hidden" aria-hidden>
@@ -83,12 +123,12 @@ export default function FormularioContacto() {
       </button>
 
       {estado.estado === "invalido" && (
-        <p role="alert" className="mt-3 text-sm font-semibold text-orange">
+        <p role="alert" className="mt-3 text-sm font-semibold text-orange-deep">
           {t("invalido")}
         </p>
       )}
       {estado.estado === "error" && (
-        <p role="alert" className="mt-3 text-sm font-semibold text-orange">
+        <p role="alert" className="mt-3 text-sm font-semibold text-orange-deep">
           {t("error")}
         </p>
       )}
