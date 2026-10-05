@@ -49,21 +49,23 @@ describe("navegación", () => {
     for (const item of todos) expect(item.href, item.clave).toMatch(/^\/[a-z0-9\-/#?=]*$/);
   });
 
-  it("el menú, el pie y los enlaces legales cubren las secciones del sitio", () => {
+  it("el menú, el pie y los enlaces legales cubren las secciones visibles del sitio", () => {
+    // Quienes somos, ejes de trabajo, publicaciones, actualidad y contacto están
+    // ocultos temporalmente (oculto: true en navegacion.ts) y por eso no aparecen.
     expect(rutas).toEqual(
       expect.arrayContaining([
-        "/quienes-somos",
-        "/ejes-de-trabajo",
         "/mapa-de-centros-de-datos",
         "/buscador-de-noticias",
-        "/publicaciones",
-        "/actualidad",
-        "/contacto",
         "/accesibilidad",
         "/privacidad",
         "/terminos-de-uso",
       ]),
     );
+  });
+
+  it("las secciones ocultas no aparecen en el menú ni en el pie", () => {
+    const ocultas = ["/quienes-somos", "/ejes-de-trabajo", "/publicaciones", "/actualidad", "/contacto"];
+    for (const ruta of ocultas) expect(rutas, ruta).not.toContain(ruta);
   });
 
   it.each(rutas)("%s tiene una page.tsx", (ruta) => {

@@ -89,12 +89,19 @@ export default async function Inicio({ params }: { params: Promise<{ locale: Loc
         <div className="shell relative text-center">
           <h1 className="display t-h1 mx-auto max-w-[20ch]">{t("titulo")}</h1>
           {sitio.inicio?.texto && <p className="t-lead mx-auto mt-6 max-w-[var(--lead-max)]">{sitio.inicio.texto}</p>}
+          {/* Botón a "Quiénes somos" oculto mientras la sección lo esté.
+              Reactivar junto con la sección. */}
+          {/*
           <Link href="/quienes-somos" className="pill pill-dark mt-12">
             {(await getTranslations("quienesSomos"))("titulo")}
           </Link>
+          */}
         </div>
       </section>
 
+      {/* Mapa resumido y sección "Reciente" ocultos temporalmente a pedido.
+          Reactivar quitando este comentario cuando se vayan a usar. */}
+      {/*
       <section aria-labelledby="titulo-mapa">
         <h2 id="titulo-mapa" className="sr-only">
           {t("mapaTitulo")}
@@ -126,6 +133,7 @@ export default async function Inicio({ params }: { params: Promise<{ locale: Loc
           </div>
         </div>
       </section>
+      */}
     </>
   );
 }
