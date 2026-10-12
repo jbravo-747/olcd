@@ -1,47 +1,52 @@
 /** Tipos del dataset de centros de datos recopilado de medios periodísticos
  * (src/datos/datacenters-prensa.json, generado por
- * scripts/generar_datacenters_prensa.py). */
+ * scripts/generar_datacenters_prensa.py a partir del consolidado curado). */
 
 export type EstadoCentro = "en-operacion" | "en-construccion" | "anunciado";
+
+/** Semáforo de completitud de la información (umbrales del consolidado). */
+export type Semaforo = "verde" | "amarillo" | "naranja" | "rojo";
 
 export type NotaPrensa = {
   url: string;
   medio: string;
 };
 
-export type FuenteUbicacion = {
-  medio: string;
-  url: string;
-  anio: number;
-};
-
-export type MencionPrensa = {
-  anio: number;
-  fecha: string | null;
+/** Una fase del proyecto según la prensa: "Febrero de 2025 (Inversión)". */
+export type FaseCentro = {
+  texto: string;
+  anio: number | null;
   accion: string | null;
-  monto: string | null;
-  ubicacionFuente: string | null;
-  notas: NotaPrensa[];
-  /** true si la ubicación del centro se infirió de esta mención. */
-  fijaUbicacion: boolean;
 };
 
 export type CentroPrensa = {
   id: string;
+  /** Nombre del centro según el consolidado (p. ej. "AWS México Central"). */
+  nombre: string;
+  variacion: string | null;
   empresa: string;
-  nombre: string | null;
+  fases: {
+    anuncio: FaseCentro | null;
+    construccion: FaseCentro | null;
+    expansion: FaseCentro | null;
+  };
+  monto: string | null;
+  electricidad: string | null;
+  tamano: string | null;
+  enfriamiento: string | null;
+  notas: NotaPrensa[];
+  score: number;
+  semaforo: Semaforo;
+  ubicacionFuente: string;
   municipio: string | null;
   entidad: string;
   lat: number;
   lng: number;
   /** "municipio" = cabecera municipal aproximada; "entidad" = punto representativo del estado. */
   precision: "municipio" | "entidad";
-  /** Medios de los que se infirió la ubicación elegida (notas cuya ubicación resolvió a este lugar). */
-  fuentesUbicacion: FuenteUbicacion[];
   estado: EstadoCentro;
   ultimaAccion: string | null;
-  ultimoAnio: number;
-  menciones: MencionPrensa[];
+  ultimoAnio: number | null;
 };
 
 export type MedioResumen = {
@@ -55,10 +60,11 @@ export type DatosPrensa = {
     descripcion: string;
     fuente: string;
     totalCentros: number;
-    totalMenciones: number;
+    totalNotas: number;
     aniosCubiertos: [number, number];
     medios: MedioResumen[];
-    sinUbicacion: unknown[];
+    sinUbicacion: { nombre: string; empresa: string }[];
+    umbralesSemaforo: { verde: number; amarillo: number; naranja: number };
   };
   centros: CentroPrensa[];
 };

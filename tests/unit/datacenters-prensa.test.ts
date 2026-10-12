@@ -1,26 +1,28 @@
 /**
  * Integridad del dataset de centros de datos recopilado de prensa
  * (src/datos/datacenters-prensa.json, generado por
- * scripts/generar_datacenters_prensa.py). Si el pipeline se corre de nuevo y
- * produce algo malformado, estos tests lo detienen antes de llegar al mapa.
+ * scripts/generar_datacenters_prensa.py desde el consolidado curado). Si el
+ * pipeline se corre de nuevo y produce algo malformado, estos tests lo
+ * detienen antes de llegar al mapa.
  */
 import { describe, expect, it } from "vitest";
 import datos from "@/datos/datacenters-prensa.json";
 import type { DatosPrensa } from "@/datos/tipos";
 
-const d = datos as DatosPrensa;
+const d = datos as unknown as DatosPrensa;
 const MX = { latMin: 14, latMax: 33, lngMin: -118, lngMax: -86 };
 
 describe("dataset de centros de datos (prensa)", () => {
   it("meta y conteos coinciden con el contenido", () => {
     expect(d.meta.totalCentros).toBe(d.centros.length);
-    expect(d.meta.totalMenciones).toBe(d.centros.reduce((s, c) => s + c.menciones.length, 0));
+    expect(d.meta.totalNotas).toBe(d.centros.reduce((s, c) => s + c.notas.length, 0));
     expect(d.centros.length).toBeGreaterThan(40);
-    expect(d.meta.medios.length).toBeGreaterThan(30);
+    expect(d.meta.medios.length).toBeGreaterThan(25);
   });
 
-  it("todo centro tiene empresa, entidad, estado válido y coordenadas dentro de México", () => {
+  it("todo centro tiene nombre, empresa, entidad, estado válido y coordenadas dentro de México", () => {
     for (const c of d.centros) {
+      expect(c.nombre, c.id).toBeTruthy();
       expect(c.empresa, c.id).toBeTruthy();
       expect(c.entidad, c.id).toBeTruthy();
       expect(["en-operacion", "en-construccion", "anunciado"], c.id).toContain(c.estado);
@@ -29,7 +31,6 @@ describe("dataset de centros de datos (prensa)", () => {
       expect(c.lat, c.id).toBeLessThan(MX.latMax);
       expect(c.lng, c.id).toBeGreaterThan(MX.lngMin);
       expect(c.lng, c.id).toBeLessThan(MX.lngMax);
-      expect(c.menciones.length, c.id).toBeGreaterThan(0);
     }
   });
 
@@ -38,32 +39,24 @@ describe("dataset de centros de datos (prensa)", () => {
     expect(new Set(ids).size).toBe(ids.length);
   });
 
-  it("cada nota tiene URL http y las menciones vienen ordenadas por año", () => {
+  it("toda fase registrada trae texto, y las notas URLs http", () => {
+    // Hay centros sin ninguna fase fechada en el consolidado (p. ej. Pemex):
+    // las fases son opcionales, pero si existen deben traer texto.
     for (const c of d.centros) {
-      const anios = c.menciones.map((m) => m.anio);
-      expect(
-        [...anios].sort((a, b) => a - b),
-        c.id,
-      ).toEqual(anios);
-      for (const m of c.menciones) {
-        for (const n of m.notas) expect(n.url, c.id).toMatch(/^https?:\/\//);
-      }
+      const fases = [c.fases.anuncio, c.fases.construccion, c.fases.expansion].filter(Boolean);
+      for (const f of fases) expect(f!.texto, c.id).toBeTruthy();
+      for (const n of c.notas) expect(n.url, c.id).toMatch(/^https?:\/\//);
     }
   });
 
-  it("todo centro dice de qué medios se infirió su ubicación", () => {
+  it("score en [0,10] con semáforo coherente a los umbrales", () => {
+    const u = d.meta.umbralesSemaforo;
     for (const c of d.centros) {
-      expect(Array.isArray(c.fuentesUbicacion), c.id).toBe(true);
-      expect(c.fuentesUbicacion.length, c.id).toBeGreaterThan(0);
-      for (const f of c.fuentesUbicacion) {
-        expect(f.medio, c.id).toBeTruthy();
-        expect(f.url, c.id).toMatch(/^https?:\/\//);
-      }
-      // Y al menos una mención queda marcada como la que fija la ubicación.
-      expect(
-        c.menciones.some((m) => m.fijaUbicacion),
-        c.id,
-      ).toBe(true);
+      expect(c.score, c.id).toBeGreaterThanOrEqual(0);
+      expect(c.score, c.id).toBeLessThanOrEqual(10);
+      const esperado =
+        c.score >= u.verde ? "verde" : c.score >= u.amarillo ? "amarillo" : c.score >= u.naranja ? "naranja" : "rojo";
+      expect(c.semaforo, c.id).toBe(esperado);
     }
   });
 

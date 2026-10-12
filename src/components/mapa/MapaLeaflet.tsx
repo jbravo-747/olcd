@@ -197,13 +197,12 @@ function CapaCentrosAgrupados({
       const seleccionado = activo?.id === c.id;
       const marcador = L.marker([c.lat, c.lng], {
         icon: iconoCentro(c.estado, seleccionado),
-        alt: `${c.empresa}${c.nombre ? ` ${c.nombre}` : ""}`,
+        alt: `${c.nombre} (${c.empresa})`,
       });
       const lugar = c.municipio ? `${c.municipio}, ${c.entidad}` : c.entidad;
-      marcador.bindTooltip(
-        `<strong>${c.empresa}${c.nombre ? ` · ${c.nombre}` : ""}</strong><br/>${lugar} <em>(${textoAproximada})</em>`,
-        { direction: "top" },
-      );
+      marcador.bindTooltip(`<strong>${c.nombre}</strong><br/>${c.empresa}<br/>${lugar} <em>(${textoAproximada})</em>`, {
+        direction: "top",
+      });
       marcador.on("click", () => onSeleccionar(c));
       grupo.addLayer(marcador);
     }

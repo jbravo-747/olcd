@@ -156,14 +156,26 @@
     "todasEntidades": "Todas las entidades",
     "ubicacion": "Ubicación",
     "ubicacionAproximada": "ubicación aproximada",
-    "ultimaAccion": "Última acción reportada",
-    "ultimaMencion": "Última mención en prensa",
-    "menciones": "Menciones en prensa ({n})",
+    "electricidad": "Electricidad",
+    "tamano": "Tamaño",
+    "enfriamiento": "Enfriamiento",
+    "nivelInformacion": "Información disponible",
+    "semaforo": {
+      "verde": "Amplia",
+      "amarillo": "Media",
+      "naranja": "Escasa",
+      "rojo": "Mínima"
+    },
+    "cronologia": "Cronología según la prensa",
+    "fases": {
+      "anuncio": "Anuncio / inversión",
+      "construccion": "Construcción / apertura",
+      "expansion": "Expansión / mejoramiento"
+    },
+    "notasPrensa": "Notas de prensa ({n})",
     "fuente": "fuente",
     "leyendaGrupo": "Grupo de centros: acércate o tócalo para separarlos",
     "centrar": "Volver a la vista de México",
-    "fuenteUbicacion": "fija la ubicación",
-    "fuenteUbicacionTitulo": "La ubicación del centro se infirió de las notas de esta mención",
     "aviso": {
       "titulo": "Sobre esta información",
       "cuerpo": "Los {total} centros de datos de este mapa se identificaron mediante el monitoreo de medios periodísticos realizado por el Observatorio entre {desde} y {hasta}. No es un registro oficial: refleja lo publicado por la prensa y cada ficha enlaza las notas que lo respaldan.",

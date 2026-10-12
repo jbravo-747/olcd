@@ -156,14 +156,26 @@
     "todasEntidades": "All states",
     "ubicacion": "Location",
     "ubicacionAproximada": "approximate location",
-    "ultimaAccion": "Latest reported action",
-    "ultimaMencion": "Latest press mention",
-    "menciones": "Press mentions ({n})",
+    "electricidad": "Power",
+    "tamano": "Size",
+    "enfriamiento": "Cooling",
+    "nivelInformacion": "Available information",
+    "semaforo": {
+      "verde": "Extensive",
+      "amarillo": "Moderate",
+      "naranja": "Scarce",
+      "rojo": "Minimal"
+    },
+    "cronologia": "Timeline according to the press",
+    "fases": {
+      "anuncio": "Announcement / investment",
+      "construccion": "Construction / opening",
+      "expansion": "Expansion / improvement"
+    },
+    "notasPrensa": "Press articles ({n})",
     "fuente": "source",
     "leyendaGrupo": "Cluster of centers: zoom in or tap to separate them",
     "centrar": "Back to the Mexico view",
-    "fuenteUbicacion": "sets the location",
-    "fuenteUbicacionTitulo": "The center's location was inferred from this mention's articles",
     "aviso": {
       "titulo": "About this information",
       "cuerpo": "The {total} data centers on this map were identified through the Observatory's monitoring of journalistic media between {desde} and {hasta}. It is not an official registry: it reflects what the press has published, and each record links the articles that support it.",

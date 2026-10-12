@@ -22,6 +22,14 @@ const MapaLeaflet = dynamic(() => import("./MapaLeaflet"), {
 
 const estados: EstadoCentro[] = ["en-operacion", "en-construccion", "anunciado"];
 
+/** Colores del semáforo de completitud de información. */
+const COLOR_SEMAFORO: Record<CentroPrensa["semaforo"], string> = {
+  verde: "#2f7d32",
+  amarillo: "#b58900",
+  naranja: "#c2590b",
+  rojo: "#b3261e",
+};
+
 export default function MapaCentrosInteractivo({ datos }: { datos: DatosPrensa }) {
   const t = useTranslations("mapa");
   const [entidad, setEntidad] = useState("");
@@ -157,59 +165,64 @@ export default function MapaCentrosInteractivo({ datos }: { datos: DatosPrensa }
         <aside aria-live="polite">
           {activo ? (
             <div className="rounded-xl bg-cream-deep p-6">
-              <h2 className="display text-2xl">
-                {activo.empresa}
-                {activo.nombre ? ` · ${activo.nombre}` : ""}
-              </h2>
+              <h2 className="display text-2xl">{activo.nombre}</h2>
+              <p className="mt-1 text-sm font-semibold text-ink/70">{activo.empresa}</p>
               <dl className="mt-4 space-y-3 text-[13px]">
-                {[
-                  [t("ubicacion"), `${lugarDe(activo)} (${t("ubicacionAproximada")})`],
-                  [t("estado"), t(`estados.${activo.estado}`)],
-                  [t("ultimaAccion"), activo.ultimaAccion ?? "—"],
-                  [t("ultimaMencion"), String(activo.ultimoAnio)],
-                ].map(([clave, valor]) => (
-                  <div key={clave} className="border-b border-line pb-2">
-                    <dt className="text-ink/70">{clave}</dt>
-                    <dd className="font-semibold">{valor}</dd>
-                  </div>
-                ))}
+                {(
+                  [
+                    [t("ubicacion"), `${lugarDe(activo)} (${t("ubicacionAproximada")})`],
+                    [t("estado"), t(`estados.${activo.estado}`)],
+                    [t("inversion"), activo.monto],
+                    [t("electricidad"), activo.electricidad],
+                    [t("tamano"), activo.tamano],
+                    [t("enfriamiento"), activo.enfriamiento],
+                  ] as [string, string | null][]
+                )
+                  .filter(([, valor]) => valor)
+                  .map(([clave, valor]) => (
+                    <div key={clave} className="border-b border-line pb-2">
+                      <dt className="text-ink/70">{clave}</dt>
+                      <dd className="font-semibold">{valor}</dd>
+                    </div>
+                  ))}
+                <div className="border-b border-line pb-2">
+                  <dt className="text-ink/70">{t("nivelInformacion")}</dt>
+                  <dd className="flex items-center gap-2 font-semibold">
+                    <span
+                      className="inline-block h-2.5 w-2.5 rounded-full"
+                      style={{ backgroundColor: COLOR_SEMAFORO[activo.semaforo] }}
+                      aria-hidden
+                    />
+                    {t(`semaforo.${activo.semaforo}`)}
+                  </dd>
+                </div>
               </dl>
 
+              {Object.values(activo.fases).some(Boolean) && (
+                <>
+                  <h3 className="mt-5 text-xs font-bold uppercase tracking-wide text-ink/70">{t("cronologia")}</h3>
+                  <ul className="mt-2 space-y-2">
+                    {(["anuncio", "construccion", "expansion"] as const)
+                      .filter((f) => activo.fases[f])
+                      .map((f) => (
+                        <li key={f} className="border-b border-line pb-2 text-[13px]">
+                          <p className="text-ink/70">{t(`fases.${f}`)}</p>
+                          <p className="font-semibold">{activo.fases[f]!.texto}</p>
+                        </li>
+                      ))}
+                  </ul>
+                </>
+              )}
+
               <h3 className="mt-5 text-xs font-bold uppercase tracking-wide text-ink/70">
-                {t("menciones", { n: activo.menciones.length })}
+                {t("notasPrensa", { n: activo.notas.length })}
               </h3>
-              <ul className="mt-2 space-y-3">
-                {activo.menciones.map((m, i) => (
-                  <li key={i} className="border-b border-line pb-2 text-[13px]">
-                    <p className="font-semibold">
-                      {m.anio}
-                      {m.accion ? ` · ${m.accion}` : ""}
-                      {m.monto ? ` · ${m.monto}` : ""}
-                      {m.fijaUbicacion && (
-                        <span
-                          className="ml-2 inline-block rounded-full bg-ink/10 px-2 py-0.5 align-middle text-[11px] font-semibold text-ink/80"
-                          title={t("fuenteUbicacionTitulo")}
-                        >
-                          {t("fuenteUbicacion")}
-                        </span>
-                      )}
-                    </p>
-                    {m.notas.length > 0 && (
-                      <ul className="mt-1 space-y-0.5">
-                        {m.notas.map((n) => (
-                          <li key={n.url}>
-                            <a
-                              href={n.url}
-                              target="_blank"
-                              rel="noreferrer"
-                              className="text-ink/80 underline hover:text-ink"
-                            >
-                              {n.medio || t("fuente")}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
+              <ul className="mt-2 space-y-0.5 text-[13px]">
+                {activo.notas.map((n) => (
+                  <li key={n.url}>
+                    <a href={n.url} target="_blank" rel="noreferrer" className="text-ink/80 underline hover:text-ink">
+                      {n.medio || t("fuente")}
+                    </a>
                   </li>
                 ))}
               </ul>
@@ -233,10 +246,7 @@ export default function MapaCentrosInteractivo({ datos }: { datos: DatosPrensa }
                   }`}
                 >
                   <FaLocationPin size={13} color={COLOR_ESTADO[c.estado]} aria-hidden className="shrink-0" />
-                  <span className="min-w-0 flex-1 truncate">
-                    {c.empresa}
-                    {c.nombre ? ` · ${c.nombre}` : ""}
-                  </span>
+                  <span className="min-w-0 flex-1 truncate">{c.nombre}</span>
                   <span className="shrink-0 text-ink/60">{c.entidad}</span>
                 </button>
               </li>
