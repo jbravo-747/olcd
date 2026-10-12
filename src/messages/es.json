@@ -173,7 +173,7 @@
     "capas": {
       "claro": "Mapa claro (minimalista)",
       "detallado": "Mapa detallado (OSM)",
-      "sentinel": "Satélite (Sentinel-2)",
+      "satelite": "Satélite (Esri)",
       "etiquetasLugares": "Nombres y lugares",
       "agua": "Cuerpos de agua",
       "rios": "Ríos",

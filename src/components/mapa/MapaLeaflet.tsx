@@ -38,7 +38,7 @@ const estiloRios: PathOptions = { color: "#3b9ad1", weight: 1.2, opacity: 0.8 };
 export type EtiquetasMapa = {
   claro: string;
   detallado: string;
-  sentinel: string;
+  satelite: string;
   etiquetasLugares: string;
   agua: string;
   rios: string;
@@ -247,11 +247,11 @@ export default function MapaLeaflet({
           />
         </LayersControl.BaseLayer>
 
-        <LayersControl.BaseLayer name={etiquetas.sentinel}>
+        <LayersControl.BaseLayer name={etiquetas.satelite}>
           <TileLayer
-            url="https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/g/{z}/{y}/{x}.jpg"
-            attribution="Sentinel-2 cloudless 2020 por EOX IT Services (datos Copernicus modificados)"
-            maxZoom={14}
+            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+            attribution="Imágenes &copy; Esri, Maxar, Earthstar Geographics"
+            maxZoom={18}
           />
         </LayersControl.BaseLayer>
 

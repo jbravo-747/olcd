@@ -173,7 +173,7 @@
     "capas": {
       "claro": "Light map (minimal)",
       "detallado": "Detailed map (OSM)",
-      "sentinel": "Satellite (Sentinel-2)",
+      "satelite": "Satellite (Esri)",
       "etiquetasLugares": "Names and places",
       "agua": "Water bodies",
       "rios": "Rivers",
