@@ -29,6 +29,46 @@ vista resumida del inicio sigue usando el mapa SVG ligero (`MapaCentros`).
   Payload, coloreados por estado, filtrables por país y estado, con ficha y
   lista sincronizadas.
 
+## Centros de datos: dataset de prensa
+
+Los centros del mapa **no salen del CMS**: provienen del monitoreo de medios
+periodísticos del Observatorio (2020-2026), consolidado por
+`scripts/generar_datacenters_prensa.py` a partir de las tablas
+`Limpieza/Data Centers AAAA.xlsx` (carpeta fuera de git). Salida versionada:
+`src/datos/datacenters-prensa.json` (tipos en `src/datos/tipos.ts`).
+
+Qué hace el pipeline:
+
+- Une los registros anuales y **resuelve identidades**: el mismo centro
+  aparece año tras año con grafías distintas (Equinix `MX2`≡`MX 2`≡`MX02`,
+  KIO Networks ≡ KIO Data Centers, menciones genéricas que se funden con su
+  DC nombrado, ubicaciones que se corrigen entre años). 98 registros → 59
+  centros únicos con su historial de menciones.
+- **Ubica de forma aproximada**: la fuente da municipio, parque industrial o
+  entidad; un diccionario curado en el script los lleva a coordenadas de la
+  cabecera municipal o a un punto representativo de la entidad, con el campo
+  `precision` ("municipio" | "entidad"). Nunca es el predio.
+- **Deriva el estado** (anunciado / en construcción / en operación) de la
+  última acción reportada, y conserva cada nota de prensa con su medio.
+- Las menciones cuya ubicación no puede mapearse quedan en
+  `meta.sinUbicacion` (hoy 1: la "Fábrica de IA" federal de 2026, sin sede).
+
+En el mapa los centros se muestran **agrupados** (leaflet.markercluster): un
+pin numerado por municipio o entidad que se separa al acercarse, y en el zoom
+máximo se abre en abanico al tocarlo (varios centros comparten coordenadas
+exactas por diseño). La página muestra un **aviso permanente** de que la
+información proviene de medios periodísticos, con la lista completa de medios
+y el número de notas de cada uno; la ficha de cada centro enlaza sus notas.
+
+Para regenerar tras actualizar los Excel: `python3
+scripts/generar_datacenters_prensa.py` (valida que ninguna ubicación quede sin
+mapear y falla si aparece una nueva; añadirla al diccionario `UBICACIONES`).
+El test `tests/unit/datacenters-prensa.test.ts` protege la estructura.
+
+Pendiente documentado: migrar este dataset a la colección `centros` de Payload
+para editarlo desde el admin; hoy el CMS conserva los datos de maqueta y el
+mapa usa el JSON.
+
 ## Datos de INEGI
 
 Fuente: **Conjunto de datos vectoriales de la serie topográfica escala

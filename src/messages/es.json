@@ -152,6 +152,21 @@
     "coordenadas": "Coordenadas",
     "centrosDeDatos": "{n} centros de datos",
     "descripcionMapa": "Mapa de América Latina con {n} centros de datos",
+    "entidad": "Entidad federativa",
+    "todasEntidades": "Todas las entidades",
+    "ubicacion": "Ubicación",
+    "ubicacionAproximada": "ubicación aproximada",
+    "ultimaAccion": "Última acción reportada",
+    "ultimaMencion": "Última mención en prensa",
+    "menciones": "Menciones en prensa ({n})",
+    "fuente": "fuente",
+    "leyendaGrupo": "Grupo de centros: acércate o tócalo para separarlos",
+    "aviso": {
+      "titulo": "Sobre esta información",
+      "cuerpo": "Los {total} centros de datos de este mapa se identificaron mediante el monitoreo de medios periodísticos realizado por el Observatorio entre {desde} y {hasta}. No es un registro oficial: refleja lo publicado por la prensa y cada ficha enlaza las notas que lo respaldan.",
+      "ubicaciones": "Las ubicaciones son aproximadas: las fuentes indican municipio, parque industrial o entidad, no el predio. Cada pin se coloca en la cabecera municipal o en un punto representativo de la entidad; los números agrupan centros cercanos.",
+      "verMedios": "Ver los {n} medios consultados"
+    },
     "capas": {
       "satelite": "Satélite (Esri)",
       "sentinel": "Satélite (Sentinel-2)",

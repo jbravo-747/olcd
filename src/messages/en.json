@@ -152,6 +152,21 @@
     "coordenadas": "Coordinates",
     "centrosDeDatos": "{n} data centers",
     "descripcionMapa": "Map of Latin America with {n} data centers",
+    "entidad": "State",
+    "todasEntidades": "All states",
+    "ubicacion": "Location",
+    "ubicacionAproximada": "approximate location",
+    "ultimaAccion": "Latest reported action",
+    "ultimaMencion": "Latest press mention",
+    "menciones": "Press mentions ({n})",
+    "fuente": "source",
+    "leyendaGrupo": "Cluster of centers: zoom in or tap to separate them",
+    "aviso": {
+      "titulo": "About this information",
+      "cuerpo": "The {total} data centers on this map were identified through the Observatory's monitoring of journalistic media between {desde} and {hasta}. It is not an official registry: it reflects what the press has published, and each record links the articles that support it.",
+      "ubicaciones": "Locations are approximate: sources name a municipality, industrial park or state, not the site. Each pin sits at the municipal seat or a representative point of the state; numbered pins group nearby centers.",
+      "verMedios": "See the {n} media outlets consulted"
+    },
     "capas": {
       "satelite": "Satellite (Esri)",
       "sentinel": "Satellite (Sentinel-2)",

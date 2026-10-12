@@ -4,7 +4,8 @@ import type { Locale } from "@/i18n/routing";
 import EncabezadoPagina from "@/components/EncabezadoPagina";
 import MapaCentrosInteractivo from "@/components/mapa/MapaCentrosInteractivo";
 import { metadatosPagina } from "@/components/seo";
-import { listarCentros } from "@/lib/cms/centros";
+import datosPrensa from "@/datos/datacenters-prensa.json";
+import type { DatosPrensa } from "@/datos/tipos";
 import { obtenerSitio } from "@/lib/cms/sitio";
 
 type Props = { params: Promise<{ locale: Locale }> };
@@ -27,13 +28,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PaginaMapa({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, sitio, centros] = await Promise.all([getTranslations("mapa"), obtenerSitio(locale), listarCentros()]);
+  const [t, sitio] = await Promise.all([getTranslations("mapa"), obtenerSitio(locale)]);
 
   return (
     <>
       <EncabezadoPagina titulo={t("titulo")} descripcion={sitio.paginas?.mapa ?? undefined} />
       <div className="bg-cream">
-        <MapaCentrosInteractivo centros={centros} />
+        <MapaCentrosInteractivo datos={datosPrensa as DatosPrensa} />
       </div>
     </>
   );

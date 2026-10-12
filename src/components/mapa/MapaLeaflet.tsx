@@ -4,24 +4,31 @@
  * Mapa de centros de datos con Leaflet y capas superponibles:
  *  - Base satelital: Esri World Imagery o Sentinel-2 cloudless (EOX), más un mapa claro.
  *  - Overlays de cuerpos de agua y ríos de INEGI (GeoJSON en /public/geo).
- *  - Centros de datos como marcadores reactivos enlazados al filtro y la selección.
+ *  - Centros de datos agrupados (leaflet.markercluster): como la fuente sólo da
+ *    municipio o entidad, varios centros comparten coordenadas; el grupo
+ *    muestra un número y al acercarse (o tocarlo en el zoom máximo) se separa
+ *    en abanico.
  *
  * Alcance actual: México. La hidrografía viene del conjunto vectorial
- * topográfico 1:1 000 000 de INEGI, convertido con scripts/convertir-inegi.sh;
- * ver docs/mapa-datos.md.
+ * topográfico 1:1 000 000 de INEGI (scripts/convertir-inegi.sh); los centros,
+ * del monitoreo de medios (scripts/generar_datacenters_prensa.py).
  */
 
 import { useEffect, useState } from "react";
 import type { GeoJsonObject } from "geojson";
-import type { PathOptions } from "leaflet";
-import { MapContainer, TileLayer, GeoJSON, LayersControl, CircleMarker, Popup, useMap } from "react-leaflet";
+import L, { type PathOptions } from "leaflet";
+import "leaflet.markercluster";
+import { MapContainer, TileLayer, GeoJSON, LayersControl, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import type { Centro } from "@/payload-types";
+import "leaflet.markercluster/dist/MarkerCluster.css";
+import "leaflet.markercluster/dist/MarkerCluster.Default.css";
 import { COLOR_ESTADO } from "@/lib/geo/centrosGeoJSON";
+import type { CentroPrensa } from "@/datos/tipos";
 
 const CENTRO_MEXICO: [number, number] = [23.8, -102.2];
 const ATRIBUCION_INEGI =
   'Hidrografía: <a href="https://www.inegi.org.mx/temas/hidrografia/">INEGI</a>, serie topográfica 1:1 000 000';
+const ATRIBUCION_CENTROS = "Centros de datos: monitoreo de medios periodísticos del OLCD (ubicaciones aproximadas)";
 
 const estiloAgua: PathOptions = { color: "#1d6fa5", weight: 1, fillColor: "#3b9ad1", fillOpacity: 0.55 };
 const estiloRios: PathOptions = { color: "#3b9ad1", weight: 1.2, opacity: 0.8 };
@@ -36,10 +43,10 @@ export type EtiquetasMapa = {
 };
 
 /** Vuela al centro seleccionado cuando cambia. */
-function VolarA({ centro }: { centro: Centro | null }) {
+function VolarA({ centro }: { centro: CentroPrensa | null }) {
   const mapa = useMap();
   useEffect(() => {
-    if (centro) mapa.flyTo([centro.lat, centro.lng], Math.max(mapa.getZoom(), 6), { duration: 0.8 });
+    if (centro) mapa.flyTo([centro.lat, centro.lng], Math.max(mapa.getZoom(), 9), { duration: 0.8 });
   }, [centro, mapa]);
   return null;
 }
@@ -59,20 +66,86 @@ function useGeoJSON(url: string) {
   return datos;
 }
 
+/** Icono del grupo: círculo oscuro con el número de centros de datos. */
+function iconoGrupo(cluster: L.MarkerCluster) {
+  const n = cluster.getChildCount();
+  const lado = n >= 10 ? 44 : 36;
+  return L.divIcon({
+    html: `<div style="width:${lado}px;height:${lado}px;border-radius:9999px;background:#1e2429;color:#f5f1e9;border:2.5px solid #f5f1e9;display:flex;align-items:center;justify-content:center;font:700 ${n >= 10 ? 15 : 14}px/1 system-ui,sans-serif;box-shadow:0 1px 6px rgba(0,0,0,.45)">${n}</div>`,
+    className: "",
+    iconSize: [lado, lado],
+    iconAnchor: [lado / 2, lado / 2],
+  });
+}
+
+/**
+ * Capa de centros agrupados. leaflet.markercluster es imperativo, así que se
+ * administra con un efecto: reconstruye el grupo cuando cambian los centros
+ * filtrados o la selección.
+ */
+function CapaCentrosAgrupados({
+  centros,
+  activo,
+  onSeleccionar,
+  textoAproximada,
+}: {
+  centros: CentroPrensa[];
+  activo: CentroPrensa | null;
+  onSeleccionar: (c: CentroPrensa) => void;
+  textoAproximada: string;
+}) {
+  const mapa = useMap();
+
+  useEffect(() => {
+    const grupo = L.markerClusterGroup({
+      iconCreateFunction: iconoGrupo,
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+      zoomToBoundsOnClick: true,
+      maxClusterRadius: 44,
+      spiderLegPolylineOptions: { color: "#f5f1e9", weight: 1.5, opacity: 0.8 },
+      attribution: ATRIBUCION_CENTROS,
+    });
+
+    for (const c of centros) {
+      const seleccionado = activo?.id === c.id;
+      const marcador = L.circleMarker([c.lat, c.lng], {
+        radius: seleccionado ? 11 : 8,
+        color: "#ffffff",
+        weight: seleccionado ? 3 : 1.5,
+        fillColor: COLOR_ESTADO[c.estado] ?? "#1e2429",
+        fillOpacity: 1,
+      });
+      const lugar = c.municipio ? `${c.municipio}, ${c.entidad}` : c.entidad;
+      marcador.bindTooltip(
+        `<strong>${c.empresa}${c.nombre ? ` · ${c.nombre}` : ""}</strong><br/>${lugar} <em>(${textoAproximada})</em>`,
+        { direction: "top", offset: L.point(0, -8) },
+      );
+      marcador.on("click", () => onSeleccionar(c));
+      grupo.addLayer(marcador);
+    }
+
+    mapa.addLayer(grupo);
+    return () => {
+      mapa.removeLayer(grupo);
+    };
+  }, [mapa, centros, activo, onSeleccionar, textoAproximada]);
+
+  return null;
+}
+
 export default function MapaLeaflet({
   centros,
   activo,
   onSeleccionar,
   etiquetas,
-  textoEstado,
-  formatoInversion,
+  textoAproximada,
 }: {
-  centros: Centro[];
-  activo: Centro | null;
-  onSeleccionar: (c: Centro | null) => void;
+  centros: CentroPrensa[];
+  activo: CentroPrensa | null;
+  onSeleccionar: (c: CentroPrensa) => void;
   etiquetas: EtiquetasMapa;
-  textoEstado: (estado: Centro["estado"]) => string;
-  formatoInversion: (monto: number) => string;
+  textoAproximada: string;
 }) {
   const agua = useGeoJSON("/geo/cuerpos-agua-mx.geojson");
   const rios = useGeoJSON("/geo/rios-mx.geojson");
@@ -121,50 +194,14 @@ export default function MapaLeaflet({
         <LayersControl.Overlay name={etiquetas.rios}>
           <>{rios && <GeoJSON data={rios} style={() => estiloRios} attribution={ATRIBUCION_INEGI} />}</>
         </LayersControl.Overlay>
-
-        <LayersControl.Overlay checked name={etiquetas.centros}>
-          <>
-            {centros.map((c) => {
-              const seleccionado = activo?.id === c.id;
-              const inversion = c.inversionUsdMillones != null ? formatoInversion(c.inversionUsdMillones) : null;
-              return (
-                <CircleMarker
-                  key={c.id}
-                  center={[c.lat, c.lng]}
-                  radius={seleccionado ? 10 : 6}
-                  pathOptions={{
-                    color: "#ffffff",
-                    weight: seleccionado ? 3 : 1.5,
-                    fillColor: COLOR_ESTADO[c.estado] ?? "#1e2429",
-                    fillOpacity: 1,
-                  }}
-                  eventHandlers={{ click: () => onSeleccionar(c) }}
-                >
-                  <Popup>
-                    <strong>{c.nombre}</strong>
-                    <br />
-                    {[c.ciudad, c.pais].filter(Boolean).join(", ")}
-                    {c.empresa && (
-                      <>
-                        <br />
-                        {c.empresa}
-                      </>
-                    )}
-                    <br />
-                    <em>{textoEstado(c.estado)}</em>
-                    {inversion && (
-                      <>
-                        <br />
-                        {inversion}
-                      </>
-                    )}
-                  </Popup>
-                </CircleMarker>
-              );
-            })}
-          </>
-        </LayersControl.Overlay>
       </LayersControl>
+
+      <CapaCentrosAgrupados
+        centros={centros}
+        activo={activo}
+        onSeleccionar={onSeleccionar}
+        textoAproximada={textoAproximada}
+      />
     </MapContainer>
   );
 }
