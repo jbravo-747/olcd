@@ -48,36 +48,6 @@ export default function MapaCentrosInteractivo({ datos }: { datos: DatosPrensa }
 
   return (
     <div className="shell py-14">
-      {/* Aviso de procedencia: obligatorio y visible. */}
-      <aside
-        className="mb-10 rounded-xl border-l-4 border-orange-deep bg-cream-deep p-6"
-        aria-labelledby="aviso-fuentes"
-      >
-        <h2 id="aviso-fuentes" className="text-sm font-bold uppercase tracking-wide">
-          {t("aviso.titulo")}
-        </h2>
-        <p className="mt-2 max-w-3xl text-[15px] leading-relaxed">
-          {t("aviso.cuerpo", {
-            total: datos.meta.totalCentros,
-            desde: datos.meta.aniosCubiertos[0],
-            hasta: datos.meta.aniosCubiertos[1],
-          })}
-        </p>
-        <p className="mt-2 max-w-3xl text-[15px] leading-relaxed">{t("aviso.ubicaciones")}</p>
-        <details className="mt-3">
-          <summary className="cursor-pointer text-sm font-semibold underline">
-            {t("aviso.verMedios", { n: datos.meta.medios.length })}
-          </summary>
-          <ul className="mt-3 flex max-w-3xl flex-wrap gap-x-4 gap-y-1 text-[13px]">
-            {datos.meta.medios.map((m) => (
-              <li key={m.nombre}>
-                {m.nombre} <span className="text-ink/60">({m.notas})</span>
-              </li>
-            ))}
-          </ul>
-        </details>
-      </aside>
-
       <form className="mb-10 grid gap-5 sm:grid-cols-2 lg:max-w-2xl" onSubmit={(e) => e.preventDefault()}>
         <div>
           <label htmlFor="entidad" className="mb-2 block text-xs font-semibold">
@@ -154,6 +124,36 @@ export default function MapaCentrosInteractivo({ datos }: { datos: DatosPrensa }
               {t("leyendaGrupo")}
             </li>
           </ul>
+
+          {/* Aviso de procedencia: obligatorio y visible, debajo del mapa. */}
+          <aside
+            className="mt-6 rounded-xl border-l-4 border-orange-deep bg-cream-deep p-6"
+            aria-labelledby="aviso-fuentes"
+          >
+            <h2 id="aviso-fuentes" className="text-sm font-bold uppercase tracking-wide">
+              {t("aviso.titulo")}
+            </h2>
+            <p className="mt-2 max-w-3xl text-[15px] leading-relaxed">
+              {t("aviso.cuerpo", {
+                total: datos.meta.totalCentros,
+                desde: datos.meta.aniosCubiertos[0],
+                hasta: datos.meta.aniosCubiertos[1],
+              })}
+            </p>
+            <p className="mt-2 max-w-3xl text-[15px] leading-relaxed">{t("aviso.ubicaciones")}</p>
+            <details className="mt-3">
+              <summary className="cursor-pointer text-sm font-semibold underline">
+                {t("aviso.verMedios", { n: datos.meta.medios.length })}
+              </summary>
+              <ul className="mt-3 flex max-w-3xl flex-wrap gap-x-4 gap-y-1 text-[13px]">
+                {datos.meta.medios.map((m) => (
+                  <li key={m.nombre}>
+                    {m.nombre} <span className="text-ink/60">({m.notas})</span>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </aside>
         </div>
 
         <aside aria-live="polite">
