@@ -3,12 +3,12 @@
 /**
  * Mapa de centros de datos con Leaflet y capas superponibles:
  *  - Base satelital: Esri World Imagery o Sentinel-2 cloudless (EOX), más un mapa claro.
- *  - Overlays de cuerpos de agua y ríos (GeoJSON en /public/geo).
+ *  - Overlays de cuerpos de agua y ríos de INEGI (GeoJSON en /public/geo).
  *  - Centros de datos como marcadores reactivos enlazados al filtro y la selección.
  *
- * Los cuerpos de agua y ríos son hoy datos de Natural Earth (LATAM). Para
- * producción se sustituyen por INEGI (México, alta resolución) + HydroSHEDS
- * (resto de la región); ver docs/mapa-datos.md.
+ * Alcance actual: México. La hidrografía viene del conjunto vectorial
+ * topográfico 1:1 000 000 de INEGI, convertido con scripts/convertir-inegi.sh;
+ * ver docs/mapa-datos.md.
  */
 
 import { useEffect, useState } from "react";
@@ -19,7 +19,9 @@ import "leaflet/dist/leaflet.css";
 import type { Centro } from "@/payload-types";
 import { COLOR_ESTADO } from "@/lib/geo/centrosGeoJSON";
 
-const CENTRO_LATAM: [number, number] = [-12, -65];
+const CENTRO_MEXICO: [number, number] = [23.8, -102.2];
+const ATRIBUCION_INEGI =
+  'Hidrografía: <a href="https://www.inegi.org.mx/temas/hidrografia/">INEGI</a>, serie topográfica 1:1 000 000';
 
 const estiloAgua: PathOptions = { color: "#1d6fa5", weight: 1, fillColor: "#3b9ad1", fillOpacity: 0.55 };
 const estiloRios: PathOptions = { color: "#3b9ad1", weight: 1.2, opacity: 0.8 };
@@ -72,14 +74,14 @@ export default function MapaLeaflet({
   textoEstado: (estado: Centro["estado"]) => string;
   formatoInversion: (monto: number) => string;
 }) {
-  const agua = useGeoJSON("/geo/cuerpos-agua-latam.geojson");
-  const rios = useGeoJSON("/geo/rios-latam.geojson");
+  const agua = useGeoJSON("/geo/cuerpos-agua-mx.geojson");
+  const rios = useGeoJSON("/geo/rios-mx.geojson");
 
   return (
     <MapContainer
-      center={CENTRO_LATAM}
-      zoom={3}
-      minZoom={2}
+      center={CENTRO_MEXICO}
+      zoom={5}
+      minZoom={3}
       maxZoom={18}
       scrollWheelZoom
       className="h-[70vh] min-h-[420px] w-full rounded-lg"
@@ -113,11 +115,11 @@ export default function MapaLeaflet({
         </LayersControl.BaseLayer>
 
         <LayersControl.Overlay checked name={etiquetas.agua}>
-          <>{agua && <GeoJSON data={agua} style={() => estiloAgua} />}</>
+          <>{agua && <GeoJSON data={agua} style={() => estiloAgua} attribution={ATRIBUCION_INEGI} />}</>
         </LayersControl.Overlay>
 
         <LayersControl.Overlay name={etiquetas.rios}>
-          <>{rios && <GeoJSON data={rios} style={() => estiloRios} />}</>
+          <>{rios && <GeoJSON data={rios} style={() => estiloRios} attribution={ATRIBUCION_INEGI} />}</>
         </LayersControl.Overlay>
 
         <LayersControl.Overlay checked name={etiquetas.centros}>
