@@ -38,7 +38,6 @@ const estiloRios: PathOptions = { color: "#3b9ad1", weight: 1.2, opacity: 0.8 };
 export type EtiquetasMapa = {
   claro: string;
   detallado: string;
-  satelite: string;
   sentinel: string;
   etiquetasLugares: string;
   agua: string;
@@ -245,14 +244,6 @@ export default function MapaLeaflet({
             url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
             attribution='&copy; Colaboradores de <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             maxZoom={19}
-          />
-        </LayersControl.BaseLayer>
-
-        <LayersControl.BaseLayer name={etiquetas.satelite}>
-          <TileLayer
-            url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
-            attribution="Imágenes &copy; Esri, Maxar, Earthstar Geographics"
-            maxZoom={18}
           />
         </LayersControl.BaseLayer>
 

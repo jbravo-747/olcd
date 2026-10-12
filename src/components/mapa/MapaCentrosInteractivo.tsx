@@ -38,7 +38,6 @@ export default function MapaCentrosInteractivo({ datos }: { datos: DatosPrensa }
   const etiquetas: EtiquetasMapa = {
     claro: t("capas.claro"),
     detallado: t("capas.detallado"),
-    satelite: t("capas.satelite"),
     sentinel: t("capas.sentinel"),
     etiquetasLugares: t("capas.etiquetasLugares"),
     agua: t("capas.agua"),
