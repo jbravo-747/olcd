@@ -31,3 +31,6 @@ tests/e2e/.results/
 # Next.js 16 genera estas reglas de agente al arrancar dev
 AGENTS.md
 CLAUDE.md
+
+# Metadatos NTFS que deja Windows/WSL junto a las descargas
+*:Zone.Identifier
