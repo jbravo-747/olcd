@@ -10,6 +10,7 @@
 import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
+import { FaServer } from "react-icons/fa6";
 import { COLOR_ESTADO } from "@/lib/geo/centrosGeoJSON";
 import type { CentroPrensa, DatosPrensa, EstadoCentro } from "@/datos/tipos";
 import type { EtiquetasMapa } from "./MapaLeaflet";
@@ -107,10 +108,12 @@ export default function MapaCentrosInteractivo({ datos }: { datos: DatosPrensa }
             {estados.map((e) => (
               <li key={e} className="flex items-center gap-2 text-xs font-semibold">
                 <span
-                  className="inline-block h-3 w-3 rounded-full border border-ink"
+                  className="flex h-5 w-5 items-center justify-center rounded-full border border-cream"
                   style={{ backgroundColor: COLOR_ESTADO[e] }}
                   aria-hidden
-                />
+                >
+                  <FaServer size={10} color="#f5f1e9" />
+                </span>
                 {t(`estados.${e}`)}
               </li>
             ))}
@@ -248,10 +251,12 @@ export default function MapaCentrosInteractivo({ datos }: { datos: DatosPrensa }
                   }`}
                 >
                   <span
-                    className="inline-block h-2.5 w-2.5 shrink-0 rounded-full border border-ink"
+                    className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full"
                     style={{ backgroundColor: COLOR_ESTADO[c.estado] }}
                     aria-hidden
-                  />
+                  >
+                    <FaServer size={8} color="#f5f1e9" />
+                  </span>
                   <span className="min-w-0 flex-1 truncate">
                     {c.empresa}
                     {c.nombre ? ` · ${c.nombre}` : ""}

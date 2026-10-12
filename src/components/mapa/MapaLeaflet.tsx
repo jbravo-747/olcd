@@ -15,6 +15,8 @@
  */
 
 import { useEffect, useState } from "react";
+import { renderToStaticMarkup } from "react-dom/server";
+import { FaServer } from "react-icons/fa6";
 import type { GeoJsonObject } from "geojson";
 import L, { type PathOptions } from "leaflet";
 import "leaflet.markercluster";
@@ -108,6 +110,25 @@ function useGeoJSON(url: string) {
   return datos;
 }
 
+/**
+ * Pin de un centro de datos: ícono de servidor (react-icons) sobre un círculo
+ * del color del estado. Se cachean los 6 variantes (3 estados × seleccionado).
+ */
+const cacheIconos = new Map<string, L.DivIcon>();
+
+function iconoCentro(estado: keyof typeof COLOR_ESTADO, seleccionado: boolean): L.DivIcon {
+  const clave = `${estado}|${seleccionado}`;
+  const guardado = cacheIconos.get(clave);
+  if (guardado) return guardado;
+
+  const lado = seleccionado ? 38 : 30;
+  const icono = renderToStaticMarkup(<FaServer size={seleccionado ? 17 : 14} color="#f5f1e9" aria-hidden />);
+  const html = `<div style="width:${lado}px;height:${lado}px;border-radius:9999px;background:${COLOR_ESTADO[estado]};border:${seleccionado ? 3 : 2}px solid #f5f1e9;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 6px rgba(0,0,0,.45)">${icono}</div>`;
+  const div = L.divIcon({ html, className: "", iconSize: [lado, lado], iconAnchor: [lado / 2, lado / 2] });
+  cacheIconos.set(clave, div);
+  return div;
+}
+
 /** Icono del grupo: círculo oscuro con el número de centros de datos. */
 function iconoGrupo(cluster: L.MarkerCluster) {
   const n = cluster.getChildCount();
@@ -151,17 +172,14 @@ function CapaCentrosAgrupados({
 
     for (const c of centros) {
       const seleccionado = activo?.id === c.id;
-      const marcador = L.circleMarker([c.lat, c.lng], {
-        radius: seleccionado ? 11 : 8,
-        color: "#ffffff",
-        weight: seleccionado ? 3 : 1.5,
-        fillColor: COLOR_ESTADO[c.estado] ?? "#1e2429",
-        fillOpacity: 1,
+      const marcador = L.marker([c.lat, c.lng], {
+        icon: iconoCentro(c.estado, seleccionado),
+        alt: `${c.empresa}${c.nombre ? ` ${c.nombre}` : ""}`,
       });
       const lugar = c.municipio ? `${c.municipio}, ${c.entidad}` : c.entidad;
       marcador.bindTooltip(
         `<strong>${c.empresa}${c.nombre ? ` · ${c.nombre}` : ""}</strong><br/>${lugar} <em>(${textoAproximada})</em>`,
-        { direction: "top", offset: L.point(0, -8) },
+        { direction: "top", offset: L.point(0, -16) },
       );
       marcador.on("click", () => onSeleccionar(c));
       grupo.addLayer(marcador);
