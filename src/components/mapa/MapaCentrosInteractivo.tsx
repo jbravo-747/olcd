@@ -10,7 +10,7 @@
 import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { useTranslations } from "next-intl";
-import { FaServer } from "react-icons/fa6";
+import { FaLocationPin } from "react-icons/fa6";
 import { COLOR_ESTADO } from "@/lib/geo/centrosGeoJSON";
 import type { CentroPrensa, DatosPrensa, EstadoCentro } from "@/datos/tipos";
 import type { EtiquetasMapa } from "./MapaLeaflet";
@@ -108,13 +108,7 @@ export default function MapaCentrosInteractivo({ datos }: { datos: DatosPrensa }
           <ul className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
             {estados.map((e) => (
               <li key={e} className="flex items-center gap-2 text-xs font-semibold">
-                <span
-                  className="flex h-5 w-5 items-center justify-center rounded-full border border-cream"
-                  style={{ backgroundColor: COLOR_ESTADO[e] }}
-                  aria-hidden
-                >
-                  <FaServer size={10} color="#f5f1e9" />
-                </span>
+                <FaLocationPin size={15} color={COLOR_ESTADO[e]} aria-hidden className="shrink-0" />
                 {t(`estados.${e}`)}
               </li>
             ))}
@@ -238,13 +232,7 @@ export default function MapaCentrosInteractivo({ datos }: { datos: DatosPrensa }
                     activo?.id === c.id ? "bg-ink/10" : ""
                   }`}
                 >
-                  <span
-                    className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full"
-                    style={{ backgroundColor: COLOR_ESTADO[c.estado] }}
-                    aria-hidden
-                  >
-                    <FaServer size={8} color="#f5f1e9" />
-                  </span>
+                  <FaLocationPin size={13} color={COLOR_ESTADO[c.estado]} aria-hidden className="shrink-0" />
                   <span className="min-w-0 flex-1 truncate">
                     {c.empresa}
                     {c.nombre ? ` · ${c.nombre}` : ""}

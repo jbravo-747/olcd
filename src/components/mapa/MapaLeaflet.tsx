@@ -16,7 +16,7 @@
 
 import { useEffect, useState } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { FaServer } from "react-icons/fa6";
+import { FaLocationPin, FaServer } from "react-icons/fa6";
 import type { GeoJsonObject } from "geojson";
 import L, { type PathOptions } from "leaflet";
 import "leaflet.markercluster";
@@ -112,8 +112,10 @@ function useGeoJSON(url: string) {
 }
 
 /**
- * Pin de un centro de datos: ícono de servidor (react-icons) sobre un círculo
- * del color del estado. Se cachean los 6 variantes (3 estados × seleccionado).
+ * Pin de un centro de datos: gota de mapa (FaLocationPin) rellena con el color
+ * del estado, borde claro, y el ícono de servidor blanco en la cabeza. Anclado
+ * por la punta, que es la que señala la coordenada. Se cachean las 6 variantes
+ * (3 estados × seleccionado).
  */
 const cacheIconos = new Map<string, L.DivIcon>();
 
@@ -122,10 +124,30 @@ function iconoCentro(estado: keyof typeof COLOR_ESTADO, seleccionado: boolean): 
   const guardado = cacheIconos.get(clave);
   if (guardado) return guardado;
 
-  const lado = seleccionado ? 38 : 30;
-  const icono = renderToStaticMarkup(<FaServer size={seleccionado ? 17 : 14} color="#f5f1e9" aria-hidden />);
-  const html = `<div style="width:${lado}px;height:${lado}px;border-radius:9999px;background:${COLOR_ESTADO[estado]};border:${seleccionado ? 3 : 2}px solid #f5f1e9;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 6px rgba(0,0,0,.45)">${icono}</div>`;
-  const div = L.divIcon({ html, className: "", iconSize: [lado, lado], iconAnchor: [lado / 2, lado / 2] });
+  const alto = seleccionado ? 44 : 36;
+  const ancho = Math.round(alto * 0.75); // proporción del viewBox 384×512 de FaLocationPin
+  const pin = renderToStaticMarkup(
+    <FaLocationPin
+      size={alto}
+      color={COLOR_ESTADO[estado]}
+      style={{ stroke: "#f5f1e9", strokeWidth: 20 }}
+      aria-hidden
+    />,
+  );
+  const servidor = renderToStaticMarkup(<FaServer size={seleccionado ? 15 : 12} color="#f5f1e9" aria-hidden />);
+  // La cabeza de la gota ocupa el tercio superior: el servidor se centra ahí.
+  const html =
+    `<div style="position:relative;width:${ancho}px;height:${alto}px;filter:drop-shadow(0 1px 4px rgba(0,0,0,.45))">` +
+    `<div style="position:absolute;left:50%;transform:translateX(-50%)">${pin}</div>` +
+    `<div style="position:absolute;left:50%;top:${Math.round(alto * 0.36)}px;transform:translate(-50%,-50%);display:flex">${servidor}</div>` +
+    `</div>`;
+  const div = L.divIcon({
+    html,
+    className: "",
+    iconSize: [ancho, alto],
+    iconAnchor: [ancho / 2, alto], // la punta de la gota marca la coordenada
+    tooltipAnchor: [0, -alto],
+  });
   cacheIconos.set(clave, div);
   return div;
 }
@@ -180,7 +202,7 @@ function CapaCentrosAgrupados({
       const lugar = c.municipio ? `${c.municipio}, ${c.entidad}` : c.entidad;
       marcador.bindTooltip(
         `<strong>${c.empresa}${c.nombre ? ` · ${c.nombre}` : ""}</strong><br/>${lugar} <em>(${textoAproximada})</em>`,
-        { direction: "top", offset: L.point(0, -16) },
+        { direction: "top" },
       );
       marcador.on("click", () => onSeleccionar(c));
       grupo.addLayer(marcador);
