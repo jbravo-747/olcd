@@ -33,19 +33,21 @@ vista resumida del inicio sigue usando el mapa SVG ligero (`MapaCentros`).
 
 Los centros del mapa **no salen del CMS**: provienen del monitoreo de medios
 periodísticos del Observatorio (2020-2026). La fuente canónica es el
-**consolidado curado por el equipo** — `Limpieza/Data Centers consolidado.xlsx`,
-hoja "Análisis" — con una fila por centro, identidades ya resueltas, fases
-fechadas (anuncio/inversión, construcción/apertura, expansión/mejoramiento),
-hasta 10 notas de prensa por centro y un puntaje de completitud (Sumatoria_DC,
-0-10) con semáforo (verde ≥8.25, amarillo ≥5.5, naranja ≥2.75, rojo <2.75).
+**consolidado curado por el equipo** — `Limpieza/Data Centers con claves INEGI.csv` — una fila por centro,
+identidades resueltas, fases fechadas y, lo más importante, el geocodificado
+oficial del equipo: claves geoestadísticas de INEGI (`cve_ent`, `cve_mun`,
+`cvegeo`) con precisión explícita (centroide municipal, estatal o sin
+ubicación). El puntaje de completitud (0-10, semáforo verde ≥8.25 / amarillo
+≥5.5 / naranja ≥2.75 / rojo) se deriva en el pipeline: 1.25 puntos por campo
+informativo presente, la fórmula del consolidado original.
 
 `scripts/generar_datacenters_prensa.py` lo convierte en
 `src/datos/datacenters-prensa.json` (tipos en `src/datos/tipos.ts`):
 
-- **Ubica de forma aproximada** con un diccionario curado (texto de la fuente →
-  municipio/entidad → coordenadas de cabecera municipal o punto representativo),
-  con el campo `precision`. Las variantes multi-sitio del consolidado quedan a
-  nivel entidad o en el municipio dominante, documentado en el propio script.
+- **Ubica por clave INEGI**: el CSV trae `cvegeo` y precisión; el script sólo
+  aporta el catálogo de centroides por clave (cabecera municipal o punto
+  representativo de la entidad), pues las columnas lat/lon vienen vacías. Una
+  clave nueva sin centroide detiene el pipeline para añadirla.
 - **Deriva el estado** (anunciado / en construcción / en operación) de la fase
   más avanzada registrada.
 - **Medios**: dominio del enlace → nombre del medio (mapa curado; los enlaces
@@ -64,9 +66,9 @@ información proviene de medios periodísticos, con la lista completa de medios;
 la ficha de cada centro muestra su cronología, datos técnicos, nivel de
 información (semáforo) y enlaces a sus notas.
 
-Para regenerar tras actualizar el consolidado: `python3
-scripts/generar_datacenters_prensa.py` (falla si aparece una ubicación nueva
-sin mapear; añadirla al diccionario `UBICACIONES`). El test
+Para regenerar tras actualizar el CSV: `python3
+scripts/generar_datacenters_prensa.py` (falla si aparece una clave INEGI sin
+centroide; añadirla a los catálogos del script). El test
 `tests/unit/datacenters-prensa.test.ts` protege la estructura.
 
 Pendiente documentado: migrar este dataset a la colección `centros` de Payload

@@ -1,23 +1,27 @@
 #!/usr/bin/env python3
 """
-Genera el dataset del mapa a partir del consolidado curado por el equipo:
-Limpieza/Data Centers consolidado.xlsx, hoja "Análisis" (una fila por centro de
-datos, identidades ya resueltas, fases con fecha y acción, enlaces a las notas
-de prensa y puntaje de completitud de información).
+Genera el dataset del mapa a partir del consolidado geocodificado por el
+equipo: Limpieza/"Data Centers con claves INEGI.csv" — una fila por centro de
+datos con identidades resueltas, fases fechadas, enlaces a notas de prensa y
+las claves geoestadísticas oficiales de INEGI (cve_ent, cve_mun, cvegeo) con
+su precisión (centroide_municipal | centroide_estatal | sin_ubicacion).
 
     python3 scripts/generar_datacenters_prensa.py
 
 Salida: src/datos/datacenters-prensa.json
 
-IMPORTANTE: esta información se recopiló de medios periodísticos (monitoreo
-2020-2026 del Observatorio). Las ubicaciones son aproximadas: la fuente sólo da
-municipio, parque industrial o entidad; las coordenadas de este archivo son la
-cabecera municipal o un punto representativo de la entidad.
+Las columnas lat/lon del CSV vienen vacías: las coordenadas las pone este
+script con un catálogo de centroides por clave (cabecera municipal o punto
+representativo de la entidad). IMPORTANTE: la información proviene de medios
+periodísticos; las ubicaciones son aproximadas por diseño.
 
-Histórico: las tablas anuales "Data Centers AAAA.xlsx" (registros por año) son
-el insumo previo al consolidado y ya no se leen aquí.
+El puntaje de completitud (score) se deriva aquí con la fórmula del consolidado
+original: 1.25 puntos por cada uno de los 8 campos informativos presentes
+(anuncio, construcción, expansión, monto, ubicación, electricidad, tamaño,
+enfriamiento), con el semáforo de sus mismos umbrales.
 """
 
+import csv
 import json
 import re
 import sys
@@ -25,10 +29,8 @@ import unicodedata
 from datetime import date
 from urllib.parse import urlparse
 
-import openpyxl
-
 RAIZ = __file__.rsplit("/scripts/", 1)[0]
-FUENTE = f"{RAIZ}/Limpieza/Data Centers consolidado.xlsx"
+FUENTE = f"{RAIZ}/Limpieza/Data Centers con claves INEGI.csv"
 SALIDA = f"{RAIZ}/src/datos/datacenters-prensa.json"
 
 VACIOS = ("", "-", "—", "Sin asignar", "sin asignar", "None")
@@ -45,63 +47,36 @@ def limpio(v) -> str | None:
 
 
 # ---------------------------------------------------------------------------
-# Ubicaciones: texto exacto de la fuente → municipio / entidad / coordenadas.
-# Coordenadas = cabecera municipal (o punto representativo de la entidad).
-# Cuando la fuente lista varios sitios o parques sin municipio verificable, se
-# asigna nivel entidad; si nombra un municipio dominante, ese municipio.
+# Centroides por clave geoestadística de INEGI. Municipal: cabecera municipal
+# aproximada; estatal: punto representativo de la entidad. Al aparecer una
+# clave nueva en el CSV, el script falla y se añade aquí.
 # ---------------------------------------------------------------------------
-UBICACIONES = {
-    '"Parque Industrial Aprobado por la UNESCO" San Miguel de Allende, Guanajuato': ("San Miguel de Allende", "Guanajuato", 20.914, -100.744, "municipio"),
-    "Asia Pacific Park, Pesquería, Nuevo León": ("Pesquería", "Nuevo León", 25.786, -100.051, "municipio"),
-    "Cancún": ("Benito Juárez (Cancún)", "Quintana Roo", 21.161, -86.851, "municipio"),
-    "Ciudad de México": (None, "Ciudad de México", 19.433, -99.133, "entidad"),
-    "Colón, Querétaro": ("Colón", "Querétaro", 20.781, -100.051, "municipio"),
-    "Durango": (None, "Durango", 24.027, -104.653, "entidad"),
-    "El Marqués, Querétaro": ("El Marqués", "Querétaro", 20.620, -100.263, "municipio"),
-    "Guadalajara": ("Guadalajara", "Jalisco", 20.676, -103.347, "municipio"),
-    "Ixtlahuaca": ("Ixtlahuaca", "Estado de México", 19.569, -99.766, "municipio"),
-    "Lerdo, zona de La Comarca Lagunera, Durango": ("Lerdo", "Durango", 25.539, -103.524, "municipio"),
-    "Metepec, Estado de México": ("Metepec", "Estado de México", 19.251, -99.603, "municipio"),
-    "Monterrey": ("Monterrey", "Nuevo León", 25.673, -100.309, "municipio"),
-    "Monterrey, Nuevo León": ("Monterrey", "Nuevo León", 25.673, -100.309, "municipio"),
-    "Mérida": ("Mérida", "Yucatán", 20.967, -89.624, "municipio"),
-    "Nogales, Sonora": ("Nogales", "Sonora", 31.308, -110.942, "municipio"),
-    "Nuevo León": (None, "Nuevo León", 25.592, -99.996, "entidad"),
-    "Nuevo Leon": (None, "Nuevo León", 25.592, -99.996, "entidad"),
-    "Parque Industrial Amexhe, Apaseo el Grande, Guanajuato": ("Apaseo el Grande", "Guanajuato", 20.545, -100.684, "municipio"),
-    "Parque Industrial El Marques, Querétaro": ("El Marqués", "Querétaro", 20.620, -100.263, "municipio"),
-    "Parque Industrial El Marqués": ("El Marqués", "Querétaro", 20.620, -100.263, "municipio"),
-    "Parque Industrial PyME, Querétaro": (None, "Querétaro", 20.850, -99.900, "entidad"),
-    "Parque Industrial Querétaro": ("Querétaro", "Querétaro", 20.720, -100.450, "municipio"),
-    "Parque Industrialix, Querétaro": (None, "Querétaro", 20.850, -99.900, "entidad"),
-    "Parque Innovación, El Marques, Querétaro": ("El Marqués", "Querétaro", 20.620, -100.263, "municipio"),
-    "Parque industrial Amistad Chuy María, Apaseo el Grande, Guanajuato": ("Apaseo el Grande", "Guanajuato", 20.545, -100.684, "municipio"),
-    "Parque industrial Nexxus, Apodaca, Nuevo León": ("Apodaca", "Nuevo León", 25.782, -100.189, "municipio"),
-    "Pedro Escobedo, Colón y El Marqués": (None, "Querétaro", 20.850, -99.900, "entidad"),  # región AWS, tres municipios
-    "Puebla": (None, "Puebla", 19.044, -98.198, "entidad"),
-    "Queretaro": (None, "Querétaro", 20.850, -99.900, "entidad"),
-    "Querétaro": (None, "Querétaro", 20.850, -99.900, "entidad"),
-    "Quintana Roo": (None, "Quintana Roo", 19.600, -88.050, "entidad"),
-    "San Juan del Rio, Querétaro": ("San Juan del Río", "Querétaro", 20.389, -99.996, "municipio"),
-    "San Juan del Río, Querétaro": ("San Juan del Río", "Querétaro", 20.389, -99.996, "municipio"),
-    "Santa Fe, Ciudad de México": ("Cuajimalpa / Álvaro Obregón (Santa Fe)", "Ciudad de México", 19.359, -99.259, "municipio"),
-    "Tepotzotlán": ("Tepotzotlán", "Estado de México", 19.716, -99.224, "municipio"),
-    "Tepotzotlán, Edo. de México": ("Tepotzotlán", "Estado de México", 19.716, -99.224, "municipio"),
-    "Tepozpark, Tepotzotlán": ("Tepotzotlán", "Estado de México", 19.716, -99.224, "municipio"),
-    "Tultitlan, Estado de México": ("Tultitlán", "Estado de México", 19.645, -99.169, "municipio"),
-    "Vesta Industrial Park, Colón, Querétaro": ("Colón", "Querétaro", 20.781, -100.051, "municipio"),
-    "Zapopan": ("Zapopan", "Jalisco", 20.721, -103.392, "municipio"),
-    "centro de datos de Telmex-Triara, Monterrey, Nuevo León": ("Monterrey", "Nuevo León", 25.673, -100.309, "municipio"),
-    # Variantes multi-sitio del consolidado:
-    "Apaseo el Grande, Guanajuato / Querétaro": ("Apaseo el Grande", "Guanajuato", 20.545, -100.684, "municipio"),
-    "El Marqués ,PyME ,Industrialix, Querétaro": (None, "Querétaro", 20.850, -99.900, "entidad"),  # tres parques distintos
-    "El Marqués, Qro. / Tultitlán, Edo. de México": ("El Marqués", "Querétaro", 20.620, -100.263, "municipio"),  # se toma el primero listado
-    "Parque Innovación, El Marques, Querétaro | Querétaro": ("El Marqués", "Querétaro", 20.620, -100.263, "municipio"),
+CENTROIDES_MUNICIPALES = {
+    "9002": (19.4847, -99.1838),  # Azcapotzalco, CDMX
+    "11003": (20.914, -100.744),  # San Miguel de Allende, Gto.
+    "11005": (20.545, -100.684),  # Apaseo el Grande, Gto.
+    "14039": (20.676, -103.347),  # Guadalajara, Jal.
+    "15054": (19.251, -99.603),  # Metepec, Edomex
+    "15095": (19.716, -99.224),  # Tepotzotlán, Edomex
+    "19006": (25.782, -100.189),  # Apodaca, N.L.
+    "19039": (25.673, -100.309),  # Monterrey, N.L.
+    "19041": (25.786, -100.051),  # Pesquería, N.L.
+    "22005": (20.781, -100.051),  # Colón, Qro.
+    "22011": (20.620, -100.263),  # El Marqués, Qro.
+    "22012": (20.498, -100.139),  # Pedro Escobedo, Qro.
+    "22014": (20.593, -100.392),  # Querétaro, Qro.
+    "22016": (20.389, -99.996),  # San Juan del Río, Qro.
+    "26043": (31.308, -110.942),  # Nogales, Son.
 }
 
-# Centros sin ubicación en la fuente cuya sede es inequívoca por su nombre.
-UBICACION_POR_NOMBRE = {
-    "adip sectei alcaldia azcapotzalco": "Ciudad de México",  # instituciones de CDMX
+CENTROIDES_ESTATALES = {
+    "9": (19.433, -99.133),  # Ciudad de México
+    "10": (24.027, -104.653),  # Durango
+    "19": (25.592, -99.996),  # Nuevo León
+    "21": (19.044, -98.198),  # Puebla
+    "22": (20.850, -99.900),  # Querétaro
+    "23": (19.600, -88.050),  # Quintana Roo
+    "26": (29.830, -110.670),  # Sonora
 }
 
 MESES = {
@@ -112,30 +87,50 @@ MESES = {
 }
 
 
+def anio_de(texto: str) -> int | None:
+    """Extrae el año de texto libre: 'Febrero 2024 (…)', 'dic-23',
+    '2026-02-24 00:00:00' o un serial de Excel ('46165')."""
+    m = re.search(r"\b(20\d{2})\b", texto)
+    if m:
+        return int(m.group(1))
+    m = re.search(r"([a-záé]+)[-/](\d{2})\b", texto.lower())
+    if m and m.group(1)[:3] in MESES:
+        return 2000 + int(m.group(2))
+    m = re.fullmatch(r"\s*(\d{5})(?:\.0)?\s*", texto)
+    if m:  # serial de Excel (días desde 1899-12-30)
+        from datetime import datetime, timedelta
+        return (datetime(1899, 12, 30) + timedelta(days=int(m.group(1)))).year
+    return None
+
+
 def parsear_fase(texto: str | None) -> dict | None:
-    """'Febrero de 2025 (Inversión)' → {texto, anio, accion}. Tolera 'ene-24'."""
+    """Una fase puede traer varios eventos separados por '|'; se conserva el
+    texto completo, con el año más reciente y la primera acción entre
+    paréntesis como resumen."""
     if not texto:
         return None
-    anio = None
-    m = re.search(r"(\d{4})", texto)
-    if m:
-        anio = int(m.group(1))
-    else:
-        m = re.search(r"([a-záé]+)[-/](\d{2})\b", texto.lower())
-        if m and m.group(1)[:3] in MESES:
-            anio = 2000 + int(m.group(2))
+    anios = [a for parte in texto.split("|") if (a := anio_de(parte))]
     acc = re.search(r"\(([^)]+)\)", texto)
-    return {"texto": texto.strip(), "anio": anio, "accion": acc.group(1).strip() if acc else None}
+    return {
+        "texto": texto.strip(),
+        "anio": max(anios) if anios else None,
+        "accion": acc.group(1).strip() if acc else None,
+    }
 
 
 def estado_de(fases: dict) -> str:
     """Estado del proyecto según las fases registradas (la más avanzada manda)."""
-    construccion = fases.get("construccion") or {}
-    expansion = fases.get("expansion") or {}
-    texto_avanzado = norm((construccion.get("texto") or "") + " " + (expansion.get("texto") or ""))
-    if re.search(r"inaugur|apertura|opera|expansion|mejoramiento|ampliacion|certificacion|reubicacion", texto_avanzado):
+    anuncio = (fases.get("anuncio") or {}).get("texto") or ""
+    construccion = (fases.get("construccion") or {}).get("texto") or ""
+    expansion = (fases.get("expansion") or {}).get("texto") or ""
+    # Señales de operación en construcción/expansión, o una inauguración
+    # reportada ya desde la columna de anuncio ("algunos dicen inauguración").
+    if re.search(
+        r"inaugur|apertura|opera|expansion|mejoramiento|megoramiento|ampliacion|certificacion|reubicacion",
+        norm(construccion + " " + expansion),
+    ) or re.search(r"inaugur|apertura", norm(anuncio)):
         return "en-operacion"
-    if construccion.get("texto"):
+    if construccion:
         return "en-construccion"
     return "anunciado"
 
@@ -158,6 +153,7 @@ MEDIOS = {
     "realestatemarket.com.mx": "Real Estate Market",
     "elfinanciero.com.mx": "El Financiero",
     "news.microsoft.com": "Microsoft (sala de prensa)",
+    "newsroom.equinix.com": "Equinix (sala de prensa)",
     "infochannel.info": "Infochannel",
     "esemanal.mx": "eSemanal",
     "eluniversalqueretaro.mx": "El Universal Querétaro",
@@ -173,6 +169,23 @@ MEDIOS = {
     "aboutamazon.mx": "Amazon (sala de prensa)",
     "clusterindustrial.com.mx": "Clúster Industrial",
     "es.wired.com": "Wired en Español",
+    "blog.google": "Google (blog oficial)",
+    "elpais.com": "El País",
+    "nl.gob.mx": "Gobierno de Nuevo León",
+    "elmarques.gob.mx": "Gobierno de El Marqués",
+    "xataka.com.mx": "Xataka México",
+    "lopezdoriga.com": "López-Dóriga Digital",
+    "elceo.com": "EL CEO",
+    "mvsnoticias.com": "MVS Noticias",
+    "mundoejecutivo.com.mx": "Mundo Ejecutivo",
+    "itsitio.com": "ITSitio",
+    "tuinterfaz.mx": "Tu Interfaz",
+    "arenapublica.com": "Arena Pública",
+    "corresponsables.com": "Corresponsables",
+    "kioscomayor.com": "Kiosco Mayor",
+    "produ.com": "PRODU",
+    "tusbuenasnoticias.com": "Tus Buenas Noticias",
+    "kiodatacenters.com": "KIO (sitio oficial)",
 }
 
 
@@ -182,7 +195,7 @@ def medio_de(url: str) -> str:
     return MEDIOS.get(d, d) if d else ""
 
 
-# Umbrales del semáforo de completitud (hoja "Pivot Table 2" del consolidado).
+# Umbrales del semáforo de completitud (consolidado del equipo).
 def semaforo_de(score: float) -> str:
     if score >= 8.25:
         return "verde"
@@ -194,71 +207,83 @@ def semaforo_de(score: float) -> str:
 
 
 def main() -> None:
-    wb = openpyxl.load_workbook(FUENTE, read_only=True, data_only=True)
-    ws = wb["Análisis"]
-    filas = list(ws.iter_rows(values_only=True))
-    wb.close()
-    cab = [str(c).strip() if c is not None else "" for c in filas[0]]
-    ix = {c: i for i, c in enumerate(cab)}
-    col_links = [ix[c] for c in cab if re.fullmatch(r"Link \d+", c)]
+    with open(FUENTE, newline="", encoding="utf-8") as fh:
+        filas = list(csv.DictReader(fh))
 
-    centros, sin_ubicacion, sin_mapear = [], [], set()
-    for f in filas[1:]:
-        nombre = limpio(f[ix["Nombre"]])
+    centros, sin_ubicacion, claves_sin_centroide = [], [], set()
+    for f in filas:
+        nombre = limpio(f["Nombre"])
         if not nombre:
             continue
-        empresa = limpio(f[ix["Empresa"]]) or nombre
-        ubic_txt = limpio(f[ix["Ubicación"]])
-        if not ubic_txt:
-            ubic_txt = UBICACION_POR_NOMBRE.get(norm(nombre))
+        empresa = limpio(f["Empresa"]) or nombre
 
         fases = {
-            "anuncio": parsear_fase(limpio(f[ix["Anuncio / inversión"]])),
-            "construccion": parsear_fase(limpio(f[ix["Construcción | Apertura"]])),
-            "expansion": parsear_fase(limpio(f[ix["Expansión / mejoramiento"]])),
+            "anuncio": parsear_fase(limpio(f["Anuncio / inversión"])),
+            "construccion": parsear_fase(limpio(f["Construcción"])),
+            "expansion": parsear_fase(limpio(f["Expansión / mejoramiento"])),
         }
         notas, vistos = [], set()
-        for i in col_links:
-            u = limpio(f[i])
+        for i in range(1, 11):
+            u = limpio(f.get(f"Link {i}"))
             if u and u.startswith("http") and u not in vistos:
                 vistos.add(u)
                 notas.append({"url": u, "medio": medio_de(u)})
 
-        score = float(f[ix["Sumatoria_DC"]] or 0)
+        campos_info = [
+            fases["anuncio"], fases["construccion"], fases["expansion"],
+            limpio(f["Monto"]), limpio(f["Ubicación"]), limpio(f["Electricidad"]),
+            limpio(f["Tamaño"]), limpio(f["Enfriamiento"]),
+        ]
+        score = round(1.25 * sum(1 for c in campos_info if c), 2)
+
         base = {
             "nombre": nombre,
-            "variacion": limpio(f[ix["Variacion de nombre"]]),
+            "variacion": limpio(f["Variacion de nombre"]),
             "empresa": empresa,
             "fases": fases,
-            "monto": limpio(f[ix["Monto"]]),
-            "electricidad": limpio(f[ix["Electricidad"]]),
-            "tamano": limpio(f[ix["Tamaño"]]),
-            "enfriamiento": limpio(f[ix["Enfriamiento"]]),
+            "monto": limpio(f["Monto"]),
+            "electricidad": limpio(f["Electricidad"]),
+            "tamano": limpio(f["Tamaño"]),
+            "enfriamiento": limpio(f["Enfriamiento"]),
             "notas": notas,
             "score": score,
             "semaforo": semaforo_de(score),
         }
 
-        if not ubic_txt:
+        precision_csv = (f["precision"] or "").strip()
+        if precision_csv == "sin_ubicacion" or not limpio(f["entidad"]):
             sin_ubicacion.append({"nombre": nombre, "empresa": empresa})
             continue
-        info = UBICACIONES.get(ubic_txt)
-        if info is None:
-            sin_mapear.add(ubic_txt)
-            continue
-        municipio, entidad, lat, lng, precision = info
 
+        cve_ent = (f["cve_ent"] or "").strip()
+        cve_mun = (f["cve_mun"] or "").strip()
+        cvegeo = (f["cvegeo"] or "").strip()
+        if precision_csv == "centroide_municipal":
+            coords = CENTROIDES_MUNICIPALES.get(cvegeo)
+            precision = "municipio"
+        else:
+            coords = CENTROIDES_ESTATALES.get(cve_ent)
+            precision = "entidad"
+        if coords is None:
+            claves_sin_centroide.add(cvegeo or cve_ent)
+            continue
+
+        entidad = f["entidad"].strip()
+        municipio = limpio(f["municipio"]) if precision == "municipio" else None
         anios = [fa["anio"] for fa in fases.values() if fa and fa["anio"]]
         acciones = [(fa["anio"] or 0, fa["accion"] or fa["texto"]) for fa in fases.values() if fa]
         ultima = max(acciones, key=lambda a: a[0]) if acciones else (None, None)
         centros.append({
             "id": norm(f"{empresa} {nombre} {entidad}").replace(" ", "-"),
             **base,
-            "ubicacionFuente": ubic_txt,
+            "ubicacionFuente": limpio(f["Ubicación"]) or entidad,
+            "cveEnt": cve_ent,
+            "cveMun": cve_mun or None,
+            "cvegeo": cvegeo or None,
             "municipio": municipio,
             "entidad": entidad,
-            "lat": lat,
-            "lng": lng,
+            "lat": coords[0],
+            "lng": coords[1],
             "precision": precision,
             "estado": estado_de(fases),
             "ultimaAccion": ultima[1],
@@ -277,8 +302,8 @@ def main() -> None:
     salida = {
         "meta": {
             "generado": date.today().isoformat(),
-            "descripcion": "Centros de datos en México identificados mediante monitoreo de medios periodísticos (2020-2026) del OLCD. Las ubicaciones son aproximadas (municipio o entidad); las coordenadas corresponden a la cabecera municipal o a un punto representativo de la entidad, no al predio.",
-            "fuente": "Consolidado curado del monitoreo hemerográfico del Observatorio (Limpieza/Data Centers consolidado.xlsx, hoja Análisis).",
+            "descripcion": "Centros de datos en México identificados mediante monitoreo de medios periodísticos (2020-2026) del OLCD. Las ubicaciones son aproximadas: cada centro se geocodificó con las claves geoestadísticas de INEGI y se ubica en el centroide de su municipio o entidad, no en el predio.",
+            "fuente": "Consolidado geocodificado del monitoreo hemerográfico del Observatorio (Limpieza/Data Centers con claves INEGI.csv).",
             "totalCentros": len(centros),
             "totalNotas": sum(len(c["notas"]) for c in centros),
             "aniosCubiertos": [2020, 2026],
@@ -303,8 +328,8 @@ def main() -> None:
         sem[c["semaforo"]] = sem.get(c["semaforo"], 0) + 1
     print("Semáforo de información:", sem)
     print(f"Medios distintos: {len(medios)}; notas totales: {sum(m['notas'] for m in medios)}")
-    if sin_mapear:
-        print("¡UBICACIONES SIN MAPEAR! →", sin_mapear, file=sys.stderr)
+    if claves_sin_centroide:
+        print("¡CLAVES SIN CENTROIDE! →", claves_sin_centroide, file=sys.stderr)
         sys.exit(1)
     print(f"Escrito: {SALIDA}")
 

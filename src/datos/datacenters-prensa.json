@@ -1,8 +1,8 @@
 {
   "meta": {
     "generado": "2026-10-12",
-    "descripcion": "Centros de datos en México identificados mediante monitoreo de medios periodísticos (2020-2026) del OLCD. Las ubicaciones son aproximadas (municipio o entidad); las coordenadas corresponden a la cabecera municipal o a un punto representativo de la entidad, no al predio.",
-    "fuente": "Consolidado curado del monitoreo hemerográfico del Observatorio (Limpieza/Data Centers consolidado.xlsx, hoja Análisis).",
+    "descripcion": "Centros de datos en México identificados mediante monitoreo de medios periodísticos (2020-2026) del OLCD. Las ubicaciones son aproximadas: cada centro se geocodificó con las claves geoestadísticas de INEGI y se ubica en el centroide de su municipio o entidad, no en el predio.",
+    "fuente": "Consolidado geocodificado del monitoreo hemerográfico del Observatorio (Limpieza/Data Centers con claves INEGI.csv).",
     "totalCentros": 51,
     "totalNotas": 175,
     "aniosCubiertos": [2020, 2026],
@@ -76,7 +76,7 @@
         "notas": 2
       },
       {
-        "nombre": "mundoejecutivo.com.mx",
+        "nombre": "Mundo Ejecutivo",
         "notas": 2
       },
       {
@@ -88,7 +88,7 @@
         "notas": 2
       },
       {
-        "nombre": "newsroom.equinix.com",
+        "nombre": "Equinix (sala de prensa)",
         "notas": 2
       },
       {
@@ -100,15 +100,15 @@
         "notas": 2
       },
       {
-        "nombre": "elmarques.gob.mx",
+        "nombre": "Gobierno de El Marqués",
         "notas": 2
       },
       {
-        "nombre": "arenapublica.com",
+        "nombre": "Arena Pública",
         "notas": 2
       },
       {
-        "nombre": "produ.com",
+        "nombre": "PRODU",
         "notas": 1
       },
       {
@@ -116,7 +116,7 @@
         "notas": 1
       },
       {
-        "nombre": "nl.gob.mx",
+        "nombre": "Gobierno de Nuevo León",
         "notas": 1
       },
       {
@@ -124,11 +124,11 @@
         "notas": 1
       },
       {
-        "nombre": "tuinterfaz.mx",
+        "nombre": "Tu Interfaz",
         "notas": 1
       },
       {
-        "nombre": "itsitio.com",
+        "nombre": "ITSitio",
         "notas": 1
       },
       {
@@ -136,19 +136,19 @@
         "notas": 1
       },
       {
-        "nombre": "lopezdoriga.com",
+        "nombre": "López-Dóriga Digital",
         "notas": 1
       },
       {
-        "nombre": "elceo.com",
+        "nombre": "EL CEO",
         "notas": 1
       },
       {
-        "nombre": "mvsnoticias.com",
+        "nombre": "MVS Noticias",
         "notas": 1
       },
       {
-        "nombre": "elpais.com",
+        "nombre": "El País",
         "notas": 1
       },
       {
@@ -156,15 +156,15 @@
         "notas": 1
       },
       {
-        "nombre": "xataka.com.mx",
+        "nombre": "Xataka México",
         "notas": 1
       },
       {
-        "nombre": "tusbuenasnoticias.com",
+        "nombre": "Tus Buenas Noticias",
         "notas": 1
       },
       {
-        "nombre": "blog.google",
+        "nombre": "Google (blog oficial)",
         "notas": 1
       },
       {
@@ -172,7 +172,7 @@
         "notas": 1
       },
       {
-        "nombre": "kiodatacenters.com",
+        "nombre": "KIO (sitio oficial)",
         "notas": 1
       },
       {
@@ -184,11 +184,11 @@
         "notas": 1
       },
       {
-        "nombre": "corresponsables.com",
+        "nombre": "Corresponsables",
         "notas": 1
       },
       {
-        "nombre": "kioscomayor.com",
+        "nombre": "Kiosco Mayor",
         "notas": 1
       }
     ],
@@ -229,14 +229,17 @@
           "medio": "Reforma"
         }
       ],
-      "score": 3.0,
-      "semaforo": "naranja",
+      "score": 2.5,
+      "semaforo": "rojo",
       "ubicacionFuente": "Ciudad de México",
-      "municipio": null,
+      "cveEnt": "9",
+      "cveMun": "2",
+      "cvegeo": "9002",
+      "municipio": "Azcapotzalco",
       "entidad": "Ciudad de México",
-      "lat": 19.433,
-      "lng": -99.133,
-      "precision": "entidad",
+      "lat": 19.4847,
+      "lng": -99.1838,
+      "precision": "municipio",
       "estado": "en-operacion",
       "ultimaAccion": "Expansión",
       "ultimoAnio": 2021
@@ -273,9 +276,12 @@
           "medio": "IT Masters Mag"
         }
       ],
-      "score": 4.0,
+      "score": 5.0,
       "semaforo": "naranja",
       "ubicacionFuente": "Ciudad de México",
+      "cveEnt": "9",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Ciudad de México",
       "lat": 19.433,
@@ -317,14 +323,17 @@
           "medio": "Google News (agregador)"
         }
       ],
-      "score": 8.0,
+      "score": 7.5,
       "semaforo": "amarillo",
       "ubicacionFuente": "Santa Fe, Ciudad de México",
-      "municipio": "Cuajimalpa / Álvaro Obregón (Santa Fe)",
+      "cveEnt": "9",
+      "cveMun": null,
+      "cvegeo": null,
+      "municipio": null,
       "entidad": "Ciudad de México",
-      "lat": 19.359,
-      "lng": -99.259,
-      "precision": "municipio",
+      "lat": 19.433,
+      "lng": -99.133,
+      "precision": "entidad",
       "estado": "en-construccion",
       "ultimaAccion": "Inicia construcción",
       "ultimoAnio": 2026
@@ -373,14 +382,17 @@
           "medio": "Data Center Dynamics"
         }
       ],
-      "score": 7.0,
+      "score": 6.25,
       "semaforo": "amarillo",
       "ubicacionFuente": "Santa Fe, Ciudad de México",
-      "municipio": "Cuajimalpa / Álvaro Obregón (Santa Fe)",
+      "cveEnt": "9",
+      "cveMun": null,
+      "cvegeo": null,
+      "municipio": null,
       "entidad": "Ciudad de México",
-      "lat": 19.359,
-      "lng": -99.259,
-      "precision": "municipio",
+      "lat": 19.433,
+      "lng": -99.133,
+      "precision": "entidad",
       "estado": "anunciado",
       "ultimaAccion": "Compra",
       "ultimoAnio": 2025
@@ -409,9 +421,12 @@
           "medio": "El Sol de México (OEM)"
         }
       ],
-      "score": 1.0,
+      "score": 1.25,
       "semaforo": "rojo",
       "ubicacionFuente": "Ciudad de México",
+      "cveEnt": "9",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Ciudad de México",
       "lat": 19.433,
@@ -457,9 +472,12 @@
           "medio": "Google News (agregador)"
         }
       ],
-      "score": 4.0,
+      "score": 5.0,
       "semaforo": "naranja",
       "ubicacionFuente": "Durango",
+      "cveEnt": "10",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Durango",
       "lat": 24.027,
@@ -506,12 +524,15 @@
         },
         {
           "url": "https://www.mundoejecutivo.com.mx/empresas/atalait-ampliara-su-centro-de-datos-en-metepec-con-inversion-de-100-mdd/",
-          "medio": "mundoejecutivo.com.mx"
+          "medio": "Mundo Ejecutivo"
         }
       ],
-      "score": 5.0,
+      "score": 3.75,
       "semaforo": "naranja",
       "ubicacionFuente": "Metepec, Estado de México",
+      "cveEnt": "15",
+      "cveMun": "54",
+      "cvegeo": "15054",
       "municipio": "Metepec",
       "entidad": "Estado de México",
       "lat": 19.251,
@@ -545,9 +566,12 @@
           "medio": "BNamericas"
         }
       ],
-      "score": 3.0,
-      "semaforo": "naranja",
+      "score": 2.5,
+      "semaforo": "rojo",
       "ubicacionFuente": "Tepotzotlán, Edo. de México",
+      "cveEnt": "15",
+      "cveMun": "95",
+      "cvegeo": "15095",
       "municipio": "Tepotzotlán",
       "entidad": "Estado de México",
       "lat": 19.716,
@@ -600,6 +624,9 @@
       "score": 5.0,
       "semaforo": "naranja",
       "ubicacionFuente": "Apaseo el Grande, Guanajuato / Querétaro",
+      "cveEnt": "11",
+      "cveMun": "5",
+      "cvegeo": "11005",
       "municipio": "Apaseo el Grande",
       "entidad": "Guanajuato",
       "lat": 20.545,
@@ -637,9 +664,12 @@
           "medio": "Data Center Dynamics"
         }
       ],
-      "score": 6.0,
+      "score": 6.25,
       "semaforo": "amarillo",
       "ubicacionFuente": "\"Parque Industrial Aprobado por la UNESCO\" San Miguel de Allende, Guanajuato",
+      "cveEnt": "11",
+      "cveMun": "3",
+      "cvegeo": "11003",
       "municipio": "San Miguel de Allende",
       "entidad": "Guanajuato",
       "lat": 20.914,
@@ -677,9 +707,12 @@
           "medio": "Data Center Dynamics"
         }
       ],
-      "score": 4.0,
+      "score": 5.0,
       "semaforo": "naranja",
       "ubicacionFuente": "Guadalajara",
+      "cveEnt": "14",
+      "cveMun": "39",
+      "cvegeo": "14039",
       "municipio": "Guadalajara",
       "entidad": "Jalisco",
       "lat": 20.676,
@@ -710,18 +743,21 @@
       "notas": [
         {
           "url": "https://www.produ.com/tecnologia/noticias/ana-maria-oganda-de-mega-data-center-contamos-con-2300-metros-cuadrados-de-piso-blanco-don-infraestructura-de-clase-mundial/",
-          "medio": "produ.com"
+          "medio": "PRODU"
         }
       ],
-      "score": 3.0,
+      "score": 3.75,
       "semaforo": "naranja",
       "ubicacionFuente": "Guadalajara",
+      "cveEnt": "14",
+      "cveMun": "39",
+      "cvegeo": "14039",
       "municipio": "Guadalajara",
       "entidad": "Jalisco",
       "lat": 20.676,
       "lng": -103.347,
       "precision": "municipio",
-      "estado": "anunciado",
+      "estado": "en-operacion",
       "ultimaAccion": "Megoramiento",
       "ultimoAnio": 2024
     },
@@ -749,9 +785,12 @@
           "medio": "Data Center Dynamics"
         }
       ],
-      "score": 4.0,
+      "score": 3.75,
       "semaforo": "naranja",
       "ubicacionFuente": "Nuevo León",
+      "cveEnt": "19",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Nuevo León",
       "lat": 25.592,
@@ -790,12 +829,15 @@
         },
         {
           "url": "https://newsroom.equinix.com/2025-10-30-Equinix-Mexico-invierte-US-81-millones-en-nuevo-centro-de-datos-en-Monterrey?utm_source=chatgpt.com",
-          "medio": "newsroom.equinix.com"
+          "medio": "Equinix (sala de prensa)"
         }
       ],
-      "score": 4.0,
+      "score": 3.75,
       "semaforo": "naranja",
       "ubicacionFuente": "Monterrey",
+      "cveEnt": "19",
+      "cveMun": "39",
+      "cvegeo": "19039",
       "municipio": "Monterrey",
       "entidad": "Nuevo León",
       "lat": 25.673,
@@ -833,9 +875,12 @@
           "medio": "Líder Empresarial"
         }
       ],
-      "score": 3.0,
-      "semaforo": "naranja",
+      "score": 2.5,
+      "semaforo": "rojo",
       "ubicacionFuente": "Monterrey, Nuevo León",
+      "cveEnt": "19",
+      "cveMun": "39",
+      "cvegeo": "19039",
       "municipio": "Monterrey",
       "entidad": "Nuevo León",
       "lat": 25.673,
@@ -878,7 +923,7 @@
         },
         {
           "url": "https://nl.gob.mx/es/boletines/inaugura-equinix-nuevo-centro-de-datos-en-nuevo-leon-con-inversion-de-250-mdd",
-          "medio": "nl.gob.mx"
+          "medio": "Gobierno de Nuevo León"
         },
         {
           "url": "https://www.eluniversal.com.mx/techbit/equinix-impulsa-conectividad-digital-con-centro-mo2-en-monterrey/",
@@ -889,15 +934,18 @@
           "medio": "El Financiero"
         }
       ],
-      "score": 6.0,
-      "semaforo": "amarillo",
+      "score": 5.0,
+      "semaforo": "naranja",
       "ubicacionFuente": "Parque industrial Nexxus, Apodaca, Nuevo León",
+      "cveEnt": "19",
+      "cveMun": "6",
+      "cvegeo": "19006",
       "municipio": "Apodaca",
       "entidad": "Nuevo León",
       "lat": 25.782,
       "lng": -100.189,
       "precision": "municipio",
-      "estado": "anunciado",
+      "estado": "en-operacion",
       "ultimaAccion": "Inversión algunos dicen inauguración",
       "ultimoAnio": 2025
     },
@@ -932,6 +980,9 @@
       "score": 5.0,
       "semaforo": "naranja",
       "ubicacionFuente": "Nuevo León",
+      "cveEnt": "19",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Nuevo León",
       "lat": 25.592,
@@ -977,9 +1028,12 @@
           "medio": "Tecnoempresa"
         }
       ],
-      "score": 6.0,
-      "semaforo": "amarillo",
+      "score": 5.0,
+      "semaforo": "naranja",
       "ubicacionFuente": "Asia Pacific Park, Pesquería, Nuevo León",
+      "cveEnt": "19",
+      "cveMun": "41",
+      "cvegeo": "19041",
       "municipio": "Pesquería",
       "entidad": "Nuevo León",
       "lat": 25.786,
@@ -1013,9 +1067,12 @@
           "medio": "Data Center Dynamics"
         }
       ],
-      "score": 2.0,
+      "score": 2.5,
       "semaforo": "rojo",
       "ubicacionFuente": "Nuevo Leon",
+      "cveEnt": "19",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Nuevo León",
       "lat": 25.592,
@@ -1057,9 +1114,12 @@
           "medio": "Google News (agregador)"
         }
       ],
-      "score": 4.0,
+      "score": 3.75,
       "semaforo": "naranja",
       "ubicacionFuente": "Puebla",
+      "cveEnt": "21",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Puebla",
       "lat": 19.044,
@@ -1113,9 +1173,12 @@
           "medio": "Google News (agregador)"
         }
       ],
-      "score": 5.0,
-      "semaforo": "naranja",
+      "score": 6.25,
+      "semaforo": "amarillo",
       "ubicacionFuente": "Querétaro",
+      "cveEnt": "22",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Querétaro",
       "lat": 20.85,
@@ -1150,7 +1213,7 @@
         },
         {
           "url": "https://tuinterfaz.mx/noticias/22/18042/alibaba-cloud-inaugura-centro-de-datos-en-queretaro-y-refuerza-el-hub-tecnologico-en-mexico/",
-          "medio": "tuinterfaz.mx"
+          "medio": "Tu Interfaz"
         },
         {
           "url": "https://expansion.mx/tecnologia/2025/02/18/alibaba-cloud-lanza-primera-region-nube-mexico",
@@ -1162,7 +1225,7 @@
         },
         {
           "url": "https://www.itsitio.com/mx/infraestructura/alibaba-apuesta-fuerte-por-mexico-abrira-un-nuevo-centro-de-datos-en-2026-para-consolidar-su-presencia-en-latinoamerica/",
-          "medio": "itsitio.com"
+          "medio": "ITSitio"
         },
         {
           "url": "https://mobiletime.la/noticias/01/10/2025/alibaba-cloud-centro-de-datos/",
@@ -1173,9 +1236,12 @@
           "medio": "Mexico Industry"
         }
       ],
-      "score": 2.0,
+      "score": 2.5,
       "semaforo": "rojo",
       "ubicacionFuente": "Querétaro",
+      "cveEnt": "22",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Querétaro",
       "lat": 20.85,
@@ -1214,7 +1280,7 @@
         },
         {
           "url": "https://www.mundoejecutivo.com.mx/mujer-ejecutiva/amazon-invertira-mas-de-5-mil-mdd-en-infraestructura-en-mexico/",
-          "medio": "mundoejecutivo.com.mx"
+          "medio": "Mundo Ejecutivo"
         },
         {
           "url": "https://www.eluniversalqueretaro.mx/cartera/amazon-instalara-centro-de-datos-en-queretaro-invertira-5-mil-mdd/",
@@ -1222,7 +1288,7 @@
         },
         {
           "url": "https://lopezdoriga.com/nacional/amazon-invertira-5-mmdd-en-centro-de-datos-queretaro-mauricio-kuri/",
-          "medio": "lopezdoriga.com"
+          "medio": "López-Dóriga Digital"
         },
         {
           "url": "https://expansion.mx/tecnologia/2024/03/12/amazon-inversion-5000-mdd-sin-danar-ambiente",
@@ -1230,7 +1296,7 @@
         },
         {
           "url": "https://elceo.com/negocios/amazon-invertira-mas-de-5000-mdd-para-impulsar-el-negocio-de-la-nube-en-mexico/",
-          "medio": "elceo.com"
+          "medio": "EL CEO"
         },
         {
           "url": "https://www.elfinanciero.com.mx/economia/2024/02/26/amazon-web-services-invertira-5-mil-mdd-en-su-nueva-region-de-infraestructura-en-mexico/",
@@ -1242,17 +1308,20 @@
         },
         {
           "url": "https://mvsnoticias.com/entrevistas/2024/2/28/mauricio-kuri-celebra-la-llegada-de-amazon-queretaro-es-una-gran-noticia-para-mexico-623495.html",
-          "medio": "mvsnoticias.com"
+          "medio": "MVS Noticias"
         }
       ],
-      "score": 5.0,
+      "score": 3.75,
       "semaforo": "naranja",
       "ubicacionFuente": "Pedro Escobedo, Colón y El Marqués",
-      "municipio": null,
+      "cveEnt": "22",
+      "cveMun": "12",
+      "cvegeo": "22012",
+      "municipio": "Pedro Escobedo",
       "entidad": "Querétaro",
-      "lat": 20.85,
-      "lng": -99.9,
-      "precision": "entidad",
+      "lat": 20.498,
+      "lng": -100.139,
+      "precision": "municipio",
       "estado": "anunciado",
       "ultimaAccion": "Inversión",
       "ultimoAnio": 2024
@@ -1281,9 +1350,12 @@
           "medio": "BNamericas"
         }
       ],
-      "score": 4.0,
+      "score": 5.0,
       "semaforo": "naranja",
       "ubicacionFuente": "Querétaro",
+      "cveEnt": "22",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Querétaro",
       "lat": 20.85,
@@ -1321,9 +1393,12 @@
           "medio": "BNamericas"
         }
       ],
-      "score": 6.0,
+      "score": 6.25,
       "semaforo": "amarillo",
       "ubicacionFuente": "Querétaro",
+      "cveEnt": "22",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Querétaro",
       "lat": 20.85,
@@ -1365,9 +1440,12 @@
           "medio": "Google News (agregador)"
         }
       ],
-      "score": 2.0,
+      "score": 2.5,
       "semaforo": "rojo",
       "ubicacionFuente": "Querétaro",
+      "cveEnt": "22",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Querétaro",
       "lat": 20.85,
@@ -1385,7 +1463,7 @@
       "fases": {
         "anuncio": {
           "texto": "Febrero 2021 (Inversión) | Julio 2024 (Sigue en construcción) | 31 de mayo de 2025 (Inversión) | 2026-01-15 00:00:00 (Inversión)",
-          "anio": 2021,
+          "anio": 2026,
           "accion": "Inversión"
         },
         "construccion": {
@@ -1438,20 +1516,23 @@
         },
         {
           "url": "https://elpais.com/mexico/2025-09-25/cloudhq-invierte-4800-millones-de-dolares-en-un-centro-de-datos-en-queretaro.html",
-          "medio": "elpais.com"
+          "medio": "El País"
         }
       ],
-      "score": 7.0,
+      "score": 7.5,
       "semaforo": "amarillo",
-      "ubicacionFuente": "Colón, Querétaro",
+      "ubicacionFuente": "Querétaro | Colón, Querétaro",
+      "cveEnt": "22",
+      "cveMun": "5",
+      "cvegeo": "22005",
       "municipio": "Colón",
       "entidad": "Querétaro",
       "lat": 20.781,
       "lng": -100.051,
       "precision": "municipio",
       "estado": "en-construccion",
-      "ultimaAccion": "Construcción",
-      "ultimoAnio": 2023
+      "ultimaAccion": "Inversión",
+      "ultimoAnio": 2026
     },
     {
       "id": "concentrix-concentrix-data-center-queretaro",
@@ -1477,9 +1558,12 @@
           "medio": "Líder Empresarial"
         }
       ],
-      "score": 2.0,
+      "score": 2.5,
       "semaforo": "rojo",
       "ubicacionFuente": "Querétaro",
+      "cveEnt": "22",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Querétaro",
       "lat": 20.85,
@@ -1518,12 +1602,15 @@
         },
         {
           "url": "https://newsroom.equinix.com/2020-01-09-Equinix-Completes-US-175-Million-Acquisition-of-Three-Data-Centers-in-Mexico?utm_source",
-          "medio": "newsroom.equinix.com"
+          "medio": "Equinix (sala de prensa)"
         }
       ],
-      "score": 6.0,
-      "semaforo": "amarillo",
+      "score": 5.0,
+      "semaforo": "naranja",
       "ubicacionFuente": "Parque Innovación, El Marques, Querétaro",
+      "cveEnt": "22",
+      "cveMun": "11",
+      "cvegeo": "22011",
       "municipio": "El Marqués",
       "entidad": "Querétaro",
       "lat": 20.62,
@@ -1547,7 +1634,7 @@
         "construccion": null,
         "expansion": {
           "texto": "Abril 2021 (Expansión) | Diciembre 2024 (Inauguración)",
-          "anio": 2021,
+          "anio": 2024,
           "accion": "Expansión"
         }
       },
@@ -1581,9 +1668,12 @@
           "medio": "Reporte Índigo"
         }
       ],
-      "score": 8.0,
+      "score": 7.5,
       "semaforo": "amarillo",
       "ubicacionFuente": "Parque Innovación, El Marques, Querétaro | Querétaro",
+      "cveEnt": "22",
+      "cveMun": "11",
+      "cvegeo": "22011",
       "municipio": "El Marqués",
       "entidad": "Querétaro",
       "lat": 20.62,
@@ -1591,7 +1681,7 @@
       "precision": "municipio",
       "estado": "en-operacion",
       "ultimaAccion": "Expansión",
-      "ultimoAnio": 2021
+      "ultimoAnio": 2024
     },
     {
       "id": "genesys-genesys-cloud-data-center-queretaro",
@@ -1621,9 +1711,12 @@
           "medio": "eSemanal"
         }
       ],
-      "score": 2.0,
+      "score": 2.5,
       "semaforo": "rojo",
       "ubicacionFuente": "Querétaro",
+      "cveEnt": "22",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Querétaro",
       "lat": 20.85,
@@ -1647,7 +1740,7 @@
         "construccion": null,
         "expansion": null
       },
-      "monto": null,
+      "monto": "117 mil empleos para ese año (2023)",
       "electricidad": null,
       "tamano": null,
       "enfriamiento": null,
@@ -1670,7 +1763,7 @@
         },
         {
           "url": "https://www.xataka.com.mx/telecomunicaciones/a-google-le-convencio-oasis-tecnologico-que-queretaro-ha-decidido-abrir-ahi-su-primer-centro-datos-mexico",
-          "medio": "xataka.com.mx"
+          "medio": "Xataka México"
         },
         {
           "url": "https://www.eleconomista.com.mx/estados/Google-instalara-una-region-de-centros-de-datos-en-Queretaro-20240701-0072.html",
@@ -1682,7 +1775,7 @@
         },
         {
           "url": "https://www.tusbuenasnoticias.com/noticias/buenas-noticias/2024/07/02/35057-google-instalara-un-data-center-en-queretaro",
-          "medio": "tusbuenasnoticias.com"
+          "medio": "Tus Buenas Noticias"
         },
         {
           "url": "https://es.wired.com/articulos/google-inaugura-su-primera-region-de-nube-en-mexico-la-tercera-en-america-latina",
@@ -1690,12 +1783,15 @@
         },
         {
           "url": "https://blog.google/intl/es-419/actualizaciones-de-producto/en-la-nube/region-cloud-mexico-nueva/",
-          "medio": "blog.google"
+          "medio": "Google (blog oficial)"
         }
       ],
-      "score": 4.0,
+      "score": 3.75,
       "semaforo": "naranja",
       "ubicacionFuente": "El Marqués, Qro. / Tultitlán, Edo. de México",
+      "cveEnt": "22",
+      "cveMun": "11",
+      "cvegeo": "22011",
       "municipio": "El Marqués",
       "entidad": "Querétaro",
       "lat": 20.62,
@@ -1738,12 +1834,15 @@
         },
         {
           "url": "https://kiodatacenters.com/ubicaciones/qro-1",
-          "medio": "kiodatacenters.com"
+          "medio": "KIO (sitio oficial)"
         }
       ],
       "score": 5.0,
       "semaforo": "naranja",
       "ubicacionFuente": "Parque Industrial El Marques, Querétaro",
+      "cveEnt": "22",
+      "cveMun": "11",
+      "cvegeo": "22011",
       "municipio": "El Marqués",
       "entidad": "Querétaro",
       "lat": 20.62,
@@ -1786,7 +1885,7 @@
         },
         {
           "url": "https://elmarques.gob.mx/2023/02/27/anuncia-kio-networks-inversion-de-400-millones-de-dolares-en-el-marques/",
-          "medio": "elmarques.gob.mx"
+          "medio": "Gobierno de El Marqués"
         },
         {
           "url": "https://mexicoindustry.com/noticia/kio-invertira-400-mdd-en-su-tercer-data-center-en-queretaro",
@@ -1801,9 +1900,12 @@
           "medio": "El Universal Querétaro"
         }
       ],
-      "score": 8.0,
+      "score": 7.5,
       "semaforo": "amarillo",
       "ubicacionFuente": "Parque Industrial El Marques, Querétaro",
+      "cveEnt": "22",
+      "cveMun": "11",
+      "cvegeo": "22011",
       "municipio": "El Marqués",
       "entidad": "Querétaro",
       "lat": 20.62,
@@ -1820,7 +1922,7 @@
       "empresa": "KIO",
       "fases": {
         "anuncio": {
-          "texto": "2026-05-23 00:00:00",
+          "texto": "46165",
           "anio": 2026,
           "accion": null
         },
@@ -1850,7 +1952,7 @@
         },
         {
           "url": "https://elmarques.gob.mx/2023/02/27/anuncia-kio-networks-inversion-de-400-millones-de-dolares-en-el-marques/",
-          "medio": "elmarques.gob.mx"
+          "medio": "Gobierno de El Marqués"
         },
         {
           "url": "https://www.datacenterdynamics.com/es/noticias/nuevo-data-center-en-quer%C3%A9taro-n%C3%BAmero-3/",
@@ -1869,16 +1971,19 @@
           "medio": "Milenio"
         }
       ],
-      "score": 7.0,
+      "score": 6.25,
       "semaforo": "amarillo",
       "ubicacionFuente": "El Marqués, Querétaro",
+      "cveEnt": "22",
+      "cveMun": "11",
+      "cvegeo": "22011",
       "municipio": "El Marqués",
       "entidad": "Querétaro",
       "lat": 20.62,
       "lng": -100.263,
       "precision": "municipio",
       "estado": "en-construccion",
-      "ultimaAccion": "2026-05-23 00:00:00",
+      "ultimaAccion": "46165",
       "ultimoAnio": 2026
     },
     {
@@ -1901,9 +2006,12 @@
           "medio": "BNamericas"
         }
       ],
-      "score": 4.0,
+      "score": 3.75,
       "semaforo": "naranja",
       "ubicacionFuente": "Querétaro",
+      "cveEnt": "22",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Querétaro",
       "lat": 20.85,
@@ -1950,12 +2058,15 @@
         },
         {
           "url": "https://www.arenapublica.com/negocios/queretaro-en-ruta-ser-referente-mundial-de-data-centers",
-          "medio": "arenapublica.com"
+          "medio": "Arena Pública"
         }
       ],
-      "score": 10.0,
+      "score": 8.75,
       "semaforo": "verde",
       "ubicacionFuente": "Vesta Industrial Park, Colón, Querétaro",
+      "cveEnt": "22",
+      "cveMun": "5",
+      "cvegeo": "22005",
       "municipio": "Colón",
       "entidad": "Querétaro",
       "lat": 20.781,
@@ -2002,7 +2113,7 @@
         },
         {
           "url": "https://www.arenapublica.com/negocios/queretaro-en-ruta-ser-referente-mundial-de-data-centers",
-          "medio": "arenapublica.com"
+          "medio": "Arena Pública"
         },
         {
           "url": "https://www.bnamericas.com/es/reportajes/los-centros-de-datos-mas-grandes-que-se-instalaran-en-latinoamerica",
@@ -2021,13 +2132,16 @@
           "medio": "Líder Empresarial"
         }
       ],
-      "score": 7.0,
-      "semaforo": "amarillo",
+      "score": 8.75,
+      "semaforo": "verde",
       "ubicacionFuente": "Parque Industrial Querétaro",
+      "cveEnt": "22",
+      "cveMun": "14",
+      "cvegeo": "22014",
       "municipio": "Querétaro",
       "entidad": "Querétaro",
-      "lat": 20.72,
-      "lng": -100.45,
+      "lat": 20.593,
+      "lng": -100.392,
       "precision": "municipio",
       "estado": "en-operacion",
       "ultimaAccion": "Febrero 2024 Expansion",
@@ -2097,14 +2211,17 @@
           "medio": "Somos Industria"
         }
       ],
-      "score": 10.0,
+      "score": 8.75,
       "semaforo": "verde",
-      "ubicacionFuente": "El Marqués ,PyME ,Industrialix, Querétaro",
-      "municipio": null,
+      "ubicacionFuente": "El Marqués / PyME / Industrialix, Querétaro",
+      "cveEnt": "22",
+      "cveMun": "11",
+      "cvegeo": "22011",
+      "municipio": "El Marqués",
       "entidad": "Querétaro",
-      "lat": 20.85,
-      "lng": -99.9,
-      "precision": "entidad",
+      "lat": 20.62,
+      "lng": -100.263,
+      "precision": "municipio",
       "estado": "en-construccion",
       "ultimaAccion": "2026-02-24 00:00:00",
       "ultimoAnio": 2026
@@ -2133,9 +2250,12 @@
           "medio": "Expansión"
         }
       ],
-      "score": 2.0,
+      "score": 2.5,
       "semaforo": "rojo",
       "ubicacionFuente": "Queretaro",
+      "cveEnt": "22",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Querétaro",
       "lat": 20.85,
@@ -2169,9 +2289,12 @@
           "medio": "Mexico Industry"
         }
       ],
-      "score": 3.0,
+      "score": 3.75,
       "semaforo": "naranja",
       "ubicacionFuente": "Querétaro",
+      "cveEnt": "22",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Querétaro",
       "lat": 20.85,
@@ -2205,9 +2328,12 @@
           "medio": "BNamericas"
         }
       ],
-      "score": 3.0,
-      "semaforo": "naranja",
+      "score": 2.5,
+      "semaforo": "rojo",
       "ubicacionFuente": "San Juan del Río, Querétaro",
+      "cveEnt": "22",
+      "cveMun": "16",
+      "cvegeo": "22016",
       "municipio": "San Juan del Río",
       "entidad": "Querétaro",
       "lat": 20.389,
@@ -2241,9 +2367,12 @@
           "medio": "BNamericas"
         }
       ],
-      "score": 3.0,
-      "semaforo": "naranja",
+      "score": 2.5,
+      "semaforo": "rojo",
       "ubicacionFuente": "San Juan del Río, Querétaro",
+      "cveEnt": "22",
+      "cveMun": "16",
+      "cvegeo": "22016",
       "municipio": "San Juan del Río",
       "entidad": "Querétaro",
       "lat": 20.389,
@@ -2277,9 +2406,12 @@
           "medio": "BNamericas"
         }
       ],
-      "score": 3.0,
-      "semaforo": "naranja",
+      "score": 2.5,
+      "semaforo": "rojo",
       "ubicacionFuente": "San Juan del Río, Querétaro",
+      "cveEnt": "22",
+      "cveMun": "16",
+      "cvegeo": "22016",
       "municipio": "San Juan del Río",
       "entidad": "Querétaro",
       "lat": 20.389,
@@ -2313,9 +2445,12 @@
           "medio": "BNamericas"
         }
       ],
-      "score": 2.0,
+      "score": 2.5,
       "semaforo": "rojo",
       "ubicacionFuente": "Querétaro",
+      "cveEnt": "22",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Querétaro",
       "lat": 20.85,
@@ -2349,9 +2484,12 @@
           "medio": "BNamericas"
         }
       ],
-      "score": 2.0,
+      "score": 2.5,
       "semaforo": "rojo",
       "ubicacionFuente": "Querétaro",
+      "cveEnt": "22",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Querétaro",
       "lat": 20.85,
@@ -2385,9 +2523,12 @@
           "medio": "BNamericas"
         }
       ],
-      "score": 3.0,
-      "semaforo": "naranja",
+      "score": 2.5,
+      "semaforo": "rojo",
       "ubicacionFuente": "San Juan del Río, Querétaro",
+      "cveEnt": "22",
+      "cveMun": "16",
+      "cvegeo": "22016",
       "municipio": "San Juan del Río",
       "entidad": "Querétaro",
       "lat": 20.389,
@@ -2418,16 +2559,19 @@
       "notas": [
         {
           "url": "https://www.corresponsables.com/actualidad/telmex-inaugura-el-centro-de-datos-triara-el-mas-grande-y-moderno-de-latinoamerica-0/",
-          "medio": "corresponsables.com"
+          "medio": "Corresponsables"
         },
         {
           "url": "https://kioscomayor.com/2024/12/11/los-centros-de-datos-de-triara-de-telmex-consolidan-su-liderazgo-y-confiabilidad-a-nivel-mundial-con-la-obtencion-de-la-certificacion-internacional-icrea-vi/",
-          "medio": "kioscomayor.com"
+          "medio": "Kiosco Mayor"
         }
       ],
-      "score": 7.0,
+      "score": 7.5,
       "semaforo": "amarillo",
       "ubicacionFuente": "Querétaro",
+      "cveEnt": "22",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Querétaro",
       "lat": 20.85,
@@ -2465,9 +2609,12 @@
           "medio": "El Economista"
         }
       ],
-      "score": 2.0,
+      "score": 2.5,
       "semaforo": "rojo",
       "ubicacionFuente": "Quintana Roo",
+      "cveEnt": "23",
+      "cveMun": null,
+      "cvegeo": null,
       "municipio": null,
       "entidad": "Quintana Roo",
       "lat": 19.6,
@@ -2517,9 +2664,12 @@
           "medio": "El Economista"
         }
       ],
-      "score": 3.0,
-      "semaforo": "naranja",
+      "score": 2.5,
+      "semaforo": "rojo",
       "ubicacionFuente": "Nogales, Sonora",
+      "cveEnt": "26",
+      "cveMun": "43",
+      "cvegeo": "26043",
       "municipio": "Nogales",
       "entidad": "Sonora",
       "lat": 31.308,
@@ -2544,7 +2694,7 @@
         }
       },
       "monto": "30 MDD",
-      "electricidad": "2023, 2025",
+      "electricidad": null,
       "tamano": null,
       "enfriamiento": null,
       "notas": [
@@ -2553,9 +2703,12 @@
           "medio": "Mexico Industry"
         }
       ],
-      "score": 6.0,
-      "semaforo": "amarillo",
+      "score": 3.75,
+      "semaforo": "naranja",
       "ubicacionFuente": "Nogales, Sonora",
+      "cveEnt": "26",
+      "cveMun": "43",
+      "cvegeo": "26043",
       "municipio": "Nogales",
       "entidad": "Sonora",
       "lat": 31.308,

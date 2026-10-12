@@ -66,4 +66,14 @@ describe("dataset de centros de datos (prensa)", () => {
       else expect(c.municipio, c.id).toBeTruthy();
     }
   });
+
+  it("las claves INEGI son coherentes con la precisión", () => {
+    for (const c of d.centros) {
+      expect(c.cveEnt, c.id).toMatch(/^\d{1,2}$/);
+      if (c.precision === "municipio") {
+        expect(c.cvegeo, c.id).toMatch(/^\d{4,5}$/);
+        expect(c.cvegeo, c.id).toBe(`${c.cveEnt}${c.cveMun!.padStart(3, "0")}`);
+      }
+    }
+  });
 });

@@ -38,6 +38,10 @@ export type CentroPrensa = {
   score: number;
   semaforo: Semaforo;
   ubicacionFuente: string;
+  /** Claves geoestadísticas de INEGI del geocodificado del equipo. */
+  cveEnt: string;
+  cveMun: string | null;
+  cvegeo: string | null;
   municipio: string | null;
   entidad: string;
   lat: number;
