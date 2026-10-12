@@ -354,7 +354,8 @@
               "url": "https://www.reforma.com/va-fase-dos-del-centro-de-datos/ar2306427",
               "medio": "Reforma"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -397,7 +398,8 @@
               "url": "https://www.itmastersmag.com/noticias-analisis/kio-adquiere-nuevo-campus-para-centro-de-datos-en-el-valle-de-mexico/",
               "medio": "IT Masters Mag"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -478,7 +480,8 @@
               "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE9TRXpWbXZaSlYtbXBkbENiOXJKV054YzNuYWUtSkdzSXExUTczT09TQjFKX3BvVlRaTG9SRnliS0luUUExOEF6aEFyZXRXa1lTUjRpbUk2VmFYTGMtUmxFTkRaRjRvQjg0QkJnSUtqVUZZTXl3N1lCXzJ6Vi1LUQ?oc=5",
               "medio": "Google News (agregador)"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Cuajimalpa / Álvaro Obregón (Santa Fe)",
@@ -529,7 +532,8 @@
               "url": "https://www.datacenterdynamics.com/es/noticias/mtp-pone-en-marcha-la-segunda-fase-de-su-data-center-de-santa-fe/",
               "medio": "Data Center Dynamics"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Cuajimalpa / Álvaro Obregón (Santa Fe)",
@@ -578,7 +582,8 @@
               "url": "https://oem.com.mx/la-prensa/incoming/pemex-inaugura-centro-de-datos-que-hara-frente-a-ciberataques-15292778",
               "medio": "El Sol de México (OEM)"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -618,7 +623,8 @@
               "url": "https://mexicoindustry.com/noticia/pentafon-primer-data-center-en-obtener-la-certificacion-mundial-ansitia-942",
               "medio": "Mexico Industry"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -653,7 +659,8 @@
               "url": "https://oem.com.mx/diariodequeretaro/finanzas/certifican-el-data-center-de-telmex-13084657",
               "medio": "El Sol de México (OEM)"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -708,7 +715,8 @@
               "url": "https://www.businesswire.com/news/home/20240910575442/es",
               "medio": "businesswire.com"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         },
         {
           "anio": 2025,
@@ -741,7 +749,8 @@
               "url": "https://lasillarota.com/negocios/2025/12/14/primer-data-center-para-ia-en-mexico-estaria-listo-en-2028-574207.html",
               "medio": "lasillarota.com"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2026,
@@ -766,7 +775,8 @@
               "url": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxNVEFmMGFaSGtwVHphQ1Q1TXF2SXllSVluVjBHbWlzeE1pUVNuVnAzb3MxVmpXYTZiMnNGNFItaFFpWVBwZ21GVGhGR01aQ0FFcEJ4NVBqYjR1TjY2Um9rWnB2TTUzYkZDU1RUOWVrR3ozNnBBbHRzM0xpOVBNc1J0eGlQOWY0TkZSQVJyU2g3emVHRzhvLVlXX0RhdjhPMlNwZFlKWjVGNUY5STMwVjVFWXhoeHRMWEpxZEs3S0NCcWlxQTZmWURXZU9RQU9takhuU2l4M1o1dF9CQjJNeVIzWjhhdkFKSEJGb1Vhd3E3SEdUM1FRWWZBNmd3?oc=5",
               "medio": "Google News (agregador)"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         }
       ],
       "municipio": "Lerdo",
@@ -837,7 +847,8 @@
               "url": "https://www.mundoejecutivo.com.mx/empresas/atalait-ampliara-su-centro-de-datos-en-metepec-con-inversion-de-100-mdd/",
               "medio": "mundoejecutivo.com.mx"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Metepec",
@@ -896,7 +907,8 @@
               "url": "https://expansion.mx/tecnologia/2021/10/26/huawei-centro-de-datos-mexico",
               "medio": "Expansión"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Tultitlán",
@@ -936,7 +948,8 @@
               "url": "https://www.datacenterdynamics.com/es/noticias/el-data-center-de-nabiax-en-ixtlahuaca-renueva-la-certificaci%C3%B3n-tier-iii-gold-de-uptime-institute/",
               "medio": "Data Center Dynamics"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Ixtlahuaca",
@@ -971,7 +984,8 @@
               "url": "https://www.bnamericas.com/es/reportajes/un-vistazo-a-la-cartera-de-proyectos-de-datacenters-de-scala",
               "medio": "BNamericas"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2023,
@@ -992,7 +1006,8 @@
               "url": "https://www.datacenterdynamics.com/es/noticias/scala-data-centers-invierte-80-millones-de-d%C3%B3lares-en-construir-su-primer-data-center-hiperescala-en-m%C3%A9xico/",
               "medio": "Data Center Dynamics"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Tepotzotlán",
@@ -1050,7 +1065,8 @@
               "url": "https://www.datacenterdynamics.com/es/noticias/layer-9-data-centers-empieza-a-construir-un-campus-de-96mw-en-guanajuato-m%C3%A9xico/",
               "medio": "Data Center Dynamics"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Apaseo el Grande",
@@ -1095,7 +1111,8 @@
               "url": "https://www.datacenterdynamics.com/es/features/todos-los-data-centers-que-veran-la-luz-en-2024/",
               "medio": "Data Center Dynamics"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         },
         {
           "anio": 2024,
@@ -1124,7 +1141,8 @@
               "url": "https://www.liderempresarial.com/inicio-operaciones-de-datacenter-de-odata-en-queretaro-esto-es-lo-que-sabemos/",
               "medio": "Líder Empresarial"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Apaseo el Grande",
@@ -1173,7 +1191,8 @@
               "url": "https://www.datacenterdynamics.com/es/noticias/odata-inicia-la-construccion-del-data-center-qr04-en-mexico/",
               "medio": "Data Center Dynamics"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         },
         {
           "anio": 2025,
@@ -1218,7 +1237,8 @@
               "url": "https://somosindustria.com/articulo/odata-inauguro-planta-en-guanajuato/",
               "medio": "Somos Industria"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "San Miguel de Allende",
@@ -1297,7 +1317,8 @@
               "url": "https://www.itmastersmag.com/transformacion-digital/aws-estrena-oficina-en-monterrey-es-la-tercera-en-mexico/",
               "medio": "IT Masters Mag"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Zapopan",
@@ -1341,7 +1362,8 @@
               "url": "https://www.datacenterdynamics.com/es/noticias/arelion-amplia-presencia-en-mexico-y-lanza-pop-en-guadalajara-en-el-data-center-de-hostdime/",
               "medio": "Data Center Dynamics"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Guadalajara",
@@ -1376,7 +1398,8 @@
               "url": "https://www.produ.com/tecnologia/noticias/ana-maria-oganda-de-mega-data-center-contamos-con-2300-metros-cuadrados-de-piso-blanco-don-infraestructura-de-clase-mundial/",
               "medio": "produ.com"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Guadalajara",
@@ -1411,7 +1434,8 @@
               "url": "https://www.datacenterdynamics.com/es/noticias/nuevo-le%C3%B3n-impulsar%C3%A1-innovaci%C3%B3n-con-su-primer-centro-de-c%C3%B3mputo-de-alto-rendimiento-e-inteligencia-artificial/",
               "medio": "Data Center Dynamics"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -1450,7 +1474,8 @@
               "url": "https://www.itmastersmag.com/transformacion-digital/aws-estrena-oficina-en-monterrey-es-la-tercera-en-mexico/",
               "medio": "IT Masters Mag"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Monterrey",
@@ -1494,7 +1519,8 @@
               "url": "https://www.liderempresarial.com/5-datos-sobre-equinix-la-gigante-tecnologica-que-se-expandira-en-queretaro/",
               "medio": "Líder Empresarial"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Monterrey",
@@ -1542,7 +1568,8 @@
               "url": "https://newsroom.equinix.com/2025-10-30-Equinix-Mexico-invierte-US-81-millones-en-nuevo-centro-de-datos-en-Monterrey?utm_source=chatgpt.com",
               "medio": "newsroom.equinix.com"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         },
         {
           "anio": 2025,
@@ -1575,7 +1602,8 @@
               "url": "https://www.elfinanciero.com.mx/monterrey/2025/10/30/inaugura-equinix-centro-de-datos-en-monterrey/",
               "medio": "El Financiero"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Apodaca",
@@ -1634,7 +1662,8 @@
               "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOOFFTMXBxRS04LTI1ZWc3OE90UUh0OUQtaWs1Z1hKbjNvaGJVWHNKVVVROHZEUlZHUjRDNE1Wb2hURXl4dUJqbVIwRlVTOTlhbElFQWpzVmRIdENuSjBvTk5mY1FTQi1WcGZKdjNNSzR5SUxNLUhSV054Wm9yc1pDRE1uSF9pRHR5SU5BT01SX0dreXM4ZDNOZ3kyZXg4NDh6dEtR?oc=5",
               "medio": "Google News (agregador)"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -1681,7 +1710,8 @@
               "url": "https://tecnoempresa.mx/kio-data-centers-anuncia-planes-de-expansion-para-2024/",
               "medio": "Tecnoempresa"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Pesquería",
@@ -1763,7 +1793,8 @@
               "url": "https://www.milenio.com/negocios/oracle-abre-nueva-region-de-soluciones-de-nube-en-monterrey",
               "medio": "Milenio"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2024,
@@ -1776,7 +1807,8 @@
               "url": "https://www.datacenterdynamics.com/es/noticias/oracle-desarrollara-region-de-nube-en-nuevo-leon-mexico/",
               "medio": "Data Center Dynamics"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         }
       ],
       "municipio": "Monterrey",
@@ -1851,7 +1883,8 @@
               "url": "https://oem.com.mx/diariodequeretaro/finanzas/certifican-el-data-center-de-telmex-13084657",
               "medio": "El Sol de México (OEM)"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Monterrey",
@@ -1894,7 +1927,8 @@
               "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxQT3pwREF0c1BWaFpiSzVrdVJOeWJ1SldoU0FRM3JTelRCUkMtSWpLejRTUnNBS1gwTFVuTjFtU0h5Y2dfenBBMl9pRDNnUEhyUXczYkxjTXdPcEJNTDdfZHFxSWZaems5QzRCWG03SlktMHNpb0xjbTdfRHhYYVB1N2hzLW9IWllLQlFaMkNha1ZISHBUNzNiZlRhcnfSAZwBQVVfeXFMUE9OYWVOelBINlh3VURTRUJhdE5zS0tmQ0haUUtFZGt3T0FQdEFMRURUVFZWeUpQVWFtTU1GMHBub0dRVHlRMW90andaWTVXUjdPbXc1TThJemV5VEVqWC1wYTlSaWd4clVycWhNbkVBVWF2ZEhaZXdOdlRqZFhoTUpJeFZMTXJGTGFUcnAxMjV2bjlGYW5sT1o3M0pK?oc=5",
               "medio": "Google News (agregador)"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -1933,7 +1967,8 @@
               "url": "https://www.datacenterdynamics.com/es/noticias/actis-lanza-terranova-una-plataforma-de-data-centers-hyperscale-para-acelerar-la-expansi%C3%B3n-digital-en-latam/",
               "medio": "Data Center Dynamics"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2026,
@@ -1954,7 +1989,8 @@
               "url": "https://news.google.com/rss/articles/CBMi1gFBVV95cUxONF85cms0VXVnQWRiY3BxX2Rxb3ZVaDVxaFB2WGJHX1RvNno5RVFkXzVBalNDbm43aDRpWDlaQk9mOEo1b3lTSmFWa2NNWmVEcGpPVm1lclpnclpkYXlDMVVSOUZLVkREbW5lUGhzX0p6S29FTkJYbEo2ay1Xc3VldjVLTGN0TFFYTU1wMjUxZjRBWERhRDJzQmM2cE1nZmtZd2lCTWd1Ty1DcXNkTkZxN2hWYjhONWFJZi0tOGdiWE54N3VuNmFMUk5UVkF3MXVsZUVSaVBn?oc=5",
               "medio": "Google News (agregador)"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -2023,7 +2059,8 @@
               "url": "https://mexicoindustry.com/noticia/alibaba-cloud-abrira-centro-de-datos-en-mexico-como-parte-de-plan-de-expansion",
               "medio": "Mexico Industry"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -2087,7 +2124,8 @@
               "url": "https://lavozdequeretaro.com/queretaro/amazon-podria-abrir-un-centro-de-datos-en-queretaro/",
               "medio": "lavozdequeretaro.com"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2022,
@@ -2104,7 +2142,8 @@
               "url": "https://dplnews.com/queretaro-se-posiciona-como-hub-de-centros-de-datos-en-america-latina/",
               "medio": "DPL News"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2023,
@@ -2121,7 +2160,8 @@
               "url": "https://forbes.com.mx/amazon-web-services-expande-su-nube-con-una-nueva-zona-en-queretaro/",
               "medio": "Forbes México"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2024,
@@ -2170,7 +2210,8 @@
               "url": "https://mvsnoticias.com/entrevistas/2024/2/28/mauricio-kuri-celebra-la-llegada-de-amazon-queretaro-es-una-gran-noticia-para-mexico-623495.html",
               "medio": "mvsnoticias.com"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2025,
@@ -2211,7 +2252,8 @@
               "url": "https://www.gob.mx/presidencia/prensa/presidenta-claudia-sheinbaum-anuncia-inversion-de-5-mmdd-de-amazon-web-services-en-mexico-para-crear-region-digital-en-queretaro?idiom=es",
               "medio": "gob.mx"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -2326,7 +2368,8 @@
               "url": "https://www.bnamericas.com/es/reportajes/los-centros-de-datos-mas-grandes-que-se-instalaran-en-latinoamerica",
               "medio": "BNamericas"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -2365,7 +2408,8 @@
               "url": "https://www.bnamericas.com/es/reportajes/los-centros-de-datos-mas-grandes-que-se-instalaran-en-latinoamerica",
               "medio": "BNamericas"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2023,
@@ -2382,7 +2426,8 @@
               "url": "https://www.datacenterdynamics.com/es/features/todos-los-data-centers-que-veran-la-luz-en-2024/",
               "medio": "Data Center Dynamics"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -2435,7 +2480,8 @@
               "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxQaUQ0Wm9LQ0NOeUZib1llem9tYWZJcjZMWkV6X203THhFQ3VSWDYyOHNUMHhOOGVwRVZGc1hiSU5aZ295MEM1UFRtMmVCSTY4UFBuMGpjd25EYXlobDZITXRyczhWUE9lWGVTY3ZvYkltYTgtbDBlOFV4dlFYbWtUSUNCekR0WUVVTGc?oc=5",
               "medio": "Google News (agregador)"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -2474,7 +2520,8 @@
               "url": "https://www.liderempresarial.com/la-tecnologica-estadounidense-cloudhq-llega-a-queretaro/",
               "medio": "Líder Empresarial"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         },
         {
           "anio": 2023,
@@ -2499,7 +2546,8 @@
               "url": "https://somosindustria.com/articulo/huawei-ampliara-su-centro-de-datos-en-queretaro/",
               "medio": "Somos Industria"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2024,
@@ -2512,7 +2560,8 @@
               "url": "https://www.bnamericas.com/es/reportajes/radiografia-a-los-principales-centros-de-datos-en-desarrollo-en-latinoamerica",
               "medio": "BNamericas"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2025,
@@ -2573,7 +2622,8 @@
               "url": "https://theofficer.es/cloudhq-invertira-4-800-millones-centros-datos-ia-mexico/",
               "medio": "theofficer.es"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         },
         {
           "anio": 2026,
@@ -2598,7 +2648,8 @@
               "url": "https://arteesetica.org/queretaro-sin-agua-y-sin-luz-por-la-ia/",
               "medio": "arteesetica.org"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         }
       ],
       "municipio": "Colón",
@@ -2648,7 +2699,8 @@
               "url": "https://www.liderempresarial.com/concentrix-inaugura-nuevo-hub-tecnologico-en-queretaro/",
               "medio": "Líder Empresarial"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -2691,7 +2743,8 @@
               "url": "https://newsroom.equinix.com/2020-01-09-Equinix-Completes-US-175-Million-Acquisition-of-Three-Data-Centers-in-Mexico?utm_source",
               "medio": "newsroom.equinix.com"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "El Marqués",
@@ -2740,7 +2793,8 @@
               "url": "https://www.liderempresarial.com/5-datos-sobre-equinix-la-gigante-tecnologica-que-se-expandira-en-queretaro/",
               "medio": "Líder Empresarial"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2021,
@@ -2765,7 +2819,8 @@
               "url": "https://www.bnamericas.com/es/reportajes/los-centros-de-datos-mas-grandes-que-se-instalaran-en-latinoamerica",
               "medio": "BNamericas"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         },
         {
           "anio": 2022,
@@ -2778,7 +2833,8 @@
               "url": "https://www.datacenterdynamics.com/es/features/c%C3%B3mo-se-ampliar%C3%A1-el-mapa-de-los-data-centers-en-latam-este-2022/",
               "medio": "Data Center Dynamics"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         },
         {
           "anio": 2024,
@@ -2799,7 +2855,8 @@
               "url": "https://infochannel.info/equinix-termina-expansion-de-queretaro-y-alista-monterrey/",
               "medio": "Infochannel"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         }
       ],
       "municipio": "El Marqués",
@@ -2843,7 +2900,8 @@
               "url": "https://esemanal.mx/2025/11/genesys-instala-region-cloud-en-mexico-para-proyectos-con-residencia-de-datos/",
               "medio": "eSemanal"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -2891,7 +2949,8 @@
               "url": "https://dplnews.com/queretaro-se-posiciona-como-hub-de-centros-de-datos-en-america-latina/",
               "medio": "DPL News"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2023,
@@ -2912,7 +2971,8 @@
               "url": "https://www.elfinanciero.com.mx/empresas/2023/08/16/region-de-google-cloud-en-queretaro-dara-empujon-a-pib-de-mexico-estima-aportar-226-mil-mdp/",
               "medio": "El Financiero"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2024,
@@ -2961,7 +3021,8 @@
               "url": "https://www.telediario.mx/comunidad/google-instalara-en-queretaro-data-center-en-2025",
               "medio": "telediario.mx"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2025,
@@ -2974,7 +3035,8 @@
               "url": "https://www.itsitio.com/mx/cloud/google-inaugura-region-en-queretaro-y-apuesta-por-el-talento-tecnologico-en-mexico/",
               "medio": "itsitio.com"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -3092,7 +3154,8 @@
               "url": "https://www.eleconomista.com.mx/estados/Huawei-amplia-su-centro-de-datos-en-Queretaro-impulsando-el-sector-TIC-en-la-region-20240110-0064.html",
               "medio": "El Economista"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "El Marqués",
@@ -3149,7 +3212,8 @@
               "url": "https://forbes.com.mx/un-viaje-a-las-entranas-de-internet-asi-es-el-centro-de-datos-de-kio-en-queretaro/",
               "medio": "Forbes México"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "El Marqués",
@@ -3222,7 +3286,8 @@
               "url": "https://www.eluniversalqueretaro.mx/cartera/planta-de-kio-networks-creara-250-empleos-en-queretaro/",
               "medio": "El Universal Querétaro"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2024,
@@ -3255,7 +3320,8 @@
               "url": "https://www.datacenterdynamics.com/es/noticias/kio-data-centers-anuncia-planes-de-expansion-para-2024/",
               "medio": "Data Center Dynamics"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "El Marqués",
@@ -3360,7 +3426,8 @@
               "url": "https://www.eluniversalqueretaro.mx/cartera/planta-de-kio-networks-creara-250-empleos-en-queretaro/",
               "medio": "El Universal Querétaro"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2024,
@@ -3405,7 +3472,8 @@
               "url": "https://www.datacenterdynamics.com/es/noticias/kio-data-centers-anuncia-planes-de-expansion-para-2024/",
               "medio": "Data Center Dynamics"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2025,
@@ -3418,7 +3486,8 @@
               "url": "https://www.eleconomista.com.mx/estados/kio-data-centers-inaugura-qro2-amplia-presencia-queretaro-20251209-790433.html",
               "medio": "El Economista"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         }
       ],
       "municipio": "El Marqués",
@@ -3508,7 +3577,8 @@
               "url": "https://www.bnamericas.com/es/noticias/radiografia-al-masivo-proyecto-de-layer-9-data-centers-en-mexico",
               "medio": "BNamericas"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2024,
@@ -3521,7 +3591,8 @@
               "url": "https://www.bnamericas.com/es/reportajes/radiografia-a-los-principales-centros-de-datos-en-desarrollo-en-latinoamerica",
               "medio": "BNamericas"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -3564,7 +3635,8 @@
               "url": "https://www.datacenterdynamics.com/en/news/microsoft-chooses-quer%C3%A9taro-for-mexican-cloud-region/",
               "medio": "Data Center Dynamics"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2021,
@@ -3585,7 +3657,8 @@
               "url": "https://www.arenapublica.com/negocios/queretaro-en-ruta-ser-referente-mundial-de-data-centers",
               "medio": "arenapublica.com"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2022,
@@ -3606,7 +3679,8 @@
               "url": "https://dplnews.com/queretaro-se-posiciona-como-hub-de-centros-de-datos-en-america-latina/",
               "medio": "DPL News"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         },
         {
           "anio": 2023,
@@ -3639,7 +3713,8 @@
               "url": "https://forbes.com.mx/brand-voice/ad-este-2023-microsoft-iniciara-operaciones-en-su-region-de-centros-de-datos-en-queretaro/",
               "medio": "Forbes México"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         },
         {
           "anio": 2024,
@@ -3688,7 +3763,8 @@
               "url": "https://www.tvnotas.com.mx/noticias-mexico/la-primera-region-en-mexico-de-centros-de-datos-inicia-operaciones-en-queretaro",
               "medio": "tvnotas.com.mx"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         },
         {
           "anio": 2026,
@@ -3705,7 +3781,8 @@
               "url": "https://local.microsoft.com/wp-content/uploads/2025/10/Microsoft-datacenters-in-Mexico.pdf?utm_source=copilot.com",
               "medio": "local.microsoft.com"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         }
       ],
       "municipio": "Colón",
@@ -3772,7 +3849,8 @@
               "url": "https://www.bnamericas.com/es/reportajes/los-centros-de-datos-mas-grandes-que-se-instalaran-en-latinoamerica",
               "medio": "BNamericas"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2022,
@@ -3793,7 +3871,8 @@
               "url": "https://www.liderempresarial.com/odata-culmina-la-construccion-de-su-primer-centro-de-datos-en-queretaro/",
               "medio": "Líder Empresarial"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         },
         {
           "anio": 2023,
@@ -3801,7 +3880,8 @@
           "accion": "Construcción",
           "monto": null,
           "ubicacionFuente": "Querétaro",
-          "notas": []
+          "notas": [],
+          "fijaUbicacion": false
         },
         {
           "anio": 2024,
@@ -3818,7 +3898,8 @@
               "url": "https://www.bnamericas.com/es/reportajes/radiografia-a-los-principales-centros-de-datos-en-desarrollo-en-latinoamerica",
               "medio": "BNamericas"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         }
       ],
       "municipio": "Querétaro",
@@ -3872,7 +3953,8 @@
               "url": "https://www.bnamericas.com/es/reportajes/radiografia-a-los-principales-centros-de-datos-en-desarrollo-en-latinoamerica",
               "medio": "BNamericas"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2025,
@@ -3941,7 +4023,8 @@
               "url": "https://www.datacenterdynamics.com/es/noticias/odata-se-acerca-a-la-finalizaci%C3%B3n-del-mayor-campus-de-centros-de-datos-de-m%C3%A9xico/",
               "medio": "Data Center Dynamics"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         },
         {
           "anio": 2026,
@@ -3974,7 +4057,8 @@
               "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxObnlvTHB0VU9GVElXbTV1VmZoRTkzV2c4UXhZZFowaXpMVGE3VjMxdmdOdDI1NllZN09mdy0zWUx2bHFTR3RWTlVCU0JicGpMUEVRUE95bHRGVnlNTG83cDlfRW9Nb255d2gzZDB4VUptUnFaVlFPZGcyTDRReVd5QkdtSTNCVU5QS056czFQaFl4U2dLOFlqVFIwVkhJYktzcklKSnJ6RnVXVUpIbXR3bQ?oc=5",
               "medio": "Google News (agregador)"
             }
-          ]
+          ],
+          "fijaUbicacion": false
         }
       ],
       "municipio": "El Marqués",
@@ -4014,7 +4098,8 @@
               "url": "https://expansion.mx/tecnologia/2022/06/30/oracle-elige-a-queretaro-para-abrir-su-nueva-region-de-nube",
               "medio": "Expansión"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -4049,7 +4134,8 @@
               "url": "https://www.bnamericas.com/es/reportajes/un-vistazo-a-la-cartera-de-proyectos-de-datacenters-de-scala",
               "medio": "BNamericas"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "San Juan del Río",
@@ -4084,7 +4170,8 @@
               "url": "https://www.bnamericas.com/es/reportajes/un-vistazo-a-la-cartera-de-proyectos-de-datacenters-de-scala",
               "medio": "BNamericas"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "San Juan del Río",
@@ -4119,7 +4206,8 @@
               "url": "https://www.bnamericas.com/es/reportajes/un-vistazo-a-la-cartera-de-proyectos-de-datacenters-de-scala",
               "medio": "BNamericas"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "San Juan del Río",
@@ -4154,7 +4242,8 @@
               "url": "https://www.bnamericas.com/es/reportajes/un-vistazo-a-la-cartera-de-proyectos-de-datacenters-de-scala",
               "medio": "BNamericas"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "San Juan del Río",
@@ -4189,7 +4278,8 @@
               "url": "https://www.bnamericas.com/es/reportajes/un-vistazo-a-la-cartera-de-proyectos-de-datacenters-de-scala",
               "medio": "BNamericas"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -4224,7 +4314,8 @@
               "url": "https://www.bnamericas.com/es/reportajes/un-vistazo-a-la-cartera-de-proyectos-de-datacenters-de-scala",
               "medio": "BNamericas"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -4259,7 +4350,8 @@
               "url": "https://oem.com.mx/diariodequeretaro/finanzas/certifican-el-data-center-de-telmex-13084657",
               "medio": "El Sol de México (OEM)"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         },
         {
           "anio": 2024,
@@ -4276,7 +4368,8 @@
               "url": "https://kioscomayor.com/2024/12/11/los-centros-de-datos-de-triara-de-telmex-consolidan-su-liderazgo-y-confiabilidad-a-nivel-mundial-con-la-obtencion-de-la-certificacion-internacional-icrea-vi/",
               "medio": "kioscomayor.com"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -4321,7 +4414,8 @@
               "url": "https://www.eleconomista.com.mx/estados/Telmex-instala-un-Data-Center-en-Cancun-20210704-0057.html",
               "medio": "El Economista"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Benito Juárez (Cancún)",
@@ -4360,7 +4454,8 @@
               "url": "https://www.eleconomista.com.mx/empresas/Zoom-abre-su-primer-centro-de-datos-en-Mexico-20210602-0089.html",
               "medio": "El Economista"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": null,
@@ -4400,7 +4495,8 @@
               "url": "https://mexicoindustry.com/noticia/humanscale-amplia-operaciones-en-nogales-sonora-con-inversion-de-30-mdd",
               "medio": "Mexico Industry"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Nogales",
@@ -4435,7 +4531,8 @@
               "url": "https://www.datacenterdynamics.com/es/noticias/mtp-comienza-segunda-fase-de-su-centro-de-datos-en-m%C3%A9rida/",
               "medio": "Data Center Dynamics"
             }
-          ]
+          ],
+          "fijaUbicacion": true
         }
       ],
       "municipio": "Mérida",

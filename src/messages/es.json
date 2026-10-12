@@ -162,7 +162,8 @@
     "fuente": "fuente",
     "leyendaGrupo": "Grupo de centros: acércate o tócalo para separarlos",
     "centrar": "Volver a la vista de México",
-    "ubicacionSegun": "Ubicación inferida de estas notas:",
+    "fuenteUbicacion": "fija la ubicación",
+    "fuenteUbicacionTitulo": "La ubicación del centro se infirió de las notas de esta mención",
     "aviso": {
       "titulo": "Sobre esta información",
       "cuerpo": "Los {total} centros de datos de este mapa se identificaron mediante el monitoreo de medios periodísticos realizado por el Observatorio entre {desde} y {hasta}. No es un registro oficial: refleja lo publicado por la prensa y cada ficha enlaza las notas que lo respaldan.",

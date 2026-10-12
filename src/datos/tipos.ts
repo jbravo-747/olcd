@@ -22,6 +22,8 @@ export type MencionPrensa = {
   monto: string | null;
   ubicacionFuente: string | null;
   notas: NotaPrensa[];
+  /** true si la ubicación del centro se infirió de esta mención. */
+  fijaUbicacion: boolean;
 };
 
 export type CentroPrensa = {

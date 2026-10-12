@@ -26,9 +26,9 @@ import { Logo as Logo_49518996e3d1846683e63590c5ff0417 } from '../../../cms/comp
 import { EnlaceManual as EnlaceManual_6e227a59af7cfa452b2262429d38af0f } from '../../../cms/componentes/EnlaceManual'
 import { Bienvenida as Bienvenida_807d7b477fee69c64cb2a242ba1caa57 } from '../../../cms/componentes/Bienvenida'
 import { AntesDeLogin as AntesDeLogin_d384675c4a83fab2f3edbc69251f638f } from '../../../cms/componentes/AntesDeLogin'
-import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 import { Manual as Manual_48b1b6260439366a3cd34331a41217b4 } from '../../../cms/componentes/Manual'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
+import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 
 /** @type import('payload').ImportMap */
 export const importMap = {
@@ -60,7 +60,7 @@ export const importMap = {
   "/cms/componentes/EnlaceManual#EnlaceManual": EnlaceManual_6e227a59af7cfa452b2262429d38af0f,
   "/cms/componentes/Bienvenida#Bienvenida": Bienvenida_807d7b477fee69c64cb2a242ba1caa57,
   "/cms/componentes/AntesDeLogin#AntesDeLogin": AntesDeLogin_d384675c4a83fab2f3edbc69251f638f,
-  "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
   "/cms/componentes/Manual#Manual": Manual_48b1b6260439366a3cd34331a41217b4,
-  "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
+  "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1,
+  "@payloadcms/storage-s3/client#S3ClientUploadHandler": S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24
 }

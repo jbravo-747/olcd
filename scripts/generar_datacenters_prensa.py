@@ -233,40 +233,40 @@ def main() -> None:
             "empresa": empresa,
             "nombre": None,
             "menciones": [],
-            "_ubicaciones": [],  # (anio, municipio, entidad, lat, lng, precision)
         })
-        c["menciones"].append(mencion)
-        c["_ubicaciones"].append({
-            "anio": int(anio),
+        # La ubicación resuelta viaja dentro de la mención para poder marcar,
+        # tras elegir la definitiva, cuáles menciones la fijaron.
+        mencion["_loc"] = {
             "municipio": municipio,
             "entidad": entidad,
             "lat": lat,
             "lng": lng,
             "precision": precision,
-            "notas": notas,
-        })
+        }
+        c["menciones"].append(mencion)
         if not c["nombre"] and pd.notna(r["Nombre DC"]) and str(r["Nombre DC"]).strip() not in ("-", "—"):
             c["nombre"] = str(r["Nombre DC"]).strip()
 
     def resolver_ubicacion(c: dict) -> None:
         """La mención más reciente con precisión de municipio gana; si ninguna
-        la tiene, la más reciente a nivel entidad. Registra además de qué
-        medios proviene esa ubicación: las notas de todas las menciones cuya
-        ubicación resolvió al mismo lugar."""
-        us = sorted(c["_ubicaciones"], key=lambda u: u["anio"])
-        elegida = ([u for u in us if u["precision"] == "municipio"] or us)[-1]
+        la tiene, la más reciente a nivel entidad. Marca con fijaUbicacion las
+        menciones cuya ubicación resolvió al lugar elegido, y resume sus medios
+        en fuentesUbicacion."""
+        ms = sorted(c["menciones"], key=lambda m: m["anio"])
+        con_municipio = [m for m in ms if m["_loc"]["precision"] == "municipio"]
+        elegida = (con_municipio or ms)[-1]["_loc"]
         for campo in ("municipio", "entidad", "lat", "lng", "precision"):
             c[campo] = elegida[campo]
+        lugar = (elegida["municipio"], elegida["entidad"], elegida["precision"])
         fuentes, vistos = [], set()
-        for u in us:
-            if (u["municipio"], u["entidad"], u["precision"]) != (
-                elegida["municipio"], elegida["entidad"], elegida["precision"],
-            ):
+        for m in ms:
+            m["fijaUbicacion"] = (m["_loc"]["municipio"], m["_loc"]["entidad"], m["_loc"]["precision"]) == lugar
+            if not m["fijaUbicacion"]:
                 continue
-            for n in u["notas"]:
+            for n in m["notas"]:
                 if n["medio"] and n["medio"] not in vistos:
                     vistos.add(n["medio"])
-                    fuentes.append({"medio": n["medio"], "url": n["url"], "anio": u["anio"]})
+                    fuentes.append({"medio": n["medio"], "url": n["url"], "anio": m["anio"]})
         c["fuentesUbicacion"] = fuentes
 
     for c in centros.values():
@@ -285,17 +285,18 @@ def main() -> None:
         ]
         if hermanos:
             destino = max(hermanos, key=lambda c: max(m["anio"] for m in c["menciones"]))
+            # Las menciones del genérico traen su propia ubicación resuelta
+            # (p. ej. Microsoft 2020-21 traía el municipio, Colón, que las del
+            # DC nombrado no tenían): al refundir se re-resuelve.
             destino["menciones"].extend(g["menciones"])
-            # Las ubicaciones del genérico también cuentan (p. ej. Microsoft
-            # 2020-21 traía el municipio, Colón, que las menciones del DC
-            # nombrado no tenían).
-            destino["_ubicaciones"].extend(g["_ubicaciones"])
             resolver_ubicacion(destino)
             del centros[k]
 
     lista = []
     for c in centros.values():
-        c.pop("empresaNorm"), c.pop("dcNorm"), c.pop("_ubicaciones")
+        c.pop("empresaNorm"), c.pop("dcNorm")
+        for m in c["menciones"]:
+            m.pop("_loc")
         c["menciones"].sort(key=lambda m: m["anio"])
         acciones = [m["accion"] for m in c["menciones"] if m["accion"]]
         c["estado"] = estado_de(acciones[-2:] or acciones)

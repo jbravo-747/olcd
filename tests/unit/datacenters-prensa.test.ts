@@ -59,6 +59,11 @@ describe("dataset de centros de datos (prensa)", () => {
         expect(f.medio, c.id).toBeTruthy();
         expect(f.url, c.id).toMatch(/^https?:\/\//);
       }
+      // Y al menos una mención queda marcada como la que fija la ubicación.
+      expect(
+        c.menciones.some((m) => m.fijaUbicacion),
+        c.id,
+      ).toBe(true);
     }
   });
 
