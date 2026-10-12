@@ -17,7 +17,7 @@ import type { EtiquetasMapa } from "./MapaLeaflet";
 
 const MapaLeaflet = dynamic(() => import("./MapaLeaflet"), {
   ssr: false,
-  loading: () => <div className="h-[70vh] min-h-[420px] w-full rounded-lg bg-slate" aria-hidden />,
+  loading: () => <div className="h-[70vh] min-h-[420px] w-full rounded-lg bg-cream-deep" aria-hidden />,
 });
 
 const estados: EstadoCentro[] = ["en-operacion", "en-construccion", "anunciado"];
@@ -36,9 +36,11 @@ export default function MapaCentrosInteractivo({ datos }: { datos: DatosPrensa }
   );
 
   const etiquetas: EtiquetasMapa = {
+    claro: t("capas.claro"),
+    detallado: t("capas.detallado"),
     satelite: t("capas.satelite"),
     sentinel: t("capas.sentinel"),
-    claro: t("capas.claro"),
+    etiquetasLugares: t("capas.etiquetasLugares"),
     agua: t("capas.agua"),
     rios: t("capas.rios"),
     centros: t("capas.centros"),

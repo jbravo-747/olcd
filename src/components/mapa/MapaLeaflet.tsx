@@ -36,9 +36,11 @@ const estiloAgua: PathOptions = { color: "#1d6fa5", weight: 1, fillColor: "#3b9a
 const estiloRios: PathOptions = { color: "#3b9ad1", weight: 1.2, opacity: 0.8 };
 
 export type EtiquetasMapa = {
+  claro: string;
+  detallado: string;
   satelite: string;
   sentinel: string;
-  claro: string;
+  etiquetasLugares: string;
   agua: string;
   rios: string;
   centros: string;
@@ -218,13 +220,35 @@ export default function MapaLeaflet({
       maxZoom={18}
       scrollWheelZoom
       className="h-[70vh] min-h-[420px] w-full rounded-lg"
-      style={{ background: "#0b1a2b" }}
+      style={{ background: "#e7ecef" }}
     >
       <VolarA centro={activo} />
       <ControlesMapa etiquetaCentrar={etiquetas.centrar} />
 
       <LayersControl position="topright">
-        <LayersControl.BaseLayer checked name={etiquetas.satelite}>
+        {/* Vista principal: lienzo gris claro minimalista de Esri (sin llave,
+            sólo atribución). Sin etiquetas: el detalle se suma con el overlay
+            "Nombres y lugares" o cambiando a las bases detalladas. */}
+        <LayersControl.BaseLayer checked name={etiquetas.claro}>
+          <TileLayer
+            url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+            attribution="&copy; Esri, HERE, Garmin, colaboradores de OpenStreetMap"
+            maxNativeZoom={16}
+            maxZoom={18}
+          />
+        </LayersControl.BaseLayer>
+
+        {/* OpenStreetMap estándar: la vista detallada (datos y servicio
+            abiertos, sin llave de API). */}
+        <LayersControl.BaseLayer name={etiquetas.detallado}>
+          <TileLayer
+            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; Colaboradores de <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            maxZoom={19}
+          />
+        </LayersControl.BaseLayer>
+
+        <LayersControl.BaseLayer name={etiquetas.satelite}>
           <TileLayer
             url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
             attribution="Imágenes &copy; Esri, Maxar, Earthstar Geographics"
@@ -240,15 +264,16 @@ export default function MapaLeaflet({
           />
         </LayersControl.BaseLayer>
 
-        {/* OpenStreetMap estándar: datos y servicio abiertos, sin llave de API
-            (CARTO marcaba sus tiles anónimos con un aviso de API key). */}
-        <LayersControl.BaseLayer name={etiquetas.claro}>
+        {/* Nombres de ciudades, fronteras y lugares sobre el lienzo claro. */}
+        <LayersControl.Overlay name={etiquetas.etiquetasLugares}>
           <TileLayer
-            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution='&copy; Colaboradores de <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            maxZoom={19}
+            url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
+            attribution="&copy; Esri, HERE, Garmin"
+            maxNativeZoom={16}
+            maxZoom={18}
+            pane="shadowPane"
           />
-        </LayersControl.BaseLayer>
+        </LayersControl.Overlay>
 
         <LayersControl.Overlay checked name={etiquetas.agua}>
           <>{agua && <GeoJSON data={agua} style={() => estiloAgua} attribution={ATRIBUCION_INEGI} />}</>

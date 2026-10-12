@@ -170,9 +170,11 @@
       "verMedios": "Ver los {n} medios consultados"
     },
     "capas": {
+      "claro": "Mapa claro (minimalista)",
+      "detallado": "Mapa detallado (OSM)",
       "satelite": "Satélite (Esri)",
       "sentinel": "Satélite (Sentinel-2)",
-      "claro": "Mapa claro",
+      "etiquetasLugares": "Nombres y lugares",
       "agua": "Cuerpos de agua",
       "rios": "Ríos",
       "centros": "Centros de datos"
