@@ -41,6 +41,7 @@ export default function MapaCentrosInteractivo({ datos }: { datos: DatosPrensa }
     agua: t("capas.agua"),
     rios: t("capas.rios"),
     centros: t("capas.centros"),
+    centrar: t("centrar"),
   };
 
   const lugarDe = (c: CentroPrensa) => (c.municipio ? `${c.municipio}, ${c.entidad}` : c.entidad);
@@ -175,6 +176,27 @@ export default function MapaCentrosInteractivo({ datos }: { datos: DatosPrensa }
                   </div>
                 ))}
               </dl>
+
+              {activo.fuentesUbicacion.length > 0 && (
+                <div className="mt-4 rounded-lg bg-cream p-3 text-[13px]">
+                  <h3 className="font-bold text-ink/80">{t("ubicacionSegun")}</h3>
+                  <ul className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1">
+                    {activo.fuentesUbicacion.map((f) => (
+                      <li key={f.medio}>
+                        <a
+                          href={f.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="underline decoration-ink/40 hover:decoration-ink"
+                        >
+                          {f.medio}
+                        </a>{" "}
+                        <span className="text-ink/60">({f.anio})</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               <h3 className="mt-5 text-xs font-bold uppercase tracking-wide text-ink/70">
                 {t("menciones", { n: activo.menciones.length })}

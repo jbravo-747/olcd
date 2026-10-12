@@ -40,6 +40,7 @@ export type EtiquetasMapa = {
   agua: string;
   rios: string;
   centros: string;
+  centrar: string;
 };
 
 /** Vuela al centro seleccionado cuando cambia. */
@@ -48,6 +49,47 @@ function VolarA({ centro }: { centro: CentroPrensa | null }) {
   useEffect(() => {
     if (centro) mapa.flyTo([centro.lat, centro.lng], Math.max(mapa.getZoom(), 9), { duration: 0.8 });
   }, [centro, mapa]);
+  return null;
+}
+
+/**
+ * Controles propios del mapa: botón para volver a la vista inicial de México
+ * (debajo del zoom) y barra de escala métrica.
+ */
+function ControlesMapa({ etiquetaCentrar }: { etiquetaCentrar: string }) {
+  const mapa = useMap();
+
+  useEffect(() => {
+    const Centrar = L.Control.extend({
+      options: { position: "topleft" as const },
+      onAdd() {
+        const caja = L.DomUtil.create("div", "leaflet-bar");
+        const boton = L.DomUtil.create("a", "", caja) as HTMLAnchorElement;
+        boton.href = "#";
+        boton.title = etiquetaCentrar;
+        boton.setAttribute("role", "button");
+        boton.setAttribute("aria-label", etiquetaCentrar);
+        boton.style.cssText = "display:flex;align-items:center;justify-content:center;font-size:17px;";
+        boton.innerHTML =
+          '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2v3.5M12 18.5V22M2 12h3.5M18.5 12H22"/></svg>';
+        L.DomEvent.on(boton, "click", (e) => {
+          L.DomEvent.preventDefault(e);
+          L.DomEvent.stopPropagation(e);
+          mapa.flyTo(CENTRO_MEXICO, 5, { duration: 0.8 });
+        });
+        return caja;
+      },
+    });
+    const centrar = new Centrar();
+    const escala = L.control.scale({ metric: true, imperial: false, position: "bottomleft" });
+    mapa.addControl(centrar);
+    mapa.addControl(escala);
+    return () => {
+      mapa.removeControl(centrar);
+      mapa.removeControl(escala);
+    };
+  }, [mapa, etiquetaCentrar]);
+
   return null;
 }
 
@@ -161,6 +203,7 @@ export default function MapaLeaflet({
       style={{ background: "#0b1a2b" }}
     >
       <VolarA centro={activo} />
+      <ControlesMapa etiquetaCentrar={etiquetas.centrar} />
 
       <LayersControl position="topright">
         <LayersControl.BaseLayer checked name={etiquetas.satelite}>
@@ -179,10 +222,12 @@ export default function MapaLeaflet({
           />
         </LayersControl.BaseLayer>
 
+        {/* OpenStreetMap estándar: datos y servicio abiertos, sin llave de API
+            (CARTO marcaba sus tiles anónimos con un aviso de API key). */}
         <LayersControl.BaseLayer name={etiquetas.claro}>
           <TileLayer
-            url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-            attribution="&copy; OpenStreetMap, &copy; CARTO"
+            url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution='&copy; Colaboradores de <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
             maxZoom={19}
           />
         </LayersControl.BaseLayer>

@@ -236,16 +236,38 @@ def main() -> None:
             "_ubicaciones": [],  # (anio, municipio, entidad, lat, lng, precision)
         })
         c["menciones"].append(mencion)
-        c["_ubicaciones"].append((int(anio), municipio, entidad, lat, lng, precision))
+        c["_ubicaciones"].append({
+            "anio": int(anio),
+            "municipio": municipio,
+            "entidad": entidad,
+            "lat": lat,
+            "lng": lng,
+            "precision": precision,
+            "notas": notas,
+        })
         if not c["nombre"] and pd.notna(r["Nombre DC"]) and str(r["Nombre DC"]).strip() not in ("-", "—"):
             c["nombre"] = str(r["Nombre DC"]).strip()
 
     def resolver_ubicacion(c: dict) -> None:
         """La mención más reciente con precisión de municipio gana; si ninguna
-        la tiene, la más reciente a nivel entidad."""
-        us = sorted(c["_ubicaciones"], key=lambda u: u[0])
-        elegida = ([u for u in us if u[5] == "municipio"] or us)[-1]
-        _, c["municipio"], c["entidad"], c["lat"], c["lng"], c["precision"] = elegida
+        la tiene, la más reciente a nivel entidad. Registra además de qué
+        medios proviene esa ubicación: las notas de todas las menciones cuya
+        ubicación resolvió al mismo lugar."""
+        us = sorted(c["_ubicaciones"], key=lambda u: u["anio"])
+        elegida = ([u for u in us if u["precision"] == "municipio"] or us)[-1]
+        for campo in ("municipio", "entidad", "lat", "lng", "precision"):
+            c[campo] = elegida[campo]
+        fuentes, vistos = [], set()
+        for u in us:
+            if (u["municipio"], u["entidad"], u["precision"]) != (
+                elegida["municipio"], elegida["entidad"], elegida["precision"],
+            ):
+                continue
+            for n in u["notas"]:
+                if n["medio"] and n["medio"] not in vistos:
+                    vistos.add(n["medio"])
+                    fuentes.append({"medio": n["medio"], "url": n["url"], "anio": u["anio"]})
+        c["fuentesUbicacion"] = fuentes
 
     for c in centros.values():
         resolver_ubicacion(c)

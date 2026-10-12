@@ -51,6 +51,17 @@ describe("dataset de centros de datos (prensa)", () => {
     }
   });
 
+  it("todo centro dice de qué medios se infirió su ubicación", () => {
+    for (const c of d.centros) {
+      expect(Array.isArray(c.fuentesUbicacion), c.id).toBe(true);
+      expect(c.fuentesUbicacion.length, c.id).toBeGreaterThan(0);
+      for (const f of c.fuentesUbicacion) {
+        expect(f.medio, c.id).toBeTruthy();
+        expect(f.url, c.id).toMatch(/^https?:\/\//);
+      }
+    }
+  });
+
   it("la precisión de entidad implica municipio nulo, y viceversa", () => {
     for (const c of d.centros) {
       if (c.precision === "entidad") expect(c.municipio, c.id).toBeNull();

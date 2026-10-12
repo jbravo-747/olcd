@@ -9,6 +9,12 @@ export type NotaPrensa = {
   medio: string;
 };
 
+export type FuenteUbicacion = {
+  medio: string;
+  url: string;
+  anio: number;
+};
+
 export type MencionPrensa = {
   anio: number;
   fecha: string | null;
@@ -28,6 +34,8 @@ export type CentroPrensa = {
   lng: number;
   /** "municipio" = cabecera municipal aproximada; "entidad" = punto representativo del estado. */
   precision: "municipio" | "entidad";
+  /** Medios de los que se infirió la ubicación elegida (notas cuya ubicación resolvió a este lugar). */
+  fuentesUbicacion: FuenteUbicacion[];
   estado: EstadoCentro;
   ultimaAccion: string | null;
   ultimoAnio: number;

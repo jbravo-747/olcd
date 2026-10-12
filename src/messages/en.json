@@ -161,6 +161,8 @@
     "menciones": "Press mentions ({n})",
     "fuente": "source",
     "leyendaGrupo": "Cluster of centers: zoom in or tap to separate them",
+    "centrar": "Back to the Mexico view",
+    "ubicacionSegun": "Location inferred from these articles:",
     "aviso": {
       "titulo": "About this information",
       "cuerpo": "The {total} data centers on this map were identified through the Observatory's monitoring of journalistic media between {desde} and {hasta}. It is not an official registry: it reflects what the press has published, and each record links the articles that support it.",
