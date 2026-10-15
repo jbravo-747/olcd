@@ -1,4 +1,8 @@
-import { descripcionLarga } from "./lorem";
+/**
+ * Directorio real de organizaciones aliadas (Contenidos de Diana B., octubre
+ * de 2026). Los logos viven en la carpeta de contenidos (fuera de git) y el
+ * seed los sube si la encuentra.
+ */
 
 export type Organizacion = {
   slug: string;
@@ -7,19 +11,27 @@ export type Organizacion = {
   web: string;
   correo: string;
   descripcion: string[];
+  /** Nombre de archivo del logo dentro de la carpeta de contenidos. */
+  logo?: string;
 };
 
-const regiones = ["México", "Brasil", "Chile", "Colombia", "Argentina", "Uruguay"];
-
-export const organizaciones: Organizacion[] = Array.from({ length: 12 }, (_, i) => ({
-  slug: `organizacion-${i + 1}`,
-  nombre: `Nombre organización ${i + 1}`,
-  region: regiones[i % regiones.length],
-  web: "www.ejemplo.org",
-  correo: "contacto@ejemplo.org",
-  descripcion: descripcionLarga,
-}));
-
-export function buscarOrganizacion(slug: string) {
-  return organizaciones.find((o) => o.slug === slug);
-}
+export const organizaciones: Organizacion[] = [
+  {
+    slug: "voceras-de-la-madre-tierra",
+    nombre: "Vocer@s de la Madre Tierra",
+    region: "México",
+    web: "",
+    correo: "",
+    descripcion: [],
+    logo: "logo-voceras.png",
+  },
+  {
+    slug: "eheco",
+    nombre: "Eheco",
+    region: "México",
+    web: "",
+    correo: "",
+    descripcion: [],
+    logo: "logo-eheco.jpg",
+  },
+];

@@ -3,6 +3,8 @@
  * `npm run seed` contra la base de datos de DATABASE_URI. No hace nada si ya
  * hay labs cargados.
  */
+import { existsSync } from "node:fs";
+import path from "node:path";
 import config from "@payload-config";
 import { getPayload, type Payload } from "payload";
 import { parrafosALexical } from "../cms/lexical";
@@ -17,6 +19,27 @@ import { descripcionCortaLarga, descripcionLarga } from "./datos/lorem";
 
 const contexto = { disableRevalidate: true };
 const en = (texto: string) => `[EN] ${texto}`;
+
+/**
+ * Carpeta de contenidos reales (fotos del equipo y logos de organizaciones),
+ * fuera de git. Si no está presente (CI, e2e), el seed simplemente no sube
+ * imágenes y el sitio muestra los marcadores.
+ */
+const CARPETA_IMAGENES = path.resolve(process.cwd(), "Contenidos _ Diana B _ ODCLAT/2. QUIENES SOMOS/Imágenes");
+
+async function subirImagen(payload: Payload, archivo: string, alt: string): Promise<number | undefined> {
+  const ruta = path.join(CARPETA_IMAGENES, archivo);
+  if (!existsSync(ruta)) return undefined;
+  const doc = await payload.create({
+    collection: "media",
+    data: { alt },
+    filePath: ruta,
+    locale: "es",
+    context: contexto,
+  });
+  await payload.update({ collection: "media", id: doc.id, data: { alt: en(alt) }, locale: "en", context: contexto });
+  return doc.id;
+}
 
 const meses: Record<string, number> = {
   enero: 0,
@@ -77,15 +100,17 @@ async function sembrarCategorias(payload: Payload) {
 async function sembrarOrganizaciones(payload: Payload) {
   const ids: number[] = [];
   for (const o of organizacionesMaqueta) {
+    const logo = o.logo ? await subirImagen(payload, o.logo, `Logo de ${o.nombre}`) : undefined;
     const doc = await payload.create({
       collection: "organizaciones",
       data: {
         nombre: o.nombre,
         slug: o.slug,
         region: o.region,
-        web: o.web,
-        correo: o.correo,
+        web: o.web || undefined,
+        correo: o.correo || undefined,
         descripcion: parrafosALexical(o.descripcion),
+        logo,
       },
       locale: "es",
       context: contexto,
@@ -304,7 +329,9 @@ async function sembrarPersonas(payload: Payload, organizacionIds: number[]) {
     Comunidad: "comunidad",
     Aliados: "aliados",
   };
+  void organizacionIds; // el equipo del Observatorio no pertenece al directorio de organizaciones aliadas
   for (const [i, p] of personasMaqueta.entries()) {
+    const foto = p.foto ? await subirImagen(payload, p.foto, `Retrato de ${p.nombre}`) : undefined;
     const doc = await payload.create({
       collection: "personas",
       data: {
@@ -315,11 +342,11 @@ async function sembrarPersonas(payload: Payload, organizacionIds: number[]) {
         grupo: grupo[p.grupo],
         titulo: p.titulo,
         rol: p.rol,
-        organizacion: organizacionIds[i % organizacionIds.length],
         region: p.region,
-        afiliacion: p.afiliacion,
-        correo: p.correo,
+        afiliacion: p.afiliacion || undefined,
+        correo: p.correo || undefined,
         biografia: parrafosALexical(p.biografia),
+        foto,
       },
       locale: "es",
       context: contexto,
@@ -330,7 +357,6 @@ async function sembrarPersonas(payload: Payload, organizacionIds: number[]) {
       data: {
         titulo: en(p.titulo),
         rol: en(p.rol),
-        afiliacion: en(p.afiliacion),
         biografia: parrafosALexical(p.biografia.map(en)),
       },
       locale: "en",
@@ -340,19 +366,36 @@ async function sembrarPersonas(payload: Payload, organizacionIds: number[]) {
 }
 
 async function sembrarSitio(payload: Payload) {
+  // Contenido real (Contenidos de Diana B., octubre 2026).
+  const PROPOSITO = [
+    "El Observatorio Latinoamericano de Centros de Datos es la primera iniciativa regional dedicada a investigar, documentar y monitorear los impactos multidimensionales de los centros de datos sobre los derechos humanos en América Latina. A medida que la región se convierte en un lugar cada vez más estratégico para el despliegue de la infraestructura digital global, la expansión de los centros de datos está ejerciendo nuevas presiones sobre el agua, la energía y el territorio, con escasa transparencia, consulta pública o rendición de cuentas. Los impactos de estas infraestructuras recaen de manera desproporcionada sobre comunidades que ya enfrentan vulnerabilidad ambiental y política.",
+    "Desde una perspectiva de justicia global, y a través de metodologías participativas, el Observatorio trabaja con comunidades afectadas, organizaciones de la sociedad civil, periodistas, personas de la academia, personas defensoras de derechos humanos, personas abogadas y artistas para generar evidencia rigurosa sobre estos impactos.",
+  ];
   const datos = (traducir: (s: string) => string) => ({
-    inicio: { texto: traducir(descripcionCortaLarga) },
+    inicio: {
+      texto: traducir(
+        "El Observatorio Latinoamericano de Centros de Datos es la primera iniciativa regional dedicada a investigar, documentar y monitorear los impactos multidimensionales de los centros de datos sobre los derechos humanos en América Latina.",
+      ),
+    },
     quienesSomos: {
       titulo: traducir(
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sodales orci in neque euismod rhoncus.",
+        "La primera iniciativa regional dedicada a investigar, documentar y monitorear los impactos de los centros de datos sobre los derechos humanos en América Latina.",
       ),
-      proposito: parrafosALexical(descripcionLarga.map(traducir)),
-      equipoTexto: traducir(descripcionCortaLarga),
-      organizacionesTexto: traducir(descripcionCortaLarga),
-      personasTexto: traducir(descripcionCortaLarga),
+      proposito: parrafosALexical(PROPOSITO.map(traducir)),
+      equipoTexto: traducir(
+        "El equipo del Observatorio Latinoamericano de Centros de Datos (OLCD) está conformado por personas de la academia, artistas, personas investigadoras, periodistas y activistas comprometidas con investigar el impacto de la infraestructura digital en Latinoamérica desde una perspectiva interseccional y de derechos humanos.",
+      ),
+      organizacionesTexto: traducir(
+        "Colaboramos con grupos de defensa ambiental y de derechos humanos que investigan el impacto socioambiental de los centros de datos en territorio. En conjunto, desarrollamos estrategias de defensa legal, divulgación e incidencia.",
+      ),
+      personasTexto: traducir(
+        "Colaboramos con individuos que impulsan la investigación y documentación de los impactos multidimensionales de la infraestructura digital en Latinoamérica. Desde sus áreas de especialización, estas personas contribuyen a un debate informado y a la divulgación del tema.",
+      ),
     },
     paginas: {
-      ejesDeTrabajo: traducir(descripcionCortaLarga),
+      ejesDeTrabajo: traducir(
+        "El Observatorio Latinoamericano de Centros de Datos (OLCD) busca convertirse en un centro de conocimiento y una red regional que investigue, documente y monitoree los impactos en los derechos humanos de la industria de los centros de datos en toda la región. Para alcanzar este objetivo, el OLCD generará resultados de gran impacto en cinco laboratorios que, en conjunto, permitirán la recopilación de datos, el análisis, la participación de la comunidad, la generación de conocimiento y el impacto en las políticas.",
+      ),
       mapa: traducir(
         "[Descripción corta] Registro colaborativo de los centros de datos anunciados, en construcción y en operación en América Latina.",
       ),
@@ -360,7 +403,7 @@ async function sembrarSitio(payload: Payload) {
         "Registro colaborativo de la infraestructura anunciada, en construcción y en operación en América Latina.",
       ),
       contacto: traducir(
-        "[Descripción corta] Escríbenos para sumarte a la red, compartir información sobre un centro de datos o solicitar una colaboración.",
+        "Para ponerse en contacto con el Observatorio Latinoamericano de Centros de Datos, favor de rellenar el formulario y alguna persona del equipo responderá a la brevedad. Para medios de comunicación interesados en entrevistas, escribir al correo datacenters@riseup.net.",
       ),
     },
     publicaciones: {
@@ -382,7 +425,7 @@ async function sembrarSitio(payload: Payload) {
       terminos: parrafosALexical(descripcionLarga.map(traducir)),
     },
     redes: {
-      correoContacto: "contacto@olcd.org",
+      correoContacto: "datacenters@riseup.net",
       enlaces: [
         { red: "instagram" as const, url: "https://instagram.com" },
         { red: "linkedin" as const, url: "https://linkedin.com" },
