@@ -2,9 +2,8 @@
  * Estructura del menú y del pie. Las etiquetas viven en src/messages/*.json
  * bajo la clave "nav"; aquí sólo van las claves y los hrefs.
  *
- * Secciones ocultas temporalmente (se habilitarán después): llevan `oculto: true`.
- * Para reactivar una sección, basta quitar esa marca. Hoy sólo se muestran
- * "Mapa de centros de datos" y "Buscador de noticias".
+ * Para ocultar temporalmente una sección (menú y pie), márcala con
+ * `oculto: true`; para reactivarla, quita la marca.
  */
 
 export type ItemNav = {
@@ -18,7 +17,6 @@ const todas: ItemNav[] = [
   {
     clave: "quienesSomos",
     href: "/quienes-somos",
-    oculto: true,
     hijos: [
       { clave: "proposito", href: "/quienes-somos#proposito" },
       { clave: "equipo", href: "/quienes-somos#equipo" },
@@ -29,7 +27,6 @@ const todas: ItemNav[] = [
   {
     clave: "ejesDeTrabajo",
     href: "/ejes-de-trabajo",
-    oculto: true,
     hijos: [
       { clave: "dataLab", href: "/ejes-de-trabajo/data-lab" },
       { clave: "citizenScienceLab", href: "/ejes-de-trabajo/citizen-science-lab" },
@@ -43,7 +40,6 @@ const todas: ItemNav[] = [
   {
     clave: "publicaciones",
     href: "/publicaciones",
-    oculto: true,
     hijos: [
       { clave: "reportes", href: "/publicaciones#reportes" },
       { clave: "articulosLibros", href: "/publicaciones#articulos-y-libros" },
@@ -53,7 +49,6 @@ const todas: ItemNav[] = [
   {
     clave: "actualidad",
     href: "/actualidad",
-    oculto: true,
     hijos: [
       { clave: "blog", href: "/actualidad#blog" },
       { clave: "comunicados", href: "/actualidad#comunicados" },
@@ -61,7 +56,7 @@ const todas: ItemNav[] = [
       { clave: "noticiasObservatorio", href: "/actualidad#noticias-del-observatorio" },
     ],
   },
-  { clave: "contacto", href: "/contacto", oculto: true },
+  { clave: "contacto", href: "/contacto" },
 ];
 
 /** Menú principal: sólo las secciones no ocultas. */
@@ -75,27 +70,23 @@ const columnas: ColumnaFooter[] = [
   {
     titulo: { clave: "quienesSomos", href: "/quienes-somos" },
     enlaces: hijosDe("quienesSomos"),
-    oculto: true,
   },
   {
     titulo: { clave: "ejesDeTrabajo", href: "/ejes-de-trabajo" },
     enlaces: hijosDe("ejesDeTrabajo"),
-    oculto: true,
   },
   {
     titulo: { clave: "mapa", href: "/mapa-de-centros-de-datos" },
     enlaces: [
       { clave: "buscador", href: "/buscador-de-noticias" },
-      // Enlaces a Publicaciones ocultos junto con su sección:
-      // { clave: "publicaciones", href: "/publicaciones" },
-      // { clave: "reportes", href: "/publicaciones#reportes" },
-      // { clave: "articulosLibros", href: "/publicaciones#articulos-y-libros" },
-      // { clave: "recursosEducativos", href: "/publicaciones#recursos-educativos" },
+      { clave: "publicaciones", href: "/publicaciones" },
+      { clave: "reportes", href: "/publicaciones#reportes" },
+      { clave: "articulosLibros", href: "/publicaciones#articulos-y-libros" },
+      { clave: "recursosEducativos", href: "/publicaciones#recursos-educativos" },
     ],
   },
   {
     titulo: { clave: "actualidad", href: "/actualidad" },
-    oculto: true,
     enlaces: [
       { clave: "blog", href: "/actualidad#blog" },
       { clave: "comunicados", href: "/actualidad#comunicados" },

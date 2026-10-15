@@ -5,11 +5,33 @@ import type { Locale } from "@/i18n/routing";
 import GridRecursos, { type Recurso } from "@/components/GridRecursos";
 import MapaCentros from "@/components/MapaCentros";
 import { metadatosPagina } from "@/components/seo";
+import datosPrensa from "@/datos/datacenters-prensa.json";
+import type { DatosPrensa } from "@/datos/tipos";
+import type { Centro } from "@/payload-types";
 import { listarPublicaciones } from "@/lib/cms/publicaciones";
 import { listarEntradas } from "@/lib/cms/actualidad";
-import { listarCentros } from "@/lib/cms/centros";
 import { obtenerSitio } from "@/lib/cms/sitio";
 import { imagen, imagenes } from "@/lib/cms/util";
+
+// El mapa resumido del inicio usa el mismo dataset de prensa que el mapa
+// completo (no los centros de maqueta del CMS). El SVG agrupa su lista lateral
+// por `pais`, que aquí llenamos con la entidad federativa: así la portada
+// muestra el conteo real por estado.
+const centrosResumen = (datosPrensa as unknown as DatosPrensa).centros.map(
+  (c, i) =>
+    ({
+      id: i,
+      nombre: c.nombre,
+      ciudad: c.municipio ?? c.entidad,
+      pais: c.entidad,
+      empresa: c.empresa,
+      estado: c.estado,
+      lat: c.lat,
+      lng: c.lng,
+      updatedAt: "",
+      createdAt: "",
+    }) as Centro,
+);
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -25,7 +47,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: L
 export default async function Inicio({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, tPub, tAct, tComun, sitio, publicaciones, entradas, centros] = await Promise.all([
+  const [t, tPub, tAct, tComun, sitio, publicaciones, entradas] = await Promise.all([
     getTranslations("inicio"),
     getTranslations("publicaciones.tipos"),
     getTranslations("actualidad.tipos"),
@@ -33,7 +55,6 @@ export default async function Inicio({ params }: { params: Promise<{ locale: Loc
     obtenerSitio(locale),
     listarPublicaciones(locale),
     listarEntradas(locale),
-    listarCentros(),
   ]);
 
   // "Lo más reciente": mezcla de reportes, blog y artículos, como en el wireframe.
@@ -89,24 +110,17 @@ export default async function Inicio({ params }: { params: Promise<{ locale: Loc
         <div className="shell relative text-center">
           <h1 className="display t-h1 mx-auto max-w-[20ch]">{t("titulo")}</h1>
           {sitio.inicio?.texto && <p className="t-lead mx-auto mt-6 max-w-[var(--lead-max)]">{sitio.inicio.texto}</p>}
-          {/* Botón a "Quiénes somos" oculto mientras la sección lo esté.
-              Reactivar junto con la sección. */}
-          {/*
           <Link href="/quienes-somos" className="pill pill-dark mt-12">
             {(await getTranslations("quienesSomos"))("titulo")}
           </Link>
-          */}
         </div>
       </section>
 
-      {/* Mapa resumido y sección "Reciente" ocultos temporalmente a pedido.
-          Reactivar quitando este comentario cuando se vayan a usar. */}
-      {/*
       <section aria-labelledby="titulo-mapa">
         <h2 id="titulo-mapa" className="sr-only">
           {t("mapaTitulo")}
         </h2>
-        <MapaCentros resumido centros={centros} descripcion={sitio.paginas?.mapaResumen} />
+        <MapaCentros resumido centros={centrosResumen} descripcion={sitio.paginas?.mapaResumen} />
         <div className="bg-slate pb-12 text-center">
           <Link href="/mapa-de-centros-de-datos" className="pill pill-dark">
             {t("verMapa")}
@@ -133,7 +147,6 @@ export default async function Inicio({ params }: { params: Promise<{ locale: Loc
           </div>
         </div>
       </section>
-      */}
     </>
   );
 }
