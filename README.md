@@ -109,19 +109,20 @@ En ambos casos, si el sitio ya se visitó antes de cargar contenido, ejecutar
 `docker compose up -d --force-recreate app` para vaciar la caché de datos.
 
 **Actualizar el servidor.** `./scripts/desplegar.sh` trae el último `main`,
-respalda la base en `~/respaldos-olcd`, reconstruye, corre el seed y vacía la
-caché. Reglas para que el servidor no se desalinee ni pierda contenido:
+respalda la base en `~/respaldos-olcd` y reconstruye (las migraciones se
+aplican al arrancar). No corre el seed: ése sólo se usa una vez, para llenar
+una base nueva. Reglas para que el servidor no se desalinee ni pierda
+contenido:
 
 - En el servidor no se edita ni se commitea código: los cambios se hacen en el
   repo y se suben a GitHub. Si hay archivos modificados o commits que no están
   en GitHub, el script se detiene y dice cuáles.
 - La configuración propia del servidor va en `.env` o en
   `docker-compose.override.yml` (ignorados por git).
-- En producción el contenido se edita en `/admin`. El seed sólo llena una base
-  vacía; un despliegue nunca sobrescribe contenido, así que los cambios de
-  textos o fotos del seed no llegan solos a una base con datos: se cargan en
-  `/admin`. Nunca usar `docker compose down -v` en producción (borra la base y
-  los archivos).
+- En producción el contenido se edita en `/admin`; los despliegues no lo
+  tocan, y los cambios posteriores al seed (textos o fotos) se cargan ahí.
+  Nunca usar `docker compose down -v` en producción (borra la base y los
+  archivos).
 
 **Correo del formulario de contacto.** Con `SMTP_HOST` vacío los mensajes se
 guardan igual en `/admin` → Administración → Mensajes de contacto, pero no se

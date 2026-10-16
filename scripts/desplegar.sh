@@ -4,8 +4,8 @@
 # - Sólo avanza si el servidor no tiene cambios ni commits propios: el código
 #   se edita en el repo y se sube a GitHub, nunca en el servidor.
 # - Respalda la base antes de tocar nada (en ~/respaldos-olcd).
-# - El seed sólo llena una base vacía: el contenido de producción se edita en
-#   /admin y un despliegue nunca lo sobrescribe.
+# - No toca el contenido: se edita en /admin. El seed (docker compose run --rm
+#   seed) sólo se usa una vez, para llenar una base nueva.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
@@ -41,11 +41,5 @@ fi
 
 echo "==> Construcción y arranque (las migraciones se aplican al arrancar)"
 docker compose up -d --build
-
-echo "==> Contenido inicial (no hace nada si la base ya tiene contenido)"
-docker compose run --rm seed
-
-echo "==> Caché de datos"
-docker compose up -d --force-recreate app
 
 echo "Listo: $(git log -1 --format='%h')"
