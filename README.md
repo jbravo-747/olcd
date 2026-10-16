@@ -125,6 +125,23 @@ contenido:
   proyectos…) se edita en `/admin` y los despliegues no lo tocan. Nunca usar `docker compose down -v` en producción (borra la base y los
   archivos).
 
+**Respaldos.** `./scripts/respaldar.sh` guarda en `~/respaldos-olcd` un
+`olcd-AAAA-MM-DD-HHMM.tar.gz` con todo lo que no está en git: la base (lo
+editado en `/admin`, usuarios y mensajes de contacto), los archivos subidos a
+MinIO y el commit del código. Conserva los últimos 14. No incluye `.env`: cada
+servidor tiene sus propios secretos. `desplegar.sh` lo corre antes de cada
+despliegue; para uno diario, en `crontab -e`:
+
+```
+0 3 * * * cd /ruta/al/proyecto && ./scripts/respaldar.sh >> ~/respaldos-olcd/registro.log 2>&1
+```
+
+Para levantar un servidor nuevo con esos datos (en lugar del seed): clonar el
+repo, crear `.env`, copiar el respaldo y correr
+`./scripts/restaurar.sh olcd-AAAA-MM-DD-HHMM.tar.gz`. Reemplaza la base y los
+archivos (pide escribir RESTAURAR), arranca la app y aplica las migraciones
+pendientes. El código debe ser igual o más nuevo que el del respaldo.
+
 **Correo del formulario de contacto.** Con `SMTP_HOST` vacío los mensajes se
 guardan igual en `/admin` → Administración → Mensajes de contacto, pero no se
 envía ningún correo. Para activarlo basta definir `SMTP_HOST`, `SMTP_PORT`,
