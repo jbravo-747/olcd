@@ -39,8 +39,8 @@ export function Manual({ initPageResult, params, searchParams }: AdminViewServer
         <article className="olcd-manual">
           <h1>Manual de uso del panel</h1>
           <p className="olcd-manual__lead">
-            Guía para el equipo editorial del Observatorio. Explica qué hace cada apartado, cómo publicar contenido
-            en los dos idiomas y qué cuidados tener con imágenes, documentos y datos.
+            Guía para el equipo editorial del Observatorio. Explica qué hace cada apartado, cómo publicar contenido en
+            los dos idiomas y qué cuidados tener con imágenes, documentos y datos.
           </p>
 
           <nav className="olcd-manual__indice" aria-label="Índice del manual">
@@ -57,24 +57,26 @@ export function Manual({ initPageResult, params, searchParams }: AdminViewServer
           <p>
             Es el gestor de contenidos del sitio público del Observatorio. Todo lo que se ve en el sitio (labs y
             proyectos, publicaciones, actualidad, centros de datos del mapa, directorio de personas y organizaciones,
-            textos de las páginas) se escribe aquí y se guarda en una base de datos. El sitio lee esa base y muestra
-            los cambios en cuanto se guardan: no hace falta avisar a nadie ni esperar un despliegue.
+            textos de las páginas) se escribe aquí y se guarda en una base de datos. El sitio lee esa base y muestra los
+            cambios en cuanto se guardan: no hace falta avisar a nadie ni esperar un despliegue.
           </p>
           <p>
-            Cada apartado del menú de la izquierda corresponde a una sección del sitio. La regla general es: si algo
-            del sitio tiene texto o imagen que puede cambiar con el tiempo, se edita aquí.
+            Cada apartado del menú de la izquierda corresponde a una sección del sitio. La regla general es: si algo del
+            sitio tiene texto o imagen que puede cambiar con el tiempo, se edita aquí.
           </p>
 
           <h2 id="entrar">2. Entrar y cambiar la contraseña</h2>
           <ol>
-            <li>Abre la dirección del sitio seguida de <code>/admin</code> e introduce tu correo y contraseña.</li>
             <li>
-              Para cambiar la contraseña, pulsa tu avatar (arriba a la derecha) → <strong>Cuenta</strong> →
-              «Cambiar contraseña».
+              Abre la dirección del sitio seguida de <code>/admin</code> e introduce tu correo y contraseña.
             </li>
             <li>
-              Si la olvidaste, usa «¿Olvidaste tu contraseña?» en la pantalla de acceso; recibirás un correo si el
-              envío de correo está configurado. Si no, pide a una persona administradora que te asigne una nueva.
+              Para cambiar la contraseña, pulsa tu avatar (arriba a la derecha) → <strong>Cuenta</strong> → «Cambiar
+              contraseña».
+            </li>
+            <li>
+              Si la olvidaste, usa «¿Olvidaste tu contraseña?» en la pantalla de acceso; recibirás un correo si el envío
+              de correo está configurado. Si no, pide a una persona administradora que te asigne una nueva.
             </li>
           </ol>
 
@@ -91,7 +93,9 @@ export function Manual({ initPageResult, params, searchParams }: AdminViewServer
               <tr>
                 <td rowSpan={7}>Contenido</td>
                 <td>Ejes de trabajo (labs)</td>
-                <td>Las cinco tarjetas de «Ejes de trabajo» y la portada de cada lab. El campo «Orden» define la posición.</td>
+                <td>
+                  Las cinco tarjetas de «Ejes de trabajo» y la portada de cada lab. El campo «Orden» define la posición.
+                </td>
               </tr>
               <tr>
                 <td>Proyectos</td>
@@ -107,7 +111,10 @@ export function Manual({ initPageResult, params, searchParams }: AdminViewServer
               </tr>
               <tr>
                 <td>Noticias (buscador)</td>
-                <td>El corpus de notas de prensa que alimenta el «Buscador de noticias». Solo título, medio, fecha, enlace y categorías.</td>
+                <td>
+                  El corpus de notas de prensa que alimenta el «Buscador de noticias». Solo título, medio, fecha, enlace
+                  y categorías.
+                </td>
               </tr>
               <tr>
                 <td>Centros de datos</td>
@@ -115,12 +122,17 @@ export function Manual({ initPageResult, params, searchParams }: AdminViewServer
               </tr>
               <tr>
                 <td>Textos del sitio</td>
-                <td>Textos fijos de las páginas: inicio, quiénes somos, encabezados, páginas legales, redes sociales.</td>
+                <td>
+                  Textos fijos de las páginas: inicio, quiénes somos, encabezados, páginas legales, redes sociales.
+                </td>
               </tr>
               <tr>
                 <td rowSpan={2}>Directorio</td>
                 <td>Personas</td>
-                <td>Equipo y directorio. La casilla «Forma parte del equipo» las muestra en la sección Equipo; el «Grupo» las agrupa en el directorio.</td>
+                <td>
+                  Equipo y directorio. La casilla «Forma parte del equipo» las muestra en la sección Equipo; el «Grupo»
+                  las agrupa en el directorio.
+                </td>
               </tr>
               <tr>
                 <td>Organizaciones</td>
@@ -154,10 +166,12 @@ export function Manual({ initPageResult, params, searchParams }: AdminViewServer
 
           <h2 id="editar">4. Crear y editar contenido</h2>
           <ol>
-            <li>Entra al apartado y pulsa <strong>Crear</strong> (arriba a la derecha) o abre un elemento existente.</li>
             <li>
-              Rellena los campos. Los marcados con asterisco son obligatorios; el panel no deja guardar si falta
-              alguno y señala cuál.
+              Entra al apartado y pulsa <strong>Crear</strong> (arriba a la derecha) o abre un elemento existente.
+            </li>
+            <li>
+              Rellena los campos. Los marcados con asterisco son obligatorios; el panel no deja guardar si falta alguno
+              y señala cuál.
             </li>
             <li>
               El <strong>slug</strong> es la parte final de la dirección web del elemento (por ejemplo
@@ -165,47 +179,48 @@ export function Manual({ initPageResult, params, searchParams }: AdminViewServer
               cambies después de publicar, porque los enlaces compartidos dejarían de funcionar.
             </li>
             <li>
-              Pulsa <strong>Guardar</strong>. El cambio aparece en el sitio al recargar la página; no hay
-              borradores ni aprobación previa, así que revisa antes de guardar.
+              Pulsa <strong>Guardar</strong>. El cambio aparece en el sitio al recargar la página; no hay borradores ni
+              aprobación previa, así que revisa antes de guardar.
             </li>
             <li>
-              Para eliminar, abre el elemento y usa el menú «···» → Eliminar. No se puede deshacer. Si el elemento
-              está relacionado con otros (una categoría usada en varias publicaciones), esas relaciones quedan vacías.
+              Para eliminar, abre el elemento y usa el menú «···» → Eliminar. No se puede deshacer. Si el elemento está
+              relacionado con otros (una categoría usada en varias publicaciones), esas relaciones quedan vacías.
             </li>
           </ol>
           <p>
-            Los campos de texto largo usan un editor con formato: títulos, negritas, listas, enlaces y citas. Pega
-            texto desde Word con <code>Ctrl+Shift+V</code> para no arrastrar formatos extraños.
+            Los campos de texto largo usan un editor con formato: títulos, negritas, listas, enlaces y citas. Pega texto
+            desde Word con <code>Ctrl+Shift+V</code> para no arrastrar formatos extraños.
           </p>
 
           <h2 id="idiomas">5. Español e inglés</h2>
           <p>
             El sitio se publica en español e inglés. Arriba a la derecha de cada formulario hay un selector
-            <strong>Idioma: Español / English</strong>. Los campos con texto (títulos, descripciones, cuerpos) tienen
-            un valor por idioma; los datos (fechas, enlaces, coordenadas, relaciones, imágenes) son comunes.
+            <strong>Idioma: Español / English</strong>. Los campos con texto (títulos, descripciones, cuerpos) tienen un
+            valor por idioma; los datos (fechas, enlaces, coordenadas, relaciones, imágenes) son comunes.
           </p>
           <ol>
             <li>Escribe y guarda primero en español.</li>
             <li>Cambia el selector a English, traduce los campos de texto y guarda de nuevo.</li>
           </ol>
           <div className="olcd-manual__aviso">
-            Si un campo no tiene traducción, el sitio en inglés muestra el texto en español. Los contenidos de
-            ejemplo llevan el prefijo <code>[EN]</code> en inglés para localizar fácilmente lo que falta traducir.
+            Si un campo no tiene traducción, el sitio en inglés muestra el texto en español. Los contenidos de ejemplo
+            llevan el prefijo <code>[EN]</code> en inglés para localizar fácilmente lo que falta traducir.
           </div>
 
           <h2 id="archivos">6. Imágenes y documentos</h2>
           <ul>
             <li>
-              Puedes subir una imagen desde el propio campo («Crear nuevo») o antes, en <strong>Archivos → Imágenes</strong>,
-              y luego elegirla («Seleccionar existente»). Ambas quedan en la misma biblioteca.
+              Puedes subir una imagen desde el propio campo («Crear nuevo») o antes, en{" "}
+              <strong>Archivos → Imágenes</strong>, y luego elegirla («Seleccionar existente»). Ambas quedan en la misma
+              biblioteca.
             </li>
             <li>
               El <strong>texto alternativo</strong> es obligatorio: describe la imagen en una frase para personas que
               usan lector de pantalla y para buscadores. También se traduce.
             </li>
             <li>
-              Formatos: JPG, PNG o WebP para imágenes; PDF para documentos. Tamaño recomendado: imágenes de hasta
-              2000 px de ancho y menos de 2 MB; el panel genera las versiones pequeñas.
+              Formatos: JPG, PNG o WebP para imágenes; PDF para documentos. Tamaño recomendado: imágenes de hasta 2000
+              px de ancho y menos de 2 MB; el panel genera las versiones pequeñas.
             </li>
             <li>
               Las galerías (proyectos, actualidad) admiten varias imágenes; la primera es la portada de la tarjeta.
@@ -216,12 +231,12 @@ export function Manual({ initPageResult, params, searchParams }: AdminViewServer
           <h2 id="relaciones">7. Categorías, labs y otras relaciones</h2>
           <ul>
             <li>
-              Cada proyecto pertenece a un lab; cada publicación puede indicar el lab que la produjo; cada persona
-              puede vincularse a una organización. Elige el elemento en el desplegable o créalo al momento.
+              Cada proyecto pertenece a un lab; cada publicación puede indicar el lab que la produjo; cada persona puede
+              vincularse a una organización. Elige el elemento en el desplegable o créalo al momento.
             </li>
             <li>
-              Las <strong>categorías</strong> son una lista común. Antes de crear una nueva comprueba que no exista
-              con otro nombre; el buscador de noticias las usa como filtro.
+              Las <strong>categorías</strong> son una lista común. Antes de crear una nueva comprueba que no exista con
+              otro nombre; el buscador de noticias las usa como filtro.
             </li>
             <li>Renombrar una categoría o un lab actualiza todos los lugares donde aparece.</li>
           </ul>
@@ -231,16 +246,15 @@ export function Manual({ initPageResult, params, searchParams }: AdminViewServer
             En <strong>Contenido → Textos del sitio</strong> están, por pestañas, los textos fijos que no pertenecen a
             ningún elemento: el texto bajo el nombre del Observatorio en la portada, el propósito y las introducciones
             de «Quiénes somos», las descripciones de los encabezados de página, los textos de cada bloque de
-            Publicaciones y Actualidad, las páginas legales (accesibilidad, privacidad, términos) y las redes
-            sociales con el correo de contacto.
+            Publicaciones y Actualidad, las páginas legales (accesibilidad, privacidad, términos) y las redes sociales
+            con el correo de contacto.
           </p>
 
           <h2 id="mensajes">9. Mensajes de contacto</h2>
           <p>
             Lo enviado por el formulario del sitio se guarda en <strong>Administración → Mensajes de contacto</strong>
-            con nombre, correo, asunto y mensaje. Marca «Leído» al atenderlos. Si el envío de correo está
-            configurado, además llega un aviso a la dirección del Observatorio; responde desde tu correo, no desde
-            el panel.
+            con nombre, correo, asunto y mensaje. Marca «Leído» al atenderlos. Si el envío de correo está configurado,
+            además llega un aviso a la dirección del Observatorio; responde desde tu correo, no desde el panel.
           </p>
 
           <h2 id="usuarios">10. Usuarios y permisos</h2>
@@ -264,13 +278,16 @@ export function Manual({ initPageResult, params, searchParams }: AdminViewServer
           </table>
           <p>
             Para dar de alta a alguien: <strong>Administración → Usuarios → Crear</strong>, con correo, nombre,
-            contraseña provisional y rol. Pídele que la cambie al entrar. Cuando una persona deja el equipo, borra
-            su usuario.
+            contraseña provisional y rol. Pídele que la cambie al entrar. Cuando una persona deja el equipo, borra su
+            usuario.
           </p>
 
           <h2 id="no-editable">11. Lo que no se edita aquí</h2>
           <ul>
-            <li>El nombre del Observatorio en la portada, el menú de navegación y los textos de botones y etiquetas de la interfaz.</li>
+            <li>
+              El nombre del Observatorio en la portada, el menú de navegación y los textos de botones y etiquetas de la
+              interfaz.
+            </li>
             <li>El diseño: colores, tipografías, disposición de las páginas.</li>
             <li>Las traducciones de la interfaz (menú, botones) en inglés.</li>
           </ul>
@@ -282,7 +299,9 @@ export function Manual({ initPageResult, params, searchParams }: AdminViewServer
             <li>Un slug claro y corto, definido una sola vez.</li>
             <li>Descripción corta de una o dos frases: es lo que se ve en las tarjetas.</li>
             <li>Texto alternativo en todas las imágenes y crédito cuando corresponda.</li>
-            <li>Traduce al inglés en la misma sesión o deja el prefijo <code>[EN]</code> para encontrarlo después.</li>
+            <li>
+              Traduce al inglés en la misma sesión o deja el prefijo <code>[EN]</code> para encontrarlo después.
+            </li>
             <li>No borres categorías, labs u organizaciones en uso sin revisar qué elementos los referencian.</li>
           </ul>
         </article>

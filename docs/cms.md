@@ -7,18 +7,18 @@ dos opciones que se barajaron: un solo despliegue y control total del esquema
 
 ## Piezas
 
-| Pieza | Dónde |
-|---|---|
-| Configuración de Payload | `src/payload.config.ts` |
-| Colecciones y global | `src/cms/collections/*`, `src/cms/globals/Sitio.ts` |
-| Reglas de acceso | `src/cms/access/index.ts` (`admin` / `editor` / público) |
-| Invalidación de caché | `src/cms/hooks/revalidar.ts` |
-| Panel de administración | `/admin` (`src/app/(payload)/`) |
-| API REST / GraphQL | `/api/*`, `/api/graphql` |
-| Capa de lectura del sitio | `src/lib/cms/*.ts` (Local API + Data Cache por etiquetas) |
-| Tipos generados | `src/payload-types.ts` (`npm run generate:types`) |
-| Migraciones | `src/migrations/` (`npm run migrate:create`) |
-| Seed con el contenido de la maqueta | `src/seed/index.ts` (`npm run seed`) |
+| Pieza                               | Dónde                                                     |
+| ----------------------------------- | --------------------------------------------------------- |
+| Configuración de Payload            | `src/payload.config.ts`                                   |
+| Colecciones y global                | `src/cms/collections/*`, `src/cms/globals/Sitio.ts`       |
+| Reglas de acceso                    | `src/cms/access/index.ts` (`admin` / `editor` / público)  |
+| Invalidación de caché               | `src/cms/hooks/revalidar.ts`                              |
+| Panel de administración             | `/admin` (`src/app/(payload)/`)                           |
+| API REST / GraphQL                  | `/api/*`, `/api/graphql`                                  |
+| Capa de lectura del sitio           | `src/lib/cms/*.ts` (Local API + Data Cache por etiquetas) |
+| Tipos generados                     | `src/payload-types.ts` (`npm run generate:types`)         |
+| Migraciones                         | `src/migrations/` (`npm run migrate:create`)              |
+| Seed con el contenido de la maqueta | `src/seed/index.ts` (`npm run seed`)                      |
 
 ## Modelo de contenido
 
