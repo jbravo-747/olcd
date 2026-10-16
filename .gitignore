@@ -43,3 +43,7 @@ Contenidos _ Diana B _ ODCLAT/
 
 # Wireframes descargados de Nextcloud (insumo de diseño)
 Wireframes/
+
+# Configuración propia de cada servidor y cachés de Python
+docker-compose.override.yml
+__pycache__/
