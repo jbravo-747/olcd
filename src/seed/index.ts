@@ -27,11 +27,10 @@ const EN_CONSTRUCCION = "En construcción.";
 const en = (texto: string) => `[EN] ${texto}`;
 
 /**
- * Carpeta de contenidos reales (fotos del equipo y logos de organizaciones),
- * fuera de git. Si no está presente (CI, e2e), el seed simplemente no sube
- * imágenes y el sitio muestra los marcadores.
+ * Fotos del equipo y logos de organizaciones, reducidas a 1200 px y sin
+ * metadatos. Si falta un archivo, el sitio muestra el marcador.
  */
-const CARPETA_IMAGENES = path.resolve(process.cwd(), "Contenidos _ Diana B _ ODCLAT/2. QUIENES SOMOS/Imágenes");
+const CARPETA_IMAGENES = path.resolve(process.cwd(), "src/seed/imagenes");
 
 async function subirImagen(payload: Payload, archivo: string, alt: string): Promise<number | undefined> {
   const ruta = path.join(CARPETA_IMAGENES, archivo);

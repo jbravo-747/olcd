@@ -1,7 +1,6 @@
 /**
  * Directorio real de organizaciones aliadas (Contenidos de Diana B., octubre
- * de 2026). Los logos viven en la carpeta de contenidos (fuera de git) y el
- * seed los sube si la encuentra.
+ * de 2026). Los logos están en src/seed/imagenes.
  */
 
 export type Organizacion = {
@@ -11,7 +10,7 @@ export type Organizacion = {
   web: string;
   correo: string;
   descripcion: string[];
-  /** Nombre de archivo del logo dentro de la carpeta de contenidos. */
+  /** Nombre de archivo del logo dentro de src/seed/imagenes. */
   logo?: string;
 };
 
