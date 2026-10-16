@@ -4,29 +4,29 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import EncabezadoPagina, { TituloSeccion } from "@/components/EncabezadoPagina";
 import GridRecursos from "@/components/GridRecursos";
-import TextoEnriquecido from "@/components/TextoEnriquecido";
-import { buscarLab, listarProyectosDeLab } from "@/lib/cms/labs";
+import Parrafos from "@/components/Parrafos";
+import { buscarLab } from "@/contenido/labs";
+import { listarProyectosDeLab } from "@/lib/cms/proyectos";
 import { imagenes } from "@/lib/cms/util";
 
 type Props = { params: Promise<{ locale: Locale; lab: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { locale, lab } = await params;
-  return { title: (await buscarLab(lab, locale))?.nombre ?? "Lab" };
+  const { lab } = await params;
+  return { title: buscarLab(lab)?.nombre ?? "Lab" };
 }
 
 /** N2 - Página interna de lab */
 export default async function PaginaLab({ params }: Props) {
   const { locale, lab: slug } = await params;
   setRequestLocale(locale);
-  const [t, tComun, lab] = await Promise.all([
+  const lab = buscarLab(slug);
+  if (!lab) notFound();
+  const [t, tComun, proyectos] = await Promise.all([
     getTranslations("ejes"),
     getTranslations("comun"),
-    buscarLab(slug, locale),
+    listarProyectosDeLab(lab.slug, locale),
   ]);
-  if (!lab) notFound();
-
-  const proyectos = await listarProyectosDeLab(lab.id, locale);
   const recursos = proyectos.map((p) => ({
     slug: p.slug,
     titulo: p.titulo,
@@ -41,7 +41,7 @@ export default async function PaginaLab({ params }: Props) {
 
       <section className="bg-cream py-16">
         <div className="shell max-w-4xl">
-          <TextoEnriquecido datos={lab.introduccion} className="text-center" />
+          <Parrafos parrafos={lab.introduccion} className="text-center" />
         </div>
       </section>
 

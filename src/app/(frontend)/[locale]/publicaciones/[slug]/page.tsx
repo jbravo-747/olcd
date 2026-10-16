@@ -6,8 +6,8 @@ import Imagen from "@/components/Imagen";
 import TextoEnriquecido from "@/components/TextoEnriquecido";
 import { IconoDocumento } from "@/components/Iconos";
 import { buscarPublicacion } from "@/lib/cms/publicaciones";
-import { imagen, nombresCategorias, poblado, urlDocumento } from "@/lib/cms/util";
-import type { Lab } from "@/payload-types";
+import { imagen, nombresCategorias, urlDocumento } from "@/lib/cms/util";
+import { buscarLab } from "@/contenido/labs";
 
 type Props = { params: Promise<{ locale: Locale; slug: string }> };
 
@@ -28,7 +28,7 @@ export default async function PaginaRecurso({ params }: Props) {
   if (!recurso) notFound();
 
   const datos: [string, string | null | undefined][] = [
-    [t("lab"), poblado<Lab>(recurso.lab)?.nombre],
+    [t("lab"), recurso.lab ? buscarLab(recurso.lab)?.nombre : undefined],
     [t("autores"), recurso.autores],
     [t("anio"), recurso.anio],
     [t("paginas"), recurso.paginas],

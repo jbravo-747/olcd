@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import EncabezadoPagina from "@/components/EncabezadoPagina";
-import TextoEnriquecido from "@/components/TextoEnriquecido";
-import { obtenerSitio } from "@/lib/cms/sitio";
+import Parrafos from "@/components/Parrafos";
+import { textosDelSitio } from "@/contenido/textos";
 
 type Props = { params: Promise<{ locale: Locale }> };
 
@@ -16,14 +16,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function Pagina({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, sitio] = await Promise.all([getTranslations("legales"), obtenerSitio(locale)]);
+  const t = await getTranslations("legales");
 
   return (
     <>
       <EncabezadoPagina titulo={t("terminos")} />
       <div className="bg-cream py-16">
         <div className="shell max-w-3xl">
-          <TextoEnriquecido datos={sitio.legales?.terminos} />
+          <Parrafos parrafos={textosDelSitio(locale).legales.terminos} />
         </div>
       </div>
     </>

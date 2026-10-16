@@ -7,26 +7,44 @@ dos opciones que se barajaron: un solo despliegue y control total del esquema
 
 ## Piezas
 
-| Pieza                               | Dónde                                                     |
-| ----------------------------------- | --------------------------------------------------------- |
-| Configuración de Payload            | `src/payload.config.ts`                                   |
-| Colecciones y global                | `src/cms/collections/*`, `src/cms/globals/Sitio.ts`       |
-| Reglas de acceso                    | `src/cms/access/index.ts` (`admin` / `editor` / público)  |
-| Invalidación de caché               | `src/cms/hooks/revalidar.ts`                              |
-| Panel de administración             | `/admin` (`src/app/(payload)/`)                           |
-| API REST / GraphQL                  | `/api/*`, `/api/graphql`                                  |
-| Capa de lectura del sitio           | `src/lib/cms/*.ts` (Local API + Data Cache por etiquetas) |
-| Tipos generados                     | `src/payload-types.ts` (`npm run generate:types`)         |
-| Migraciones                         | `src/migrations/` (`npm run migrate:create`)              |
-| Seed con el contenido de la maqueta | `src/seed/index.ts` (`npm run seed`)                      |
+| Pieza                                                 | Dónde                                                     |
+| ----------------------------------------------------- | --------------------------------------------------------- |
+| Configuración de Payload                              | `src/payload.config.ts`                                   |
+| Colecciones y global                                  | `src/cms/collections/*`, `src/cms/globals/Sitio.ts`       |
+| Reglas de acceso                                      | `src/cms/access/index.ts` (`admin` / `editor` / público)  |
+| Invalidación de caché                                 | `src/cms/hooks/revalidar.ts`                              |
+| Panel de administración                               | `/admin` (`src/app/(payload)/`)                           |
+| API REST / GraphQL                                    | `/api/*`, `/api/graphql`                                  |
+| Capa de lectura del sitio                             | `src/lib/cms/*.ts` (Local API + Data Cache por etiquetas) |
+| Tipos generados                                       | `src/payload-types.ts` (`npm run generate:types`)         |
+| Migraciones                                           | `src/migrations/` (`npm run migrate:create`)              |
+| Contenido fijo (textos, equipo, organizaciones, labs) | `src/contenido/*.ts`, imágenes en `public/imagenes/`      |
+| Seed de una base nueva                                | `src/seed/index.ts` (`npm run seed`)                      |
+
+## Qué vive en el código y qué en el CMS
+
+No todo el sitio es editable. Lo institucional, que cambia poco, vive en el
+código y se publica con cada despliegue sin tocar la base:
+
+- `src/contenido/textos.ts`: textos de Inicio, Quiénes somos, Ejes de trabajo,
+  Mapa, Contacto, encabezados de Publicaciones y Actualidad, legales y redes.
+- `src/contenido/equipo.ts`, `organizaciones.ts`, `labs.ts`: equipo, aliados
+  y los cinco labs (fotos y logos en `public/imagenes/`).
+- El mapa sale de `src/datos/datacenters-prensa.json`.
+
+Para cambiarlo se edita el archivo y se despliega. El inglés cae al español
+mientras no se traduzca (`en` en `textos.ts`).
+
+En el CMS queda lo que el equipo alimenta seguido: proyectos de los labs,
+publicaciones, actualidad, noticias del buscador, el directorio de personas
+externas, categorías, archivos, mensajes de contacto y usuarios.
 
 ## Modelo de contenido
 
-Colecciones: `labs`, `proyectos` (→ lab), `publicaciones` (→ lab, pdf),
-`entradas` (actualidad), `noticias` (corpus del buscador), `centros`,
-`personas` (→ organización), `organizaciones`, `categorias`, `media`
+Colecciones: `proyectos` (`lab` = slug de `src/contenido/labs.ts`),
+`publicaciones` (`lab` opcional, pdf), `entradas` (actualidad), `noticias`
+(corpus del buscador), `personas` (directorio externo), `categorias`, `media`
 (imágenes), `documentos` (PDF), `mensajes-contacto`, `users`.
-Global: `sitio` (hero, propósito, encabezados de página, textos legales, redes).
 
 Los campos de texto llevan `localized: true`: el admin muestra un selector
 ES/EN y el sitio pide cada idioma con `locale`. Si falta la traducción se

@@ -72,3 +72,16 @@ export type DatosPrensa = {
   };
   centros: CentroPrensa[];
 };
+
+/** Centro de datos en la forma que dibuja el mapa resumido del inicio (MapaCentros). */
+export type Centro = {
+  id: number;
+  nombre: string;
+  ciudad: string;
+  pais: string;
+  empresa?: string | null;
+  estado: EstadoCentro;
+  inversionUsdMillones?: number | null;
+  lat: number;
+  lng: number;
+};

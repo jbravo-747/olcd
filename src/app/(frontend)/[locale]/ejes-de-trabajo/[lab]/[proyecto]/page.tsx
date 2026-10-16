@@ -5,28 +5,25 @@ import type { Locale } from "@/i18n/routing";
 import Carrusel from "@/components/Carrusel";
 import SeccionesDesplegables from "@/components/SeccionesDesplegables";
 import { IconoDocumento, IconoRed } from "@/components/Iconos";
-import { buscarProyecto } from "@/lib/cms/labs";
-import { obtenerSitio } from "@/lib/cms/sitio";
+import { buscarLab } from "@/contenido/labs";
+import { redes as redesSitio } from "@/contenido/textos";
+import { buscarProyecto } from "@/lib/cms/proyectos";
 import { imagenes, nombresCategorias, urlDocumento } from "@/lib/cms/util";
 
 type Props = { params: Promise<{ locale: Locale; lab: string; proyecto: string }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, lab, proyecto } = await params;
-  return { title: (await buscarProyecto(lab, proyecto, locale))?.proyecto.titulo ?? "Proyecto" };
+  return { title: (await buscarProyecto(lab, proyecto, locale))?.titulo ?? "Proyecto" };
 }
 
 /** N3 - Proyecto de lab */
 export default async function PaginaProyecto({ params }: Props) {
   const { locale, lab: labSlug, proyecto: proyectoSlug } = await params;
   setRequestLocale(locale);
-  const [t, sitio, resultado] = await Promise.all([
-    getTranslations("proyecto"),
-    obtenerSitio(locale),
-    buscarProyecto(labSlug, proyectoSlug, locale),
-  ]);
-  if (!resultado) notFound();
-  const { lab, proyecto } = resultado;
+  const lab = buscarLab(labSlug);
+  const [t, proyecto] = await Promise.all([getTranslations("proyecto"), buscarProyecto(labSlug, proyectoSlug, locale)]);
+  if (!lab || !proyecto) notFound();
 
   const datos: [string, string | null | undefined][] = [
     [t("autores"), proyecto.autores],
@@ -35,7 +32,7 @@ export default async function PaginaProyecto({ params }: Props) {
     [t("participantes"), proyecto.participantes],
   ];
   const descargable = urlDocumento(proyecto.descargable?.archivo);
-  const redes = sitio.redes?.enlaces ?? [];
+  const redes = redesSitio.enlaces;
 
   return (
     <article>
@@ -82,7 +79,7 @@ export default async function PaginaProyecto({ params }: Props) {
             </ul>
             <ul className="flex gap-4">
               {redes.map((red) => (
-                <li key={red.id ?? red.red}>
+                <li key={red.red}>
                   <a href={red.url} target="_blank" rel="noreferrer" aria-label={t("compartir", { red: red.red })}>
                     <IconoRed tipo={red.red} className="h-6 w-6" />
                   </a>

@@ -12,7 +12,13 @@ export const gruposPersona = [
 export const Personas: CollectionConfig = {
   slug: "personas",
   labels: { singular: "Persona", plural: "Personas" },
-  admin: { group: "Directorio", useAsTitle: "nombre", defaultColumns: ["nombre", "organizacion", "grupo", "equipo"] },
+  admin: {
+    group: "Directorio",
+    useAsTitle: "nombre",
+    defaultColumns: ["nombre", "organizacion", "grupo"],
+    description:
+      "Directorio de personas externas. El equipo del Observatorio vive en el código (src/contenido/equipo.ts).",
+  },
   access: { read: publico, create: esEditor, update: esEditor, delete: esEditor },
   hooks: revalidarColeccion("personas"),
   defaultSort: "orden",
@@ -20,8 +26,14 @@ export const Personas: CollectionConfig = {
     { name: "nombre", type: "text", required: true },
     slug(),
     { name: "orden", type: "number", defaultValue: 0, admin: { position: "sidebar" } },
-    { name: "equipo", type: "checkbox", defaultValue: false, label: "Forma parte del equipo", admin: { position: "sidebar" } },
-    { name: "grupo", type: "select", required: true, options: [...gruposPersona], index: true, admin: { position: "sidebar" } },
+    {
+      name: "grupo",
+      type: "select",
+      required: true,
+      options: [...gruposPersona],
+      index: true,
+      admin: { position: "sidebar" },
+    },
     {
       type: "row",
       fields: [
@@ -29,7 +41,7 @@ export const Personas: CollectionConfig = {
         { name: "rol", type: "text", localized: true },
       ],
     },
-    { name: "organizacion", type: "relationship", relationTo: "organizaciones", label: "Organización" },
+    { name: "organizacion", type: "text", localized: true, label: "Organización" },
     {
       type: "row",
       fields: [

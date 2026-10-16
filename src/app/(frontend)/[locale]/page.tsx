@@ -6,18 +6,17 @@ import GridRecursos, { type Recurso } from "@/components/GridRecursos";
 import MapaCentros from "@/components/MapaCentros";
 import { metadatosPagina } from "@/components/seo";
 import datosPrensa from "@/datos/datacenters-prensa.json";
-import type { DatosPrensa } from "@/datos/tipos";
-import type { Centro } from "@/payload-types";
+import type { Centro, DatosPrensa } from "@/datos/tipos";
 import { listarPublicaciones } from "@/lib/cms/publicaciones";
 import { listarEntradas } from "@/lib/cms/actualidad";
-import { obtenerSitio } from "@/lib/cms/sitio";
 import { imagen, imagenes } from "@/lib/cms/util";
+import { textosDelSitio } from "@/contenido/textos";
 
 // El mapa resumido del inicio usa el mismo dataset de prensa que el mapa
-// completo (no los centros de maqueta del CMS). El SVG agrupa su lista lateral
+// completo. El SVG agrupa su lista lateral
 // por `pais`, que aquí llenamos con la entidad federativa: así la portada
 // muestra el conteo real por estado.
-const centrosResumen = (datosPrensa as unknown as DatosPrensa).centros.map(
+const centrosResumen: Centro[] = (datosPrensa as unknown as DatosPrensa).centros.map(
   (c, i) =>
     ({
       id: i,
@@ -28,31 +27,25 @@ const centrosResumen = (datosPrensa as unknown as DatosPrensa).centros.map(
       estado: c.estado,
       lat: c.lat,
       lng: c.lng,
-      updatedAt: "",
-      createdAt: "",
-    }) as Centro,
+    }) satisfies Centro,
 );
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: Locale }> }): Promise<Metadata> {
   const { locale } = await params;
-  const [t, tSeo, sitio] = await Promise.all([
-    getTranslations({ locale, namespace: "inicio" }),
-    getTranslations({ locale, namespace: "seo" }),
-    obtenerSitio(locale),
-  ]);
-  return metadatosPagina(locale, "/", t("titulo"), sitio.inicio?.texto || tSeo("inicio"));
+  const t = await getTranslations({ locale, namespace: "inicio" });
+  return metadatosPagina(locale, "/", t("titulo"), textosDelSitio(locale).inicio.texto);
 }
 
 /** N1 - Inicio */
 export default async function Inicio({ params }: { params: Promise<{ locale: Locale }> }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, tPub, tAct, tComun, sitio, publicaciones, entradas] = await Promise.all([
+  const sitio = textosDelSitio(locale);
+  const [t, tPub, tAct, tComun, publicaciones, entradas] = await Promise.all([
     getTranslations("inicio"),
     getTranslations("publicaciones.tipos"),
     getTranslations("actualidad.tipos"),
     getTranslations("comun"),
-    obtenerSitio(locale),
     listarPublicaciones(locale),
     listarEntradas(locale),
   ]);
@@ -109,7 +102,7 @@ export default async function Inicio({ params }: { params: Promise<{ locale: Loc
 
         <div className="shell relative text-center">
           <h1 className="display t-h1 mx-auto max-w-[20ch]">{t("titulo")}</h1>
-          {sitio.inicio?.texto && <p className="t-lead mx-auto mt-6 max-w-[var(--lead-max)]">{sitio.inicio.texto}</p>}
+          <p className="t-lead mx-auto mt-6 max-w-[var(--lead-max)]">{sitio.inicio.texto}</p>
           <Link href="/quienes-somos" className="pill pill-dark mt-12">
             {(await getTranslations("quienesSomos"))("titulo")}
           </Link>
@@ -120,7 +113,7 @@ export default async function Inicio({ params }: { params: Promise<{ locale: Loc
         <h2 id="titulo-mapa" className="sr-only">
           {t("mapaTitulo")}
         </h2>
-        <MapaCentros resumido centros={centrosResumen} descripcion={sitio.paginas?.mapaResumen} />
+        <MapaCentros resumido centros={centrosResumen} descripcion={sitio.paginas.mapaResumen} />
         <div className="bg-slate pb-12 text-center">
           <Link href="/mapa-de-centros-de-datos" className="pill pill-dark">
             {t("verMapa")}

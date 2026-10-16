@@ -2,11 +2,11 @@ import { expect, test } from "@playwright/test";
 import { mensajes } from "./helpers";
 
 /**
- * E2 - Localización: el contenido del CMS en /en lleva el prefijo "[EN] " del
+ * E2 - Localización: el contenido del CMS (la maqueta de SEED_MAQUETA) en /en lleva el prefijo "[EN] " del
  * seed, en /es no, y el conmutador del header cambia de idioma conservando la ruta.
  */
 
-const rutasConContenidoCms = ["/ejes-de-trabajo", "/publicaciones", "/quienes-somos"];
+const rutasConContenidoCms = ["/publicaciones", "/actualidad"];
 
 test.describe("localización", () => {
   for (const ruta of rutasConContenidoCms) {

@@ -36,18 +36,7 @@ async function correrSeed() {
   }
 }
 
-const COLECCIONES = [
-  "labs",
-  "proyectos",
-  "publicaciones",
-  "entradas",
-  "noticias",
-  "centros",
-  "personas",
-  "organizaciones",
-  "categorias",
-  "users",
-] as const;
+const COLECCIONES = ["proyectos", "publicaciones", "entradas", "noticias", "categorias", "users"] as const;
 
 async function contar() {
   const payload = await obtenerPayload();
@@ -95,14 +84,6 @@ describe("S4 · seed", () => {
     for (const doc of en.docs) expect(doc.titulo).toMatch(/^\[EN\] /);
     const es = await payload.find({ collection: "publicaciones", locale: "es", limit: 5, overrideAccess: true });
     for (const doc of es.docs) expect(doc.titulo).not.toMatch(/^\[EN\] /);
-  });
-
-  it("rellena los textos del sitio en ambos idiomas", async () => {
-    const payload = await obtenerPayload();
-    const es = await payload.findGlobal({ slug: "sitio", locale: "es", overrideAccess: true });
-    const en = await payload.findGlobal({ slug: "sitio", locale: "en", overrideAccess: true });
-    expect(es.inicio?.texto).toBeTruthy();
-    expect(en.inicio?.texto).toMatch(/^\[EN\] /);
   });
 
   it("una segunda corrida termina con 0 y no cambia ningún conteo", { timeout: TIEMPO }, async () => {

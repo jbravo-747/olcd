@@ -32,41 +32,40 @@ beforeAll(async () => {
   otroEditor = await crearUsuario("editor");
 });
 
-const datosLab = (slug: string) => ({
-  nombre: `Lab ${slug}`,
+const datosPersona = (slug: string) => ({
+  nombre: `Persona ${slug}`,
   slug,
-  descripcion: "Descripción de prueba",
+  grupo: "investigacion" as const,
 });
 
 describe("S1 · anónimo", () => {
-  it("puede listar labs (colección pública)", async () => {
+  it("puede listar personas (colección pública)", async () => {
     const payload = await obtenerPayload();
-    await payload.create({ collection: "labs", data: datosLab("publico-lee"), overrideAccess: true });
-    const resultado = await payload.find({ collection: "labs", ...comoAnonimo() });
+    await payload.create({ collection: "personas", data: datosPersona("publico-lee"), overrideAccess: true });
+    const resultado = await payload.find({ collection: "personas", ...comoAnonimo() });
     expect(resultado.docs.map((d) => d.slug)).toContain("publico-lee");
   });
 
   it("no puede crear contenido", async () => {
     const payload = await obtenerPayload();
     await expect(
-      payload.create({ collection: "labs", data: datosLab("anonimo-crea"), ...comoAnonimo() }),
+      payload.create({ collection: "personas", data: datosPersona("anonimo-crea"), ...comoAnonimo() }),
     ).rejects.toMatchObject(PROHIBIDO);
   });
 
   it("no puede actualizar ni borrar contenido", async () => {
     const payload = await obtenerPayload();
-    const lab = await payload.create({ collection: "labs", data: datosLab("anonimo-edita"), overrideAccess: true });
+    const persona = await payload.create({
+      collection: "personas",
+      data: datosPersona("anonimo-edita"),
+      overrideAccess: true,
+    });
     await expect(
-      payload.update({ collection: "labs", id: lab.id, data: { nombre: "Cambiado" }, ...comoAnonimo() }),
+      payload.update({ collection: "personas", id: persona.id, data: { nombre: "Cambiado" }, ...comoAnonimo() }),
     ).rejects.toMatchObject(PROHIBIDO);
-    await expect(payload.delete({ collection: "labs", id: lab.id, ...comoAnonimo() })).rejects.toMatchObject(PROHIBIDO);
-  });
-
-  it("no puede actualizar el global sitio", async () => {
-    const payload = await obtenerPayload();
-    await expect(
-      payload.updateGlobal({ slug: "sitio", data: { inicio: { texto: "anónimo" } }, ...comoAnonimo() }),
-    ).rejects.toMatchObject(PROHIBIDO);
+    await expect(payload.delete({ collection: "personas", id: persona.id, ...comoAnonimo() })).rejects.toMatchObject(
+      PROHIBIDO,
+    );
   });
 
   it("no puede crear mensajes de contacto por la API con control de acceso", async () => {
@@ -87,18 +86,26 @@ describe("S1 · anónimo", () => {
 });
 
 describe("S1 · editor", () => {
-  it("puede crear, actualizar y borrar contenido (labs)", async () => {
+  it("puede crear, actualizar y borrar contenido (personas)", async () => {
     const payload = await obtenerPayload();
-    const lab = await payload.create({ collection: "labs", data: datosLab("editor-lab"), ...como(editor) });
-    const actualizado = await payload.update({
-      collection: "labs",
-      id: lab.id,
-      data: { nombre: "Lab editado" },
+    const persona = await payload.create({
+      collection: "personas",
+      data: datosPersona("editor-crea"),
       ...como(editor),
     });
-    expect(actualizado.nombre).toBe("Lab editado");
-    await payload.delete({ collection: "labs", id: lab.id, ...como(editor) });
-    const restantes = await payload.find({ collection: "labs", where: { id: { equals: lab.id } }, ...comoAnonimo() });
+    const actualizado = await payload.update({
+      collection: "personas",
+      id: persona.id,
+      data: { nombre: "Persona editada" },
+      ...como(editor),
+    });
+    expect(actualizado.nombre).toBe("Persona editada");
+    await payload.delete({ collection: "personas", id: persona.id, ...como(editor) });
+    const restantes = await payload.find({
+      collection: "personas",
+      where: { id: { equals: persona.id } },
+      ...comoAnonimo(),
+    });
     expect(restantes.totalDocs).toBe(0);
   });
 
@@ -121,16 +128,6 @@ describe("S1 · editor", () => {
       ...como(editor),
     });
     expect(publicacion.titulo).toBe("Reporte anual");
-  });
-
-  it("puede actualizar el global sitio", async () => {
-    const payload = await obtenerPayload();
-    const sitio = await payload.updateGlobal({
-      slug: "sitio",
-      data: { inicio: { texto: "Texto del editor" } },
-      ...como(editor),
-    });
-    expect(sitio.inicio?.texto).toBe("Texto del editor");
   });
 
   it("no puede crear usuarios", async () => {

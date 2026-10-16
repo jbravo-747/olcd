@@ -2,6 +2,7 @@ import type { CollectionConfig } from "payload";
 import { esEditor, publico } from "../access";
 import { categorias, slug } from "../campos";
 import { revalidarColeccion } from "../hooks/revalidar";
+import { opcionesLab } from "../../contenido/labs";
 
 export const tiposPublicacion = [
   { label: "Reportes", value: "reportes" },
@@ -28,7 +29,7 @@ export const Publicaciones: CollectionConfig = {
       index: true,
       admin: { position: "sidebar" },
     },
-    { name: "lab", type: "relationship", relationTo: "labs", admin: { position: "sidebar" } },
+    { name: "lab", type: "select", options: opcionesLab, admin: { position: "sidebar" } },
     { name: "descripcion", type: "textarea", required: true, localized: true, label: "Descripción corta" },
     { name: "contenido", type: "richText", localized: true },
     {

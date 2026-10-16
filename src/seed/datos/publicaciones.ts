@@ -8,6 +8,7 @@ export type Publicacion = {
   titulo: string;
   descripcion: string;
   contenido: string[];
+  /** Slug del lab (src/contenido/labs.ts). */
   lab: string;
   autores: string;
   anio: string;
@@ -37,7 +38,7 @@ export const tiposPublicacion: { slug: TipoPublicacion; nombre: string; descripc
   },
 ];
 
-const labs = ["Data Lab", "Citizen Science Lab", "Methods Lab", "Narratives Lab", "Policy Lab"];
+const labs = ["data-lab", "citizen-science-lab", "methods-lab", "narratives-lab", "policy-lab"];
 
 function generar(tipo: TipoPublicacion, cantidad: number): Publicacion[] {
   return Array.from({ length: cantidad }, (_, i) => ({

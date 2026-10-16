@@ -1,15 +1,13 @@
-import { getLocale, getTranslations } from "next-intl/server";
+import { getTranslations } from "next-intl/server";
 import Logo from "./Logo";
 import { Link } from "@/i18n/navigation";
-import type { Locale } from "@/i18n/routing";
 import { columnasFooter, enlacesLegales } from "@/lib/navegacion";
-import { obtenerSitio } from "@/lib/cms/sitio";
+import { redes as redesSitio } from "@/contenido/textos";
 import { IconoRed } from "./Iconos";
 
 export default async function Footer() {
-  const locale = (await getLocale()) as Locale;
-  const [t, sitio] = await Promise.all([getTranslations("nav"), obtenerSitio(locale)]);
-  const redes = sitio.redes?.enlaces ?? [];
+  const t = await getTranslations("nav");
+  const redes = redesSitio.enlaces;
 
   return (
     <footer className="bg-ink text-cream">
@@ -39,8 +37,14 @@ export default async function Footer() {
       <div className="shell flex flex-col gap-6 border-t border-white/10 py-6 sm:flex-row sm:items-center">
         <ul className="flex items-center gap-4">
           {redes.map((red) => (
-            <li key={red.id ?? red.red}>
-              <a href={red.url} target="_blank" rel="noreferrer" aria-label={red.red} className="block text-cream/90 hover:text-cream">
+            <li key={red.red}>
+              <a
+                href={red.url}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={red.red}
+                className="block text-cream/90 hover:text-cream"
+              >
                 <IconoRed tipo={red.red} />
               </a>
             </li>

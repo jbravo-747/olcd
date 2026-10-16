@@ -4,7 +4,10 @@ import Marcador from "./Marcador";
 
 type Tamano = "thumbnail" | "card" | "hero" | "original";
 
-/** Imagen del CMS con next/image; si no hay imagen, muestra el marcador gris de la maqueta. */
+/** Un documento de Media del CMS o una imagen fija de /public con sus medidas. */
+export type FuenteImagen = Pick<Media, "url" | "alt" | "width" | "height"> & { sizes?: Media["sizes"] };
+
+/** Imagen con next/image; si no hay imagen, muestra el marcador gris de la maqueta. */
 export default function Imagen({
   media,
   tamano = "card",
@@ -13,7 +16,7 @@ export default function Imagen({
   sizes,
   priority = false,
 }: {
-  media: Media | null | undefined;
+  media: FuenteImagen | null | undefined;
   tamano?: Tamano;
   className?: string;
   etiqueta?: string;

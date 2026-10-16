@@ -1,4 +1,7 @@
 import { expect, test, type APIRequestContext } from "@playwright/test";
+import { equipo } from "../../src/contenido/equipo";
+import { labs } from "../../src/contenido/labs";
+import { organizaciones } from "../../src/contenido/organizaciones";
 import { locales, primerDocumento, rutasEstaticas, vigilarErrores } from "./helpers";
 
 /**
@@ -7,14 +10,15 @@ import { locales, primerDocumento, rutasEstaticas, vigilarErrores } from "./help
  * desbordamiento horizontal.
  */
 
-// Rutas de detalle: una por tipo de contenido, con el slug descubierto por la API REST.
+// Rutas de detalle: una por tipo de contenido. Lo que vive en el código sale de
+// src/contenido; lo del CMS, de la API REST.
 const rutasDeDetalle: { tipo: string; ruta: (request: APIRequestContext) => Promise<string> }[] = [
-  { tipo: "lab", ruta: async (r) => `/ejes-de-trabajo/${(await primerDocumento<{ slug: string }>(r, "labs")).slug}` },
+  { tipo: "lab", ruta: async () => `/ejes-de-trabajo/${labs[0].slug}` },
   {
     tipo: "proyecto",
     ruta: async (r) => {
-      const p = await primerDocumento<{ slug: string; lab: { slug: string } }>(r, "proyectos", 1);
-      return `/ejes-de-trabajo/${p.lab.slug}/${p.slug}`;
+      const p = await primerDocumento<{ slug: string; lab: string }>(r, "proyectos");
+      return `/ejes-de-trabajo/${p.lab}/${p.slug}`;
     },
   },
   {
@@ -27,12 +31,11 @@ const rutasDeDetalle: { tipo: string; ruta: (request: APIRequestContext) => Prom
   },
   {
     tipo: "persona",
-    ruta: async (r) => `/quienes-somos/personas/${(await primerDocumento<{ slug: string }>(r, "personas")).slug}`,
+    ruta: async () => `/quienes-somos/personas/${equipo[0].slug}`,
   },
   {
     tipo: "organizacion",
-    ruta: async (r) =>
-      `/quienes-somos/organizaciones/${(await primerDocumento<{ slug: string }>(r, "organizaciones")).slug}`,
+    ruta: async () => `/quienes-somos/organizaciones/${organizaciones[0].slug}`,
   },
 ];
 

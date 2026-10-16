@@ -3,14 +3,15 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import type { Locale } from "@/i18n/routing";
 import GridPersonas, { type FichaPersona } from "@/components/GridPersonas";
 import GridOrganizaciones from "@/components/GridOrganizaciones";
-import TextoEnriquecido from "@/components/TextoEnriquecido";
+import Parrafos from "@/components/Parrafos";
 import { TituloSeccion } from "@/components/EncabezadoPagina";
 import { metadatosPagina } from "@/components/seo";
+import { equipo as miembrosEquipo } from "@/contenido/equipo";
+import { organizaciones } from "@/contenido/organizaciones";
+import { textosDelSitio } from "@/contenido/textos";
 import { listarPersonas } from "@/lib/cms/personas";
-import { listarOrganizaciones } from "@/lib/cms/organizaciones";
-import { obtenerSitio } from "@/lib/cms/sitio";
-import { imagen, poblado } from "@/lib/cms/util";
-import type { Organizacion, Persona } from "@/payload-types";
+import { imagen } from "@/lib/cms/util";
+import type { Persona } from "@/payload-types";
 
 type Props = { params: Promise<{ locale: Locale }> };
 
@@ -33,7 +34,7 @@ function ficha(p: Persona): FichaPersona {
     slug: p.slug,
     nombre: p.nombre,
     titulo: p.titulo ?? "",
-    organizacion: poblado<Organizacion>(p.organizacion)?.nombre ?? "",
+    organizacion: p.organizacion ?? "",
     foto: imagen(p.foto),
   };
 }
@@ -42,32 +43,34 @@ function ficha(p: Persona): FichaPersona {
 export default async function QuienesSomos({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, tComun, sitio, personas, organizaciones] = await Promise.all([
+  const [t, tComun, personas] = await Promise.all([
     getTranslations("quienesSomos"),
     getTranslations("comun"),
-    obtenerSitio(locale),
     listarPersonas(locale),
-    listarOrganizaciones(locale),
   ]);
-  const textos = sitio.quienesSomos;
-  const equipo = personas.filter((p) => p.equipo).map(ficha);
-  const hayDirectorioPersonas = personas.some((p) => !p.equipo);
+  const textos = textosDelSitio(locale).quienesSomos;
+  const equipo = miembrosEquipo.map((p) => ({
+    slug: p.slug,
+    nombre: p.nombre,
+    titulo: p.titulo,
+    organizacion: "",
+    foto: p.foto,
+  }));
+  const hayDirectorioPersonas = personas.length > 0;
 
   return (
     <>
       <section id="proposito" className="bg-cream py-16 scroll-mt-20">
         <div className="shell">
-          <h1 className="display t-section max-w-5xl">{textos?.titulo ?? t("titulo")}</h1>
-          <TextoEnriquecido datos={textos?.proposito} className="mt-10 max-w-4xl" />
+          <h1 className="display t-section max-w-5xl">{textos.titulo}</h1>
+          <Parrafos parrafos={textos.proposito} className="mt-10 max-w-4xl" />
         </div>
       </section>
 
       <section id="equipo" className="bg-cream-deep py-16 scroll-mt-20">
         <div className="shell">
           <TituloSeccion>{t("equipo")}</TituloSeccion>
-          {textos?.equipoTexto && (
-            <p className="mt-6 max-w-3xl text-[15px] leading-relaxed text-ink/80">{textos.equipoTexto}</p>
-          )}
+          <p className="mt-6 max-w-3xl text-[15px] leading-relaxed text-ink/80">{textos.equipoTexto}</p>
           <div className="mt-12">
             {equipo.length === 0 ? (
               <p className="text-[15px] text-ink/70">{tComun("sinContenido")}</p>
@@ -81,15 +84,13 @@ export default async function QuienesSomos({ params }: Props) {
       <section id="organizaciones" className="bg-cream py-16 scroll-mt-20">
         <div className="shell">
           <TituloSeccion>{t("directorioOrganizaciones")}</TituloSeccion>
-          {textos?.organizacionesTexto && (
-            <p className="mt-6 max-w-3xl text-[15px] leading-relaxed text-ink/80">{textos.organizacionesTexto}</p>
-          )}
+          <p className="mt-6 max-w-3xl text-[15px] leading-relaxed text-ink/80">{textos.organizacionesTexto}</p>
           <div className="mt-12">
             {organizaciones.length === 0 ? (
               <p className="text-[15px] text-ink/70">{tComun("sinContenido")}</p>
             ) : (
               <GridOrganizaciones
-                organizaciones={organizaciones.map((o) => ({ slug: o.slug, nombre: o.nombre, logo: imagen(o.logo) }))}
+                organizaciones={organizaciones.map((o) => ({ slug: o.slug, nombre: o.nombre, logo: o.logo }))}
                 porPagina={8}
               />
             )}
@@ -100,12 +101,10 @@ export default async function QuienesSomos({ params }: Props) {
       <section id="personas" className="bg-cream-deep py-16 scroll-mt-20">
         <div className="shell">
           <TituloSeccion>{t("directorioPersonas")}</TituloSeccion>
-          {textos?.personasTexto && (
-            <p className="mt-6 max-w-3xl text-[15px] leading-relaxed text-ink/80">{textos.personasTexto}</p>
-          )}
+          <p className="mt-6 max-w-3xl text-[15px] leading-relaxed text-ink/80">{textos.personasTexto}</p>
 
           {grupos.map((grupo) => {
-            const miembros = personas.filter((p) => !p.equipo && p.grupo === grupo).map(ficha);
+            const miembros = personas.filter((p) => p.grupo === grupo).map(ficha);
             if (miembros.length === 0) return null;
             const nombreGrupo = t(`grupos.${grupo}`);
             return (

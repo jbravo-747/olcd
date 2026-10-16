@@ -13,16 +13,12 @@ import { Users } from "./cms/collections/Users";
 import { Media } from "./cms/collections/Media";
 import { Documentos } from "./cms/collections/Documentos";
 import { Categorias } from "./cms/collections/Categorias";
-import { Labs } from "./cms/collections/Labs";
 import { Proyectos } from "./cms/collections/Proyectos";
 import { Publicaciones } from "./cms/collections/Publicaciones";
 import { Entradas } from "./cms/collections/Entradas";
 import { Noticias } from "./cms/collections/Noticias";
-import { Centros } from "./cms/collections/Centros";
 import { Personas } from "./cms/collections/Personas";
-import { Organizaciones } from "./cms/collections/Organizaciones";
 import { MensajesContacto } from "./cms/collections/MensajesContacto";
-import { Sitio } from "./cms/globals/Sitio";
 import { migrations } from "./migrations";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -114,21 +110,17 @@ export default buildConfig({
     fallback: true,
   },
   collections: [
-    Labs,
     Proyectos,
     Publicaciones,
     Entradas,
     Noticias,
-    Centros,
     Personas,
-    Organizaciones,
     Categorias,
     Media,
     Documentos,
     MensajesContacto,
     Users,
   ],
-  globals: [Sitio],
   editor: lexicalEditor(),
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URI || "" },

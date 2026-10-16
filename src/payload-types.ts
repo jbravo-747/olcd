@@ -67,14 +67,11 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    labs: Lab;
     proyectos: Proyecto;
     publicaciones: Publicacion;
     entradas: Entrada;
     noticias: Noticia;
-    centros: Centro;
     personas: Persona;
-    organizaciones: Organizacion;
     categorias: Categoria;
     media: Media;
     documentos: Documento;
@@ -87,14 +84,11 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    labs: LabsSelect<false> | LabsSelect<true>;
     proyectos: ProyectosSelect<false> | ProyectosSelect<true>;
     publicaciones: PublicacionesSelect<false> | PublicacionesSelect<true>;
     entradas: EntradasSelect<false> | EntradasSelect<true>;
     noticias: NoticiasSelect<false> | NoticiasSelect<true>;
-    centros: CentrosSelect<false> | CentrosSelect<true>;
     personas: PersonasSelect<false> | PersonasSelect<true>;
-    organizaciones: OrganizacionesSelect<false> | OrganizacionesSelect<true>;
     categorias: CategoriasSelect<false> | CategoriasSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     documentos: DocumentosSelect<false> | DocumentosSelect<true>;
@@ -109,12 +103,8 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: ('false' | 'none' | 'null') | false | null | ('es' | 'en') | ('es' | 'en')[];
-  globals: {
-    sitio: Sitio;
-  };
-  globalsSelect: {
-    sitio: SitioSelect<false> | SitioSelect<true>;
-  };
+  globals: {};
+  globalsSelect: {};
   locale: 'es' | 'en';
   widgets: {
     collections: CollectionsWidget;
@@ -145,84 +135,6 @@ export interface UserAuthOperations {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "labs".
- */
-export interface Lab {
-  id: number;
-  nombre: string;
-  /**
-   * Identificador en la URL (sin espacios ni acentos).
-   */
-  slug: string;
-  orden?: number | null;
-  descripcion: string;
-  introduccion?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  imagen?: (number | null) | Media;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  alt: string;
-  credito?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumbnail?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    card?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    hero?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "proyectos".
  */
 export interface Proyecto {
@@ -232,7 +144,7 @@ export interface Proyecto {
    * Identificador en la URL (sin espacios ni acentos).
    */
   slug: string;
-  lab: number | Lab;
+  lab: 'data-lab' | 'citizen-science-lab' | 'methods-lab' | 'narratives-lab' | 'policy-lab';
   descripcion: string;
   autores?: string | null;
   anio?: string | null;
@@ -305,6 +217,52 @@ export interface Categoria {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  alt: string;
+  credito?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    hero?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "documentos".
  */
 export interface Documento {
@@ -334,7 +292,7 @@ export interface Publicacion {
    */
   slug: string;
   tipo: 'reportes' | 'articulos-y-libros' | 'recursos-educativos';
-  lab?: (number | null) | Lab;
+  lab?: ('data-lab' | 'citizen-science-lab' | 'methods-lab' | 'narratives-lab' | 'policy-lab') | null;
   descripcion: string;
   contenido?: {
     root: {
@@ -418,23 +376,8 @@ export interface Noticia {
   createdAt: string;
 }
 /**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "centros".
- */
-export interface Centro {
-  id: number;
-  nombre: string;
-  ciudad: string;
-  pais: string;
-  empresa?: string | null;
-  estado: 'en-operacion' | 'en-construccion' | 'anunciado';
-  inversionUsdMillones?: number | null;
-  lat: number;
-  lng: number;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
+ * Directorio de personas externas. El equipo del Observatorio vive en el código (src/contenido/equipo.ts).
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "personas".
  */
@@ -446,11 +389,10 @@ export interface Persona {
    */
   slug: string;
   orden?: number | null;
-  equipo?: boolean | null;
   grupo: 'investigacion' | 'comunidad' | 'aliados';
   titulo?: string | null;
   rol?: string | null;
-  organizacion?: (number | null) | Organizacion;
+  organizacion?: string | null;
   region?: string | null;
   afiliacion?: string | null;
   correo?: string | null;
@@ -470,39 +412,6 @@ export interface Persona {
     [k: string]: unknown;
   } | null;
   foto?: (number | null) | Media;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "organizaciones".
- */
-export interface Organizacion {
-  id: number;
-  nombre: string;
-  /**
-   * Identificador en la URL (sin espacios ni acentos).
-   */
-  slug: string;
-  region?: string | null;
-  web?: string | null;
-  correo?: string | null;
-  descripcion?: {
-    root: {
-      type: string;
-      children: {
-        type: any;
-        version: number;
-        [k: string]: unknown;
-      }[];
-      direction: ('ltr' | 'rtl') | null;
-      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-      indent: number;
-      version: number;
-    };
-    [k: string]: unknown;
-  } | null;
-  logo?: (number | null) | Media;
   updatedAt: string;
   createdAt: string;
 }
@@ -575,10 +484,6 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'labs';
-        value: number | Lab;
-      } | null)
-    | ({
         relationTo: 'proyectos';
         value: number | Proyecto;
       } | null)
@@ -595,16 +500,8 @@ export interface PayloadLockedDocument {
         value: number | Noticia;
       } | null)
     | ({
-        relationTo: 'centros';
-        value: number | Centro;
-      } | null)
-    | ({
         relationTo: 'personas';
         value: number | Persona;
-      } | null)
-    | ({
-        relationTo: 'organizaciones';
-        value: number | Organizacion;
       } | null)
     | ({
         relationTo: 'categorias';
@@ -667,20 +564,6 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "labs_select".
- */
-export interface LabsSelect<T extends boolean = true> {
-  nombre?: T;
-  slug?: T;
-  orden?: T;
-  descripcion?: T;
-  introduccion?: T;
-  imagen?: T;
-  updatedAt?: T;
-  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -775,29 +658,12 @@ export interface NoticiasSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "centros_select".
- */
-export interface CentrosSelect<T extends boolean = true> {
-  nombre?: T;
-  ciudad?: T;
-  pais?: T;
-  empresa?: T;
-  estado?: T;
-  inversionUsdMillones?: T;
-  lat?: T;
-  lng?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "personas_select".
  */
 export interface PersonasSelect<T extends boolean = true> {
   nombre?: T;
   slug?: T;
   orden?: T;
-  equipo?: T;
   grupo?: T;
   titulo?: T;
   rol?: T;
@@ -807,21 +673,6 @@ export interface PersonasSelect<T extends boolean = true> {
   correo?: T;
   biografia?: T;
   foto?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "organizaciones_select".
- */
-export interface OrganizacionesSelect<T extends boolean = true> {
-  nombre?: T;
-  slug?: T;
-  region?: T;
-  web?: T;
-  correo?: T;
-  descripcion?: T;
-  logo?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -983,178 +834,6 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "sitio".
- */
-export interface Sitio {
-  id: number;
-  inicio?: {
-    texto?: string | null;
-  };
-  quienesSomos?: {
-    titulo?: string | null;
-    proposito?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    equipoTexto?: string | null;
-    organizacionesTexto?: string | null;
-    personasTexto?: string | null;
-  };
-  paginas?: {
-    ejesDeTrabajo?: string | null;
-    mapa?: string | null;
-    mapaResumen?: string | null;
-    contacto?: string | null;
-  };
-  publicaciones?: {
-    reportes?: string | null;
-    articulosLibros?: string | null;
-    recursosEducativos?: string | null;
-  };
-  actualidad?: {
-    blog?: string | null;
-    comunicados?: string | null;
-    coberturaPrensa?: string | null;
-    noticiasObservatorio?: string | null;
-  };
-  legales?: {
-    accesibilidad?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    privacidad?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-    terminos?: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    } | null;
-  };
-  redes?: {
-    correoContacto?: string | null;
-    enlaces?:
-      | {
-          red: 'instagram' | 'linkedin' | 'facebook';
-          url: string;
-          id?: string | null;
-        }[]
-      | null;
-  };
-  updatedAt?: string | null;
-  createdAt?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "sitio_select".
- */
-export interface SitioSelect<T extends boolean = true> {
-  inicio?:
-    | T
-    | {
-        texto?: T;
-      };
-  quienesSomos?:
-    | T
-    | {
-        titulo?: T;
-        proposito?: T;
-        equipoTexto?: T;
-        organizacionesTexto?: T;
-        personasTexto?: T;
-      };
-  paginas?:
-    | T
-    | {
-        ejesDeTrabajo?: T;
-        mapa?: T;
-        mapaResumen?: T;
-        contacto?: T;
-      };
-  publicaciones?:
-    | T
-    | {
-        reportes?: T;
-        articulosLibros?: T;
-        recursosEducativos?: T;
-      };
-  actualidad?:
-    | T
-    | {
-        blog?: T;
-        comunicados?: T;
-        coberturaPrensa?: T;
-        noticiasObservatorio?: T;
-      };
-  legales?:
-    | T
-    | {
-        accesibilidad?: T;
-        privacidad?: T;
-        terminos?: T;
-      };
-  redes?:
-    | T
-    | {
-        correoContacto?: T;
-        enlaces?:
-          | T
-          | {
-              red?: T;
-              url?: T;
-              id?: T;
-            };
-      };
-  updatedAt?: T;
-  createdAt?: T;
-  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

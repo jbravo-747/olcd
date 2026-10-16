@@ -4,7 +4,7 @@ import type { Locale } from "@/i18n/routing";
 import ExploradorPublicaciones from "@/components/ExploradorPublicaciones";
 import { metadatosPagina } from "@/components/seo";
 import { listarPublicaciones } from "@/lib/cms/publicaciones";
-import { obtenerSitio } from "@/lib/cms/sitio";
+import { textosDelSitio } from "@/contenido/textos";
 import { imagen } from "@/lib/cms/util";
 
 type Props = { params: Promise<{ locale: Locale }> };
@@ -25,24 +25,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PaginaPublicaciones({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, tComun, sitio, publicaciones] = await Promise.all([
+  const [t, tComun, publicaciones] = await Promise.all([
     getTranslations("publicaciones"),
     getTranslations("comun"),
-    obtenerSitio(locale),
     listarPublicaciones(locale),
   ]);
+  const textos = textosDelSitio(locale).publicaciones;
 
   const categorias = [
-    { slug: "reportes", nombre: t("tipos.reportes"), descripcion: sitio.publicaciones?.reportes ?? "" },
+    { slug: "reportes", nombre: t("tipos.reportes"), descripcion: textos.reportes },
     {
       slug: "articulos-y-libros",
       nombre: t("tipos.articulos-y-libros"),
-      descripcion: sitio.publicaciones?.articulosLibros ?? "",
+      descripcion: textos.articulosLibros,
     },
     {
       slug: "recursos-educativos",
       nombre: t("tipos.recursos-educativos"),
-      descripcion: sitio.publicaciones?.recursosEducativos ?? "",
+      descripcion: textos.recursosEducativos,
     },
   ];
 

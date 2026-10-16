@@ -1,4 +1,4 @@
-import type { Centro } from "@/payload-types";
+import type { Centro } from "@/datos/tipos";
 
 /**
  * Convierte los centros de datos de Payload en una FeatureCollection GeoJSON,

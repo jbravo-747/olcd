@@ -2,6 +2,7 @@ import type { CollectionConfig } from "payload";
 import { esEditor, publico } from "../access";
 import { categorias, fotos, slug } from "../campos";
 import { revalidarColeccion } from "../hooks/revalidar";
+import { opcionesLab } from "../../contenido/labs";
 
 export const Proyectos: CollectionConfig = {
   slug: "proyectos",
@@ -13,7 +14,7 @@ export const Proyectos: CollectionConfig = {
     { name: "titulo", type: "text", required: true, localized: true, label: "Título" },
     // El slug es único dentro de cada lab, no global: la URL es /ejes-de-trabajo/[lab]/[proyecto].
     slug({ unico: false }),
-    { name: "lab", type: "relationship", relationTo: "labs", required: true, index: true, admin: { position: "sidebar" } },
+    { name: "lab", type: "select", options: opcionesLab, required: true, index: true, admin: { position: "sidebar" } },
     { name: "descripcion", type: "textarea", required: true, localized: true, label: "Descripción corta" },
     {
       type: "row",

@@ -1,10 +1,5 @@
 import { revalidateTag } from "next/cache";
-import type {
-  CollectionAfterChangeHook,
-  CollectionAfterDeleteHook,
-  GlobalAfterChangeHook,
-  PayloadRequest,
-} from "payload";
+import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, PayloadRequest } from "payload";
 
 function invalidar(tag: string, req: PayloadRequest) {
   if (req.context?.disableRevalidate) return;
@@ -25,12 +20,4 @@ export function revalidarColeccion(tag: string) {
     return doc;
   };
   return { afterChange: [afterChange], afterDelete: [afterDelete] };
-}
-
-export function revalidarGlobal(tag: string) {
-  const afterChange: GlobalAfterChangeHook = ({ doc, req }) => {
-    invalidar(tag, req);
-    return doc;
-  };
-  return { afterChange: [afterChange] };
 }

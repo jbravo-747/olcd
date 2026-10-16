@@ -5,20 +5,16 @@ import EncabezadoPagina from "@/components/EncabezadoPagina";
 import FormularioContacto from "@/components/FormularioContacto";
 import { IconoRed } from "@/components/Iconos";
 import { metadatosPagina } from "@/components/seo";
-import { obtenerSitio } from "@/lib/cms/sitio";
+import { redes as redesSitio, textosDelSitio } from "@/contenido/textos";
 
 type Props = { params: Promise<{ locale: Locale }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const [t, tSeo, sitio] = await Promise.all([
-    getTranslations({ locale, namespace: "contacto" }),
-    getTranslations({ locale, namespace: "seo" }),
-    obtenerSitio(locale),
-  ]);
+  const t = await getTranslations({ locale, namespace: "contacto" });
   return {
     title: t("titulo"),
-    ...metadatosPagina(locale, "/contacto", t("titulo"), sitio.paginas?.contacto || tSeo("contacto")),
+    ...metadatosPagina(locale, "/contacto", t("titulo"), textosDelSitio(locale).paginas.contacto),
   };
 }
 
@@ -26,13 +22,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PaginaContacto({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, sitio] = await Promise.all([getTranslations("contacto"), obtenerSitio(locale)]);
-  const redes = sitio.redes?.enlaces ?? [];
-  const correo = sitio.redes?.correoContacto;
+  const t = await getTranslations("contacto");
+  const redes = redesSitio.enlaces;
+  const correo = redesSitio.correoContacto;
 
   return (
     <>
-      <EncabezadoPagina titulo={t("titulo")} descripcion={sitio.paginas?.contacto ?? undefined} />
+      <EncabezadoPagina titulo={t("titulo")} descripcion={textosDelSitio(locale).paginas.contacto} />
 
       <div className="bg-cream py-16">
         <div className="shell grid gap-14 lg:grid-cols-[1fr_320px]">
@@ -53,7 +49,7 @@ export default async function PaginaContacto({ params }: Props) {
                 <h3 className="mt-8 text-xs font-bold uppercase tracking-wide text-ink/60">{t("redes")}</h3>
                 <ul className="mt-3 flex gap-4">
                   {redes.map((red) => (
-                    <li key={red.id ?? red.red}>
+                    <li key={red.red}>
                       <a href={red.url} target="_blank" rel="noreferrer" aria-label={red.red}>
                         <IconoRed tipo={red.red} />
                       </a>

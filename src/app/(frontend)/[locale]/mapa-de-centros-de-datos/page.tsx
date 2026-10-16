@@ -6,18 +6,14 @@ import MapaCentrosInteractivo from "@/components/mapa/MapaCentrosInteractivo";
 import { metadatosPagina } from "@/components/seo";
 import datosPrensa from "@/datos/datacenters-prensa.json";
 import type { DatosPrensa } from "@/datos/tipos";
-import { obtenerSitio } from "@/lib/cms/sitio";
+import { textosDelSitio } from "@/contenido/textos";
 
 type Props = { params: Promise<{ locale: Locale }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
-  const [t, tSeo, sitio] = await Promise.all([
-    getTranslations({ locale, namespace: "mapa" }),
-    getTranslations({ locale, namespace: "seo" }),
-    obtenerSitio(locale),
-  ]);
-  const descripcion = sitio.paginas?.mapa || sitio.paginas?.mapaResumen || tSeo("mapa");
+  const t = await getTranslations({ locale, namespace: "mapa" });
+  const descripcion = textosDelSitio(locale).paginas.mapa;
   return {
     title: t("titulo"),
     ...metadatosPagina(locale, "/mapa-de-centros-de-datos", t("titulo"), descripcion),
@@ -28,11 +24,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PaginaMapa({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, sitio] = await Promise.all([getTranslations("mapa"), obtenerSitio(locale)]);
+  const t = await getTranslations("mapa");
 
   return (
     <>
-      <EncabezadoPagina titulo={t("titulo")} descripcion={sitio.paginas?.mapa ?? undefined} />
+      <EncabezadoPagina titulo={t("titulo")} descripcion={textosDelSitio(locale).paginas.mapa} />
       <div className="bg-cream">
         <MapaCentrosInteractivo datos={datosPrensa as DatosPrensa} />
       </div>

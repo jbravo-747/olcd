@@ -16,7 +16,7 @@ export const listarPersonas = cacheado(
     return docs;
   },
   "personas",
-  ["personas", "organizaciones", "media"],
+  ["personas", "media"],
 );
 
 export const buscarPersona = cacheado(
@@ -33,5 +33,5 @@ export const buscarPersona = cacheado(
     return docs[0] ?? null;
   },
   "persona",
-  ["personas", "organizaciones", "media"],
+  ["personas", "media"],
 );

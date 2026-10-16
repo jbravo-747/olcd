@@ -29,11 +29,12 @@ npm run dev                   # http://localhost:3000  →  /es, /en, /admin
 ```
 
 1. Entra a `http://localhost:3000/admin` y crea el primer usuario (admin).
-2. `npm run seed` carga el contenido de la maqueta en ambos idiomas
-   (los textos en inglés van con prefijo `[EN]` hasta que se traduzcan).
-   Las secciones sin contenido real (proyectos de los labs, publicaciones,
-   actualidad y legales) quedan "en construcción"; con `SEED_MAQUETA=1` se
-   llenan con lorem ipsum, como en las pruebas.
+2. `npm run seed` carga las categorías y las noticias del buscador. Con
+   `SEED_MAQUETA=1` agrega proyectos, publicaciones y entradas de maqueta con
+   lorem ipsum, como en las pruebas.
+
+Los textos institucionales, el equipo, las organizaciones aliadas y los labs
+no están en el CMS: viven en `src/contenido/` (ver `docs/cms.md`).
 
 En desarrollo el esquema de la base se sincroniza solo (`push`). Sin
 `S3_BUCKET` los archivos subidos se guardan en `media/` y `documentos/`.
@@ -119,9 +120,9 @@ contenido:
   en GitHub, el script se detiene y dice cuáles.
 - La configuración propia del servidor va en `.env` o en
   `docker-compose.override.yml` (ignorados por git).
-- En producción el contenido se edita en `/admin`; los despliegues no lo
-  tocan, y los cambios posteriores al seed (textos o fotos) se cargan ahí.
-  Nunca usar `docker compose down -v` en producción (borra la base y los
+- Los textos institucionales, el equipo y los labs viven en `src/contenido/`
+  y llegan con cada despliegue. Lo del CMS (publicaciones, actualidad,
+  proyectos…) se edita en `/admin` y los despliegues no lo tocan. Nunca usar `docker compose down -v` en producción (borra la base y los
   archivos).
 
 **Correo del formulario de contacto.** Con `SMTP_HOST` vacío los mensajes se
@@ -153,18 +154,21 @@ src/
 ├── app/
 │   ├── (frontend)/[locale]/   # páginas del sitio (una carpeta por ruta)
 │   └── (payload)/             # admin y API de Payload (generado)
-├── cms/                       # colecciones, global, accesos, hooks
+├── cms/                       # colecciones, accesos, hooks
+├── contenido/                 # textos, equipo, organizaciones y labs (fijos)
 ├── components/                # Header, Footer, rejillas, carrusel, mapa…
 ├── i18n/ · messages/ · proxy.ts   # next-intl (rutas /es y /en, textos de interfaz)
 ├── lib/cms/                   # lectura del CMS con caché por etiquetas
 ├── lib/navegacion.ts          # estructura del menú y del pie
-├── seed/                      # contenido inicial (antigua src/data)
+├── seed/                      # categorías, noticias y maqueta para pruebas
 ├── migrations/                # migraciones de Postgres
 └── payload.config.ts
 ```
 
 Para cambiar el menú se edita `src/lib/navegacion.ts` y las etiquetas en
-`src/messages/{es,en}.json`. El resto del contenido se edita en `/admin`.
+`src/messages/{es,en}.json`. Los textos institucionales están en
+`src/contenido/`; publicaciones, actualidad, proyectos y noticias se editan en
+`/admin`.
 
 ## Sistema de diseño
 
@@ -204,8 +208,7 @@ Los wireframes y el árbol de navegación (≈50 MB de PDF) viven en
 
 ## Pendientes
 
-1. Contenido real: los textos siguen siendo el lorem de los wireframes y las
-   imágenes se suben desde `/admin`.
-2. Registro real de centros de datos (los 12 son de muestra).
-3. Traducciones al inglés (el seed las deja con prefijo `[EN]`).
-4. Elegir bucket (R2/S3) y SMTP para producción.
+1. Contenido real de proyectos, publicaciones, actualidad y legales (hoy
+   "en construcción").
+2. Traducciones al inglés (`en` en `src/contenido/textos.ts` y en el CMS).
+3. Elegir bucket (R2/S3) y SMTP para producción.

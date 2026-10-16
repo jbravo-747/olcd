@@ -3,7 +3,7 @@
 import { useMemo, useState, type SVGProps } from "react";
 import { useFormatter, useTranslations } from "next-intl";
 import latam from "@/lib/latam.json";
-import type { Centro } from "@/payload-types";
+import type { Centro } from "@/datos/tipos";
 import { ALTO, ANCHO, anilloAPath, proyectar } from "@/lib/proyeccion";
 
 const geografia = latam as Record<string, number[][][]>;

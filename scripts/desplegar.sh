@@ -3,13 +3,12 @@
 #
 # - Sólo avanza si el servidor no tiene cambios ni commits propios: el código
 #   se edita en el repo y se sube a GitHub, nunca en el servidor.
-# - Respalda la base antes de tocar nada (en ~/respaldos-olcd).
-# - No toca el contenido: se edita en /admin. El seed (docker compose run --rm
-#   seed) sólo se usa una vez, para llenar una base nueva.
+# - Respalda base y archivos antes de tocar nada (scripts/respaldar.sh).
+# - Los textos institucionales, el equipo y los labs (src/contenido) llegan
+#   con el código. Lo del CMS se edita en /admin y el despliegue no lo toca; el
+#   seed (docker compose run --rm seed) sólo se usa una vez, en una base nueva.
 set -euo pipefail
 cd "$(dirname "$0")/.."
-
-RESPALDOS="${RESPALDOS:-$HOME/respaldos-olcd}"
 
 echo "==> Código"
 if ! git diff --quiet HEAD --; then
@@ -31,10 +30,7 @@ echo "    main en $(git log -1 --format='%h %s')"
 
 echo "==> Respaldo"
 if docker compose ps --status running --services | grep -qx db; then
-  mkdir -p "$RESPALDOS"
-  archivo="$RESPALDOS/olcd-$(date +%F-%H%M).sql.gz"
-  docker compose exec -T db pg_dump -U olcd olcd | gzip > "$archivo"
-  echo "    $archivo ($(du -h "$archivo" | cut -f1))"
+  ./scripts/respaldar.sh
 else
   echo "    la base no está corriendo (primer despliegue): sin respaldo"
 fi

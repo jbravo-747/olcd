@@ -4,7 +4,7 @@ import type { Locale } from "@/i18n/routing";
 import ExploradorPublicaciones from "@/components/ExploradorPublicaciones";
 import { metadatosPagina } from "@/components/seo";
 import { listarEntradas } from "@/lib/cms/actualidad";
-import { obtenerSitio } from "@/lib/cms/sitio";
+import { textosDelSitio } from "@/contenido/textos";
 import { imagenes } from "@/lib/cms/util";
 
 type Props = { params: Promise<{ locale: Locale }> };
@@ -25,25 +25,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function PaginaActualidad({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const [t, tComun, sitio, entradas] = await Promise.all([
+  const [t, tComun, entradas] = await Promise.all([
     getTranslations("actualidad"),
     getTranslations("comun"),
-    obtenerSitio(locale),
     listarEntradas(locale),
   ]);
+  const textos = textosDelSitio(locale).actualidad;
 
   const categorias = [
-    { slug: "blog", nombre: t("tipos.blog"), descripcion: sitio.actualidad?.blog ?? "" },
-    { slug: "comunicados", nombre: t("tipos.comunicados"), descripcion: sitio.actualidad?.comunicados ?? "" },
+    { slug: "blog", nombre: t("tipos.blog"), descripcion: textos.blog },
+    { slug: "comunicados", nombre: t("tipos.comunicados"), descripcion: textos.comunicados },
     {
       slug: "cobertura-de-prensa",
       nombre: t("tipos.cobertura-de-prensa"),
-      descripcion: sitio.actualidad?.coberturaPrensa ?? "",
+      descripcion: textos.coberturaPrensa,
     },
     {
       slug: "noticias-del-observatorio",
       nombre: t("tipos.noticias-del-observatorio"),
-      descripcion: sitio.actualidad?.noticiasObservatorio ?? "",
+      descripcion: textos.noticiasObservatorio,
     },
   ];
 

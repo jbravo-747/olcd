@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import type { Media } from "@/payload-types";
 import { Link } from "@/i18n/navigation";
-import Imagen from "./Imagen";
+import Imagen, { type FuenteImagen } from "./Imagen";
 import Paginacion from "./Paginacion";
 
 export type FichaPersona = {
@@ -12,7 +11,7 @@ export type FichaPersona = {
   nombre: string;
   titulo: string;
   organizacion: string;
-  foto?: Media | null;
+  foto?: FuenteImagen | null;
 };
 
 export default function GridPersonas({

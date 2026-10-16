@@ -11,7 +11,7 @@ const secciones = [
   ["idiomas", "Español e inglés"],
   ["archivos", "Imágenes y documentos"],
   ["relaciones", "Categorías, labs y otras relaciones"],
-  ["textos", "Textos del sitio"],
+  ["textos", "Lo que no se edita aquí"],
   ["mensajes", "Mensajes de contacto"],
   ["usuarios", "Usuarios y permisos"],
   ["no-editable", "Lo que no se edita aquí"],
@@ -55,14 +55,14 @@ export function Manual({ initPageResult, params, searchParams }: AdminViewServer
 
           <h2 id="que-es">1. Qué es este panel</h2>
           <p>
-            Es el gestor de contenidos del sitio público del Observatorio. Todo lo que se ve en el sitio (labs y
-            proyectos, publicaciones, actualidad, centros de datos del mapa, directorio de personas y organizaciones,
-            textos de las páginas) se escribe aquí y se guarda en una base de datos. El sitio lee esa base y muestra los
-            cambios en cuanto se guardan: no hace falta avisar a nadie ni esperar un despliegue.
+            Es el gestor de contenidos del sitio público del Observatorio. Aquí se escribe lo que el equipo publica con
+            frecuencia: proyectos de los labs, publicaciones, actualidad, noticias del buscador y el directorio de
+            personas. El sitio muestra los cambios en cuanto se guardan: no hace falta avisar a nadie ni esperar un
+            despliegue.
           </p>
           <p>
-            Cada apartado del menú de la izquierda corresponde a una sección del sitio. La regla general es: si algo del
-            sitio tiene texto o imagen que puede cambiar con el tiempo, se edita aquí.
+            Los textos institucionales (portada, quiénes somos, equipo, organizaciones aliadas, descripción de los labs,
+            páginas legales) no se editan aquí: ver la sección 8.
           </p>
 
           <h2 id="entrar">2. Entrar y cambiar la contraseña</h2>
@@ -91,13 +91,7 @@ export function Manual({ initPageResult, params, searchParams }: AdminViewServer
             </thead>
             <tbody>
               <tr>
-                <td rowSpan={7}>Contenido</td>
-                <td>Ejes de trabajo (labs)</td>
-                <td>
-                  Las cinco tarjetas de «Ejes de trabajo» y la portada de cada lab. El campo «Orden» define la posición.
-                </td>
-              </tr>
-              <tr>
+                <td rowSpan={4}>Contenido</td>
                 <td>Proyectos</td>
                 <td>Los proyectos de cada lab: ficha, galería, secciones desplegables y documento descargable.</td>
               </tr>
@@ -117,26 +111,9 @@ export function Manual({ initPageResult, params, searchParams }: AdminViewServer
                 </td>
               </tr>
               <tr>
-                <td>Centros de datos</td>
-                <td>Los puntos del mapa. Necesitan latitud y longitud en grados decimales (p. ej. 19.43, -99.13).</td>
-              </tr>
-              <tr>
-                <td>Textos del sitio</td>
-                <td>
-                  Textos fijos de las páginas: inicio, quiénes somos, encabezados, páginas legales, redes sociales.
-                </td>
-              </tr>
-              <tr>
-                <td rowSpan={2}>Directorio</td>
+                <td>Directorio</td>
                 <td>Personas</td>
-                <td>
-                  Equipo y directorio. La casilla «Forma parte del equipo» las muestra en la sección Equipo; el «Grupo»
-                  las agrupa en el directorio.
-                </td>
-              </tr>
-              <tr>
-                <td>Organizaciones</td>
-                <td>Directorio de organizaciones y la organización a la que pertenece cada persona.</td>
+                <td>Directorio de personas externas de «Quiénes somos». El «Grupo» las agrupa en el directorio.</td>
               </tr>
               <tr>
                 <td>Catálogos</td>
@@ -231,23 +208,22 @@ export function Manual({ initPageResult, params, searchParams }: AdminViewServer
           <h2 id="relaciones">7. Categorías, labs y otras relaciones</h2>
           <ul>
             <li>
-              Cada proyecto pertenece a un lab; cada publicación puede indicar el lab que la produjo; cada persona puede
-              vincularse a una organización. Elige el elemento en el desplegable o créalo al momento.
+              Cada proyecto pertenece a un lab y cada publicación puede indicar el lab que la produjo: elígelo en el
+              desplegable. Los cinco labs son fijos.
             </li>
             <li>
               Las <strong>categorías</strong> son una lista común. Antes de crear una nueva comprueba que no exista con
               otro nombre; el buscador de noticias las usa como filtro.
             </li>
-            <li>Renombrar una categoría o un lab actualiza todos los lugares donde aparece.</li>
+            <li>Renombrar una categoría actualiza todos los lugares donde aparece.</li>
           </ul>
 
-          <h2 id="textos">8. Textos del sitio</h2>
+          <h2 id="textos">8. Lo que no se edita aquí</h2>
           <p>
-            En <strong>Contenido → Textos del sitio</strong> están, por pestañas, los textos fijos que no pertenecen a
-            ningún elemento: el texto bajo el nombre del Observatorio en la portada, el propósito y las introducciones
-            de «Quiénes somos», las descripciones de los encabezados de página, los textos de cada bloque de
-            Publicaciones y Actualidad, las páginas legales (accesibilidad, privacidad, términos) y las redes sociales
-            con el correo de contacto.
+            Los textos institucionales viven en el código del sitio y se publican con cada actualización: el texto de la
+            portada, el propósito de «Quiénes somos», el equipo con sus fotos, las organizaciones aliadas, la
+            descripción de los cinco labs, los encabezados de página, las páginas legales, las redes sociales y el mapa
+            de centros de datos. Para cambiarlos, envía el texto nuevo al equipo de desarrollo.
           </p>
 
           <h2 id="mensajes">9. Mensajes de contacto</h2>

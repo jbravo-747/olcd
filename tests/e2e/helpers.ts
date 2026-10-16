@@ -3,6 +3,9 @@ import { expect, request as crearRequest } from "@playwright/test";
 import { enlacesLegales, navegacion } from "../../src/lib/navegacion";
 import es from "../../src/messages/es.json" with { type: "json" };
 import en from "../../src/messages/en.json" with { type: "json" };
+import { equipo } from "../../src/contenido/equipo";
+import { labs } from "../../src/contenido/labs";
+import { organizaciones } from "../../src/contenido/organizaciones";
 
 export type Locale = "es" | "en";
 export const locales: Locale[] = ["es", "en"];
@@ -65,19 +68,16 @@ export async function primerDocumento<T = Record<string, unknown>>(
 
 /** Rutas de detalle (una por tipo), descubiertas por la API REST. */
 export async function rutasDeDetalle(request: APIRequestContext): Promise<string[]> {
-  const lab = await primerDocumento<{ slug: string }>(request, "labs");
-  const proyecto = await primerDocumento<{ slug: string; lab: { slug: string } }>(request, "proyectos", 1);
+  const proyecto = await primerDocumento<{ slug: string; lab: string }>(request, "proyectos");
   const publicacion = await primerDocumento<{ slug: string }>(request, "publicaciones");
   const entrada = await primerDocumento<{ slug: string }>(request, "entradas");
-  const persona = await primerDocumento<{ slug: string }>(request, "personas");
-  const organizacion = await primerDocumento<{ slug: string }>(request, "organizaciones");
   return [
-    `/ejes-de-trabajo/${lab.slug}`,
-    `/ejes-de-trabajo/${proyecto.lab.slug}/${proyecto.slug}`,
+    `/ejes-de-trabajo/${labs[0].slug}`,
+    `/ejes-de-trabajo/${proyecto.lab}/${proyecto.slug}`,
     `/publicaciones/${publicacion.slug}`,
     `/actualidad/${entrada.slug}`,
-    `/quienes-somos/personas/${persona.slug}`,
-    `/quienes-somos/organizaciones/${organizacion.slug}`,
+    `/quienes-somos/personas/${equipo[0].slug}`,
+    `/quienes-somos/organizaciones/${organizaciones[0].slug}`,
   ];
 }
 
