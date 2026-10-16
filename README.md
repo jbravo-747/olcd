@@ -31,6 +31,9 @@ npm run dev                   # http://localhost:3000  →  /es, /en, /admin
 1. Entra a `http://localhost:3000/admin` y crea el primer usuario (admin).
 2. `npm run seed` carga el contenido de la maqueta en ambos idiomas
    (los textos en inglés van con prefijo `[EN]` hasta que se traduzcan).
+   Las secciones sin contenido real (proyectos de los labs, publicaciones,
+   actualidad y legales) quedan "en construcción"; con `SEED_MAQUETA=1` se
+   llenan con lorem ipsum, como en las pruebas.
 
 En desarrollo el esquema de la base se sincroniza solo (`push`). Sin
 `S3_BUCKET` los archivos subidos se guardan en `media/` y `documentos/`.

@@ -13,6 +13,7 @@ export default function configuracionGlobal() {
   const inicio = Date.now();
   const resultado = spawnSync(process.execPath, ["--env-file=.env.e2e", "--import", "tsx", "src/seed/index.ts"], {
     cwd: raiz,
+    env: { ...process.env, SEED_MAQUETA: "1" },
     stdio: ["ignore", "pipe", "pipe"],
     encoding: "utf8",
     timeout: 5 * 60_000,

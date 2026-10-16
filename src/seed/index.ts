@@ -2,6 +2,10 @@
  * Siembra el CMS con el contenido de la maqueta (src/seed/datos/*). Se ejecuta con
  * `npm run seed` contra la base de datos de DATABASE_URI. No hace nada si ya
  * hay labs cargados.
+ *
+ * Las secciones sin contenido real (proyectos de los labs, publicaciones,
+ * actualidad y legales) sólo se llenan con lorem ipsum si SEED_MAQUETA=1, como
+ * hacen las pruebas; si no, el sitio las muestra "en construcción".
  */
 import { existsSync } from "node:fs";
 import path from "node:path";
@@ -18,6 +22,8 @@ import { organizaciones as organizacionesMaqueta } from "./datos/organizaciones"
 import { descripcionCortaLarga, descripcionLarga } from "./datos/lorem";
 
 const contexto = { disableRevalidate: true };
+const MAQUETA = process.env.SEED_MAQUETA === "1";
+const EN_CONSTRUCCION = "En construcción.";
 const en = (texto: string) => `[EN] ${texto}`;
 
 /**
@@ -155,7 +161,7 @@ async function sembrarLabsYProyectos(payload: Payload, categoriaIds: (n: string[
     });
     labIdPorNombre.set(lab.nombre, docLab.id);
 
-    for (const p of lab.proyectos) {
+    for (const p of MAQUETA ? lab.proyectos : []) {
       const docProyecto = await payload.create({
         collection: "proyectos",
         data: {
@@ -217,7 +223,7 @@ async function sembrarPublicaciones(
   labIdPorNombre: Map<string, number>,
   categoriaIds: (n: string[]) => number[],
 ) {
-  for (const pub of publicacionesMaqueta) {
+  for (const pub of MAQUETA ? publicacionesMaqueta : []) {
     const doc = await payload.create({
       collection: "publicaciones",
       data: {
@@ -250,7 +256,7 @@ async function sembrarPublicaciones(
 }
 
 async function sembrarEntradas(payload: Payload, categoriaIds: (n: string[]) => number[]) {
-  for (const e of entradasMaqueta) {
+  for (const e of MAQUETA ? entradasMaqueta : []) {
     const doc = await payload.create({
       collection: "entradas",
       data: {
@@ -407,9 +413,9 @@ async function sembrarSitio(payload: Payload) {
       ),
     },
     publicaciones: {
-      reportes: traducir(descripcionCortaLarga),
-      articulosLibros: traducir(descripcionCortaLarga),
-      recursosEducativos: traducir(descripcionCortaLarga),
+      reportes: MAQUETA ? traducir(descripcionCortaLarga) : "",
+      articulosLibros: MAQUETA ? traducir(descripcionCortaLarga) : "",
+      recursosEducativos: MAQUETA ? traducir(descripcionCortaLarga) : "",
     },
     actualidad: {
       blog: traducir(
@@ -420,9 +426,9 @@ async function sembrarSitio(payload: Payload) {
       noticiasObservatorio: traducir("[Descripción corta] Avisos, convocatorias y novedades de la red."),
     },
     legales: {
-      accesibilidad: parrafosALexical(descripcionLarga.map(traducir)),
-      privacidad: parrafosALexical(descripcionLarga.map(traducir)),
-      terminos: parrafosALexical(descripcionLarga.map(traducir)),
+      accesibilidad: parrafosALexical((MAQUETA ? descripcionLarga : [EN_CONSTRUCCION]).map(traducir)),
+      privacidad: parrafosALexical((MAQUETA ? descripcionLarga : [EN_CONSTRUCCION]).map(traducir)),
+      terminos: parrafosALexical((MAQUETA ? descripcionLarga : [EN_CONSTRUCCION]).map(traducir)),
     },
     redes: {
       correoContacto: "datacenters@riseup.net",
