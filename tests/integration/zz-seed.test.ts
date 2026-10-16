@@ -22,7 +22,12 @@ async function correrSeed() {
     const { stdout, stderr } = await ejecutar(
       process.execPath,
       ["--env-file=.env.test", "--import", "tsx", "src/seed/index.ts"],
-      { cwd: RAIZ, env: { ...process.env, ...ADMIN }, timeout: TIEMPO - 10_000, maxBuffer: 16 * 1024 * 1024 },
+      {
+        cwd: RAIZ,
+        env: { ...process.env, ...ADMIN, SEED_MAQUETA: "1" },
+        timeout: TIEMPO - 10_000,
+        maxBuffer: 16 * 1024 * 1024,
+      },
     );
     return { codigo: 0, salida: stdout + stderr };
   } catch (error) {

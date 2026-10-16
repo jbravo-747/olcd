@@ -56,9 +56,9 @@ export default async function QuienesSomos({ params }: Props) {
   return (
     <>
       <section id="proposito" className="bg-cream py-16 scroll-mt-20">
-        <div className="shell grid gap-10 lg:grid-cols-[320px_1fr] lg:gap-20">
-          <h1 className="display t-section">{textos?.titulo ?? t("titulo")}</h1>
-          <TextoEnriquecido datos={textos?.proposito} className="max-w-3xl" />
+        <div className="shell">
+          <h1 className="display t-section max-w-5xl">{textos?.titulo ?? t("titulo")}</h1>
+          <TextoEnriquecido datos={textos?.proposito} className="mt-10 max-w-4xl" />
         </div>
       </section>
 

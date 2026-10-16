@@ -59,7 +59,7 @@
     "tipo": "Tipo",
     "seccion": "Sección",
     "filtrosDe": "Filtros de {titulo}",
-    "sinContenido": "Aún no hay contenido en esta sección."
+    "sinContenido": "Sección en construcción."
   },
   "inicio": {
     "titulo": "Observatorio Latinoamericano de Centros de Datos",
